@@ -3,6 +3,8 @@ import { useState } from "react";
 import AuthenticatedNavigator from "./src/navigators/AuthenticatedNavigator";
 import UnauthenticatedNavigator from "./src/navigators/UnauthenticatedNavigator";
 
+import "./src/lib/i18n";
+
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
