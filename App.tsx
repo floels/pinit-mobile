@@ -1,20 +1,28 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { useState } from "react";
+import AuthenticatedNavigator from "./src/navigators/AuthenticatedNavigator";
+import UnauthenticatedNavigator from "./src/navigators/UnauthenticatedNavigator";
 
-export default function App() {
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handlePressLogIn = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handlePressLogOut = () => {
+    setIsAuthenticated(false);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      {isAuthenticated ? (
+        <AuthenticatedNavigator handlePressLogOut={handlePressLogOut} />
+      ) : (
+        <UnauthenticatedNavigator handlePressLogIn={handlePressLogIn} />
+      )}
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+export default App;
