@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     flex: 1,
     justifyContent: "flex-end",
+    position: "relative", // because the container of <LandingScreenGallery /> will have 'position: absolute;'
   },
 });
 

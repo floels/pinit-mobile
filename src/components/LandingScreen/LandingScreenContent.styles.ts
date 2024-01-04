@@ -14,13 +14,14 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingBottom: 60,
     position: "relative",
+    backgroundColor: Colors.white,
   },
   logo: {
     width: 90,
     height: 90,
     marginBottom: 12,
     position: "absolute",
-    top: -45,
+    top: -45, // 50% of height
     alignSelf: "center",
   },
   header: {
