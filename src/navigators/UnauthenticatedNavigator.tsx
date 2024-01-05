@@ -1,19 +1,37 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import LandingScreen from "../screens/LandingScreen";
+import LoginScreen from "../screens/LoginScreen";
 
 type UnauthenticatedNavigatorProps = {
-  handlePressLogIn: () => void;
+  handleSubmitLogin: () => void;
+};
+
+export type UnauthenticatedNavigatorParamList = {
+  LoginScreen: undefined; // Add other routes as needed
 };
 
 const UnauthenticatedNavigator = ({
-  handlePressLogIn,
+  handleSubmitLogin,
 }: UnauthenticatedNavigatorProps) => {
-  const StackNavigator = createNativeStackNavigator();
+  const StackNavigator = createStackNavigator();
 
   return (
     <StackNavigator.Navigator>
-      <StackNavigator.Screen name="Home">
-        {() => <LandingScreen handlePressLogIn={handlePressLogIn} />}
+      <StackNavigator.Screen
+        name="Home"
+        component={LandingScreen}
+        options={{ headerShown: false }}
+      />
+      <StackNavigator.Screen
+        name="LoginScreen"
+        options={{ presentation: "modal", headerShown: false }}
+      >
+        {({ navigation }) => (
+          <LoginScreen
+            navigation={navigation}
+            handleSubmitLogin={handleSubmitLogin}
+          />
+        )}
       </StackNavigator.Screen>
     </StackNavigator.Navigator>
   );
