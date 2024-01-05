@@ -7,6 +7,7 @@ export const Colors = {
 };
 
 export const Fonts = {
+  fontSize200: 16,
   fontSize400: 28,
   fontWeightSemiBold: "600" as "600",
 };

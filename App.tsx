@@ -8,7 +8,7 @@ import "./src/lib/i18n";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handlePressLogIn = () => {
+  const handleSubmitLogin = () => {
     setIsAuthenticated(true);
   };
 
@@ -21,7 +21,7 @@ const App = () => {
       {isAuthenticated ? (
         <AuthenticatedNavigator handlePressLogOut={handlePressLogOut} />
       ) : (
-        <UnauthenticatedNavigator handlePressLogIn={handlePressLogIn} />
+        <UnauthenticatedNavigator handleSubmitLogin={handleSubmitLogin} />
       )}
     </NavigationContainer>
   );
