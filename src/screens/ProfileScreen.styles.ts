@@ -4,19 +4,19 @@ import { Colors, Fonts } from "../global.styles";
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
+    paddingTop: 80,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
-  tabs: {
-    flexDirection: "row",
+  logOutButton: {
+    backgroundColor: Colors.backgroundNormal,
+    width: "100%",
+    alignItems: "center",
     justifyContent: "center",
-    marginBottom: 10,
+    height: 40,
+    borderRadius: 60,
   },
-  tab: {
-    paddingBottom: 6,
-    borderBottomColor: Colors.colorBlack,
-    borderBottomWidth: 2,
-  },
-  tabText: {
+  logOutButtonText: {
     fontSize: Fonts.fontSize200,
     fontWeight: Fonts.fontWeightSemiBold,
   },
