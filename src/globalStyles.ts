@@ -1,9 +1,10 @@
 export const Colors = {
-  white: "#fff",
+  backgroundBase: "fff",
+  backgroundNormal: "#e9e9e9",
+  backgroundImportant: "#e60023",
 
-  backgroundPrimary: "#e60023",
-  backgroundSecondary: "#e9e9e9",
-  fontSecondary: "#fff",
+  fontImportant: "#fff",
+  fontSecondary: "gray",
 };
 
 export const Fonts = {

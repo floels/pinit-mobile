@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   logOutButton: {
-    backgroundColor: Colors.backgroundPrimary,
+    backgroundColor: Colors.backgroundImportant,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   logOutButtonText: {
     fontSize: Fonts.fontSize200,
-    color: Colors.fontSecondary,
+    color: Colors.fontImportant,
     fontWeight: Fonts.fontWeightSemiBold,
   },
 });

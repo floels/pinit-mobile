@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
 import { Colors, Fonts } from "../globalStyles";
 
+const inputsFontSize = Fonts.fontSize400;
+const inputsFontWeight = Fonts.fontWeightSemiBold;
+
 const styles = StyleSheet.create({
   closeIconAndHeader: {
     width: "100%",
@@ -18,12 +21,35 @@ const styles = StyleSheet.create({
     fontSize: Fonts.fontSize200,
     fontWeight: Fonts.fontWeightSemiBold,
   },
-  content: {
+  loginForm: {
     paddingLeft: 20,
     paddingRight: 20,
+    paddingTop: 40,
+  },
+  emailLabelAndInput: {
+    marginBottom: 30,
+  },
+  emailInput: {
+    fontSize: inputsFontSize,
+    fontWeight: inputsFontWeight,
+  },
+  passwordLabelAndInput: {
+    marginBottom: 30,
+  },
+  passwordInputAndVisibilityIcon: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  passwordInput: {
+    fontSize: inputsFontSize,
+    fontWeight: inputsFontWeight,
+    flex: 1,
+  },
+  togglePasswordVisibilityIcon: {
+    color: Colors.fontSecondary,
   },
   submitButton: {
-    backgroundColor: Colors.backgroundPrimary,
+    backgroundColor: Colors.backgroundImportant,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -31,7 +57,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
   },
   submitButtonText: {
-    color: Colors.white,
+    color: Colors.fontImportant,
     fontSize: Fonts.fontSize200,
     fontWeight: Fonts.fontWeightSemiBold,
   },

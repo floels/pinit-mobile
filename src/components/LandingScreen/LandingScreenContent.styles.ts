@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingBottom: 60,
     position: "relative",
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.backgroundBase,
   },
   logo: {
     width: 90,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   signUpButton: {
-    backgroundColor: Colors.backgroundPrimary,
+    backgroundColor: Colors.backgroundImportant,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -40,11 +40,11 @@ const styles = StyleSheet.create({
   },
   signUpButtonText: {
     fontSize: buttonTextsFontSize,
-    color: Colors.fontSecondary,
+    color: Colors.fontImportant,
     fontWeight: buttonTextsFontWeight,
   },
   logInButton: {
-    backgroundColor: Colors.backgroundSecondary,
+    backgroundColor: Colors.backgroundNormal,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
