@@ -33,7 +33,7 @@ const LoginScreen = ({
   const { t } = useTranslation();
 
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.closeIconAndHeader}>
         <TouchableOpacity onPress={onPressClose} style={styles.closeIcon}>
           <FontAwesome5 name="times" size={24} />
@@ -72,6 +72,16 @@ const LoginScreen = ({
             </TouchableOpacity>
           </View>
         </View>
+        {submitError && (
+          <View style={styles.submitError}>
+            <FontAwesome5
+              name="exclamation-circle"
+              style={styles.submitErrorIcon}
+              size={20}
+            />
+            <Text style={styles.submitErrorText}>{submitError}</Text>
+          </View>
+        )}
         <TouchableOpacity
           disabled={!canSubmit}
           onPress={onSubmit}
@@ -94,6 +104,15 @@ const LoginScreen = ({
           </Text>
         </TouchableOpacity>
       </View>
+      {isSubmitting && (
+        <View style={styles.loadingOverlay}>
+          <FontAwesome5
+            name="spinner"
+            size={40}
+            style={styles.loadingSpinner}
+          />
+        </View>
+      )}
     </View>
   );
 };

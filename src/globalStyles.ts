@@ -5,6 +5,7 @@ export const Colors = {
 
   fontImportant: "#fff",
   fontSecondary: "gray",
+  fontError: "#e60023",
 };
 
 export const Fonts = {

@@ -5,6 +5,10 @@ const inputsFontSize = Fonts.fontSize400;
 const inputsFontWeight = Fonts.fontWeightSemiBold;
 
 const styles = StyleSheet.create({
+  container: {
+    position: "relative",
+    height: "100%",
+  },
   closeIconAndHeader: {
     width: "100%",
     position: "relative",
@@ -48,6 +52,19 @@ const styles = StyleSheet.create({
   togglePasswordVisibilityIcon: {
     color: Colors.fontSecondary,
   },
+  submitError: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  submitErrorIcon: {
+    color: Colors.fontError,
+    marginRight: 6,
+  },
+  submitErrorText: {
+    color: Colors.fontError,
+    flex: 1, // to avoid text overflowing onto right padding
+  },
   submitButton: {
     width: "100%",
     alignItems: "center",
@@ -70,6 +87,19 @@ const styles = StyleSheet.create({
   },
   submitButtonTextEnabled: {
     color: Colors.fontImportant,
+  },
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+  },
+  loadingSpinner: {
+    color: Colors.fontSecondary,
   },
 });
 
