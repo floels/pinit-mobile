@@ -1,12 +1,17 @@
 import { NavigationProp } from "@react-navigation/native";
 import { UnauthenticatedNavigatorParamList } from "../navigators/UnauthenticatedNavigator";
 import { useState } from "react";
+import SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoginScreen from "./LoginScreen";
 import { isValidEmail, isValidPassword } from "../lib/utils/validation";
 import {
+  ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
+  ACCESS_TOKEN_STORAGE_KEY,
   API_BASE_URL,
   API_ENDPOINT_OBTAIN_TOKEN,
   ERROR_CODE_INVALID_EMAIL,
+  REFRESH_TOKEN_STORAGE_KEY,
 } from "../lib/constants";
 import {
   NetworkError,
@@ -64,6 +69,23 @@ const fetchTokens = async ({ email, password }: Credentials) => {
   return responseData;
 };
 
+const persistTokensData = async ({
+  accessToken,
+  refreshToken,
+  accessTokenExpirationDate,
+}: {
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpirationDate: string;
+}) => {
+  await SecureStore.setItemAsync(ACCESS_TOKEN_STORAGE_KEY, accessToken);
+  await SecureStore.setItemAsync(REFRESH_TOKEN_STORAGE_KEY, refreshToken);
+  await AsyncStorage.setItem(
+    ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
+    accessTokenExpirationDate
+  );
+};
+
 const LoginScreenContainer = ({
   navigation,
   onSuccessfulLogin,
@@ -119,6 +141,12 @@ const LoginScreenContainer = ({
         refresh_token: refreshToken,
         access_token_expiration_utc: accessTokenExpirationDate,
       } = await fetchTokens(credentials);
+
+      await persistTokensData({
+        accessToken,
+        refreshToken,
+        accessTokenExpirationDate,
+      });
 
       onSuccessfulLogin();
     } catch (error) {
