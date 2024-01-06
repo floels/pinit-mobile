@@ -60,7 +60,27 @@ it("should call 'navigation.goBack()' when pressing Close icon", async () => {
 
   await userEvent.press(closeIcon);
 
-  expect(mockNavigation.goBack).toHaveBeenCalledTimes;
+  expect(mockNavigation.goBack).toHaveBeenCalledTimes(1);
+});
+
+it("should toggle password visibility upon press of corresponding icon", async () => {
+  renderComponent();
+
+  const passwordInput = screen.getByPlaceholderText(
+    enTranslations.LandingScreen.PLACEHOLDER_PASSWORD,
+  );
+
+  expect(passwordInput.props.secureTextEntry).toBe(true);
+
+  const togglePasswordVisibilityIcon = screen.getByTestId(
+    "login-screen-toggle-password-visibility-icon",
+  );
+
+  await userEvent.press(togglePasswordVisibilityIcon);
+  expect(passwordInput.props.secureTextEntry).toBe(false);
+
+  await userEvent.press(togglePasswordVisibilityIcon);
+  expect(passwordInput.props.secureTextEntry).toBe(true);
 });
 
 it("should not enable submit button before inputs are valid", async () => {
