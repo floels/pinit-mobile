@@ -1,4 +1,5 @@
 import { render } from "@testing-library/react-native";
+
 import LoginScreenContainer from "./LoginScreenContainer";
 
 const renderComponent = () => {
