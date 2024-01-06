@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { View, Animated, Image } from "react-native";
+
 import styles from "./LandingScreenGallery.styles";
 
 // We must have static paths in require(...), so we have to import all images explicitly:
@@ -70,7 +71,7 @@ const LandingScreenGallery = () => {
 
   const imageIndexes = Array.from(
     { length: NUMBER_IMAGES_PER_COLUMN },
-    (_, index) => index
+    (_, index) => index,
   );
 
   const renderImageColumn = ({ columnIndex }: { columnIndex: number }) => (

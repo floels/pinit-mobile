@@ -1,17 +1,18 @@
 import { createStackNavigator } from "@react-navigation/stack";
+
 import LandingScreen from "../screens/LandingScreen";
-import LoginScreen from "../screens/LoginScreen";
+import LoginScreenContainer from "../screens/LoginScreenContainer";
 
 type UnauthenticatedNavigatorProps = {
-  handleSubmitLogin: () => void;
+  onSuccessfulLogin: () => void;
 };
 
 export type UnauthenticatedNavigatorParamList = {
-  LoginScreen: undefined; // Add other routes as needed
+  LoginScreen: undefined;
 };
 
 const UnauthenticatedNavigator = ({
-  handleSubmitLogin,
+  onSuccessfulLogin,
 }: UnauthenticatedNavigatorProps) => {
   const StackNavigator = createStackNavigator();
 
@@ -23,9 +24,9 @@ const UnauthenticatedNavigator = ({
         options={{ presentation: "modal" }}
       >
         {({ navigation }) => (
-          <LoginScreen
+          <LoginScreenContainer
             navigation={navigation}
-            handleSubmitLogin={handleSubmitLogin}
+            onSuccessfulLogin={onSuccessfulLogin}
           />
         )}
       </StackNavigator.Screen>

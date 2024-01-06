@@ -1,7 +1,9 @@
-import { Text, View, TouchableOpacity, Image } from "react-native";
 import { useTranslation } from "react-i18next";
-import logo from "@/assets/logo.png";
+import { Text, View, TouchableOpacity, Image } from "react-native";
+
 import styles from "./LandingScreenContent.styles";
+
+import logo from "@/assets/logo.png";
 
 type LandingScreenContentProps = {
   handlePressLogIn: () => void;

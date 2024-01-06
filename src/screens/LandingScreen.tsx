@@ -1,9 +1,10 @@
+import { NavigationProp } from "@react-navigation/native";
 import { View } from "react-native";
-import LandingScreenContent from "../components/LandingScreen/LandingScreenContent";
+
 import styles from "./LandingScreen.styles";
+import LandingScreenContent from "../components/LandingScreen/LandingScreenContent";
 import LandingScreenGallery from "../components/LandingScreen/LandingScreenGallery";
 import LandingScreenGradient from "../components/LandingScreen/LandingScreenGradient";
-import { NavigationProp } from "@react-navigation/native";
 import { UnauthenticatedNavigatorParamList } from "../navigators/UnauthenticatedNavigator";
 
 type LandingScreenProps = {

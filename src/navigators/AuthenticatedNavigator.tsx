@@ -1,6 +1,7 @@
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+
 import HomeScreen from "../screens/HomeScreen";
 
 type AuthenticatedNavigatorParamList = {
@@ -11,7 +12,7 @@ type AuthenticatedNavigatorParamList = {
 };
 
 type AuthenticatedNavigatorProps = {
-  handlePressLogOut: () => void;
+  onSuccessfulLogout: () => void;
 };
 
 const TAB_BAR_ICON_NAMES: Record<string, string> = {
@@ -22,7 +23,7 @@ const TAB_BAR_ICON_NAMES: Record<string, string> = {
 };
 
 const AuthenticatedNavigator = ({
-  handlePressLogOut,
+  onSuccessfulLogout,
 }: AuthenticatedNavigatorProps) => {
   const TabNavigator =
     createBottomTabNavigator<AuthenticatedNavigatorParamList>();
@@ -52,7 +53,7 @@ const AuthenticatedNavigator = ({
   return (
     <TabNavigator.Navigator screenOptions={screenOptions}>
       <TabNavigator.Screen name="Home">
-        {() => <HomeScreen handlePressLogOut={handlePressLogOut} />}
+        {() => <HomeScreen onLogOut={onSuccessfulLogout} />}
       </TabNavigator.Screen>
       <TabNavigator.Screen name="Search">{() => null}</TabNavigator.Screen>
       <TabNavigator.Screen name="Create">{() => null}</TabNavigator.Screen>
