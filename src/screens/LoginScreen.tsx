@@ -68,7 +68,10 @@ const LoginScreen = ({
               autoCapitalize="none"
               style={styles.passwordInput}
             />
-            <TouchableOpacity onPress={onTogglePasswordVisibility}>
+            <TouchableOpacity
+              onPress={onTogglePasswordVisibility}
+              testID="login-screen-toggle-password-visibility-icon"
+            >
               <FontAwesome5
                 name="eye"
                 size={24}
