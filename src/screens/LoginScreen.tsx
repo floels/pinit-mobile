@@ -9,6 +9,9 @@ type LoginScreenProps = {
   password: string;
   onChangePassword: (password: string) => void;
   isPasswordVisible: boolean;
+  canSubmit: boolean;
+  isSubmitting: boolean;
+  submitError: string;
   onTogglePasswordVisibility: () => void;
   onSubmit: () => void;
   onPressClose: () => void;
@@ -20,6 +23,9 @@ const LoginScreen = ({
   password,
   onChangePassword,
   isPasswordVisible,
+  canSubmit,
+  isSubmitting,
+  submitError,
   onTogglePasswordVisibility,
   onSubmit,
   onPressClose,
@@ -66,8 +72,24 @@ const LoginScreen = ({
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity onPress={onSubmit} style={styles.submitButton}>
-          <Text style={styles.submitButtonText}>
+        <TouchableOpacity
+          disabled={!canSubmit}
+          onPress={onSubmit}
+          style={[
+            styles.submitButton,
+            canSubmit
+              ? styles.submitButtonEnabled
+              : styles.submitButtonDisabled,
+          ]}
+        >
+          <Text
+            style={[
+              styles.submitButtonText,
+              canSubmit
+                ? styles.submitButtonTextEnabled
+                : styles.submitButtonTextDisabled,
+            ]}
+          >
             {t("LandingScreen.LOG_IN")}
           </Text>
         </TouchableOpacity>

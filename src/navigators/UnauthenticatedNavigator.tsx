@@ -3,7 +3,7 @@ import LandingScreen from "../screens/LandingScreen";
 import LoginScreenContainer from "../screens/LoginScreenContainer";
 
 type UnauthenticatedNavigatorProps = {
-  handleSubmitLogin: () => void;
+  onSuccessfulLogin: () => void;
 };
 
 export type UnauthenticatedNavigatorParamList = {
@@ -11,7 +11,7 @@ export type UnauthenticatedNavigatorParamList = {
 };
 
 const UnauthenticatedNavigator = ({
-  handleSubmitLogin,
+  onSuccessfulLogin,
 }: UnauthenticatedNavigatorProps) => {
   const StackNavigator = createStackNavigator();
 
@@ -25,7 +25,7 @@ const UnauthenticatedNavigator = ({
         {({ navigation }) => (
           <LoginScreenContainer
             navigation={navigation}
-            handleSubmitLogin={handleSubmitLogin}
+            onSuccessfulLogin={onSuccessfulLogin}
           />
         )}
       </StackNavigator.Screen>

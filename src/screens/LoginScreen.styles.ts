@@ -49,17 +49,27 @@ const styles = StyleSheet.create({
     color: Colors.fontSecondary,
   },
   submitButton: {
-    backgroundColor: Colors.backgroundImportant,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
     height: 40,
     borderRadius: 60,
   },
+  submitButtonDisabled: {
+    backgroundColor: Colors.backgroundNormal,
+  },
+  submitButtonEnabled: {
+    backgroundColor: Colors.backgroundImportant,
+  },
   submitButtonText: {
-    color: Colors.fontImportant,
     fontSize: Fonts.fontSize200,
     fontWeight: Fonts.fontWeightSemiBold,
+  },
+  submitButtonTextDisabled: {
+    color: Colors.fontSecondary,
+  },
+  submitButtonTextEnabled: {
+    color: Colors.fontImportant,
   },
 });
 
