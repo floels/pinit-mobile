@@ -26,8 +26,12 @@ const PinThumbnail = ({ pin, width }: PinThumbnailProps) => {
     });
   }, []);
 
+  if (!imageHeight) {
+    return null;
+  }
+
   return (
-    <View>
+    <View style={[styles.container, { width }]}>
       <Image
         source={{ uri: pin.imageURL }}
         style={[styles.image, { width, height: imageHeight }]}

@@ -1,21 +1,43 @@
-import { ScrollView, View, Dimensions } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  Dimensions,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+} from "react-native";
 
 import PinThumbnail from "./PinThumbnail";
 import styles from "./PinsBoard.styles";
+import Spinner from "../Spinner/Spinner";
 
 import { PinType } from "@/src/lib/types";
 
 type PinsBoardProps = {
   pins: PinType[];
+  isFetching: boolean;
+  fetchError: string;
+  handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
 
 const NUMBER_COLUMNS = 2;
 const MARGIN_BETWEEN_COLUMNS = 10;
+const SCROLL_EVENT_THROTTLE = 32;
 
-const PinsBoard = ({ pins }: PinsBoardProps) => {
+const PinsBoard = ({
+  pins,
+  isFetching,
+  fetchError,
+  handleScroll,
+}: PinsBoardProps) => {
   const screenWidth = Dimensions.get("window").width;
 
-  const columnWidth = screenWidth / NUMBER_COLUMNS - MARGIN_BETWEEN_COLUMNS;
+  // For N columns, we want (N+1) margins total on the screen,
+  // counting the one at the far left and the one at the far right
+  // of the screen. Therefore we should set:
+  const columnWidth =
+    (screenWidth - (NUMBER_COLUMNS + 1) * MARGIN_BETWEEN_COLUMNS) /
+    NUMBER_COLUMNS;
 
   // Here the logic is to:
   // - render as many columns as `NUMBER_COLUMNS`,
@@ -27,20 +49,30 @@ const PinsBoard = ({ pins }: PinsBoardProps) => {
   // We do this by conditioning the rendering of thumbnail #pinThumbnailIndex (zero-based) to:
   // `if (pinThumbnailIndex % NUMBER_COLUMNS === columnIndex)`.
   return (
-    <ScrollView contentContainerStyle={styles.thumbnailsGrid}>
-      {Array.from({ length: NUMBER_COLUMNS }).map((_, columnIndex) => (
-        <View key={`thumbnails-column-${columnIndex + 1}`}>
-          {pins.map((pin, pinIndex) => {
-            if (pinIndex % NUMBER_COLUMNS === columnIndex) {
-              return (
-                <View key={`pin-thumbnail-${pinIndex + 1}`}>
-                  <PinThumbnail pin={pin} width={columnWidth} />
-                </View>
-              );
-            }
-          })}
-        </View>
-      ))}
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+      showsVerticalScrollIndicator={false}
+      onScroll={handleScroll}
+      scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+    >
+      <View style={styles.thumbnailsGrid}>
+        {Array.from({ length: NUMBER_COLUMNS }).map((_, columnIndex) => (
+          <View key={`thumbnails-column-${columnIndex + 1}`}>
+            {pins.map((pin, pinIndex) => {
+              if (pinIndex % NUMBER_COLUMNS === columnIndex) {
+                return (
+                  <View key={`pin-thumbnail-${pinIndex + 1}`}>
+                    <PinThumbnail pin={pin} width={columnWidth} />
+                  </View>
+                );
+              }
+            })}
+          </View>
+        ))}
+      </View>
+      {isFetching && <Spinner style={styles.spinner} />}
+      {fetchError && <Text>{fetchError}</Text>}
     </ScrollView>
   );
 };
