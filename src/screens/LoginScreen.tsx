@@ -1,6 +1,6 @@
 import { Text, View, TouchableOpacity } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
-import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { UnauthenticatedNavigatorParamList } from "../navigators/UnauthenticatedNavigator";
 import { useTranslation } from "react-i18next";
 import styles from "./LoginScreen.styles";
@@ -17,7 +17,7 @@ const LoginScreen = ({ navigation, handleSubmitLogin }: LoginScreenProps) => {
     <View>
       <View style={styles.closeIconAndHeader}>
         <TouchableOpacity onPress={navigation.goBack} style={styles.closeIcon}>
-          <FontAwesomeIcon name="times" size={24} />
+          <FontAwesome5 name="times" size={24} />
         </TouchableOpacity>
         <Text style={styles.header}>{t("LandingScreen.LOG_IN")}</Text>
       </View>

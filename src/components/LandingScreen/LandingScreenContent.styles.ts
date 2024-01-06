@@ -3,7 +3,7 @@ import { Colors, Fonts } from "../../globalStyles";
 
 const buttonsHeight = 40;
 const buttonsBorderRadius = 60;
-const buttonTextsFontSize = 16;
+const buttonTextsFontSize = Fonts.fontSize200;
 const buttonTextsFontWeight = Fonts.fontWeightSemiBold;
 
 const styles = StyleSheet.create({

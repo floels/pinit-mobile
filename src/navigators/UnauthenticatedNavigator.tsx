@@ -16,15 +16,11 @@ const UnauthenticatedNavigator = ({
   const StackNavigator = createStackNavigator();
 
   return (
-    <StackNavigator.Navigator>
-      <StackNavigator.Screen
-        name="Home"
-        component={LandingScreen}
-        options={{ headerShown: false }}
-      />
+    <StackNavigator.Navigator screenOptions={{ headerShown: false }}>
+      <StackNavigator.Screen name="Home" component={LandingScreen} />
       <StackNavigator.Screen
         name="LoginScreen"
-        options={{ presentation: "modal", headerShown: false }}
+        options={{ presentation: "modal" }}
       >
         {({ navigation }) => (
           <LoginScreen
