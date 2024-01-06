@@ -96,6 +96,7 @@ const LoginScreen = ({
               ? styles.submitButtonEnabled
               : styles.submitButtonDisabled,
           ]}
+          testID="login-screen-submit-button"
         >
           <Text
             style={[

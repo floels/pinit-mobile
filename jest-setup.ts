@@ -1,5 +1,7 @@
 // See https://callstack.github.io/react-native-testing-library/docs/getting-started#additional-jest-matchers:
 import "@testing-library/react-native/extend-expect";
+import fetchMock from "jest-fetch-mock";
+
 import enTranslations from "@/translations/en.json";
 
 // See https://react-native-async-storage.github.io/async-storage/docs/advanced/jest/#with-jest-setup-file:
@@ -26,3 +28,5 @@ jest.mock("react-i18next", () => ({
 }));
 
 jest.useFakeTimers();
+
+fetchMock.enableMocks();

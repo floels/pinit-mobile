@@ -151,7 +151,6 @@ const LoginScreenContainer = ({
 
       onSuccessfulLogin();
     } catch (error) {
-      console.warn("Login error: ", error);
       handleSubmitError(error);
     } finally {
       setIsSubmitting(false);
