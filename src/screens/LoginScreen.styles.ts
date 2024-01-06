@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+
 import { Colors, Fonts } from "../globalStyles";
 
 const inputsFontSize = Fonts.fontSize400;

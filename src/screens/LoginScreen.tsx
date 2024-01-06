@@ -1,6 +1,7 @@
+import { useTranslation } from "react-i18next";
 import { Text, View, TouchableOpacity, TextInput } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import { useTranslation } from "react-i18next";
+
 import styles from "./LoginScreen.styles";
 
 type LoginScreenProps = {

@@ -1,4 +1,5 @@
 import { LinearGradient } from "expo-linear-gradient";
+
 import styles from "./LandingScreenGradient.styles";
 
 const LandingScreenGradient = () => {
