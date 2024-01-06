@@ -36,7 +36,11 @@ const LoginScreen = ({
   return (
     <View style={styles.container}>
       <View style={styles.closeIconAndHeader}>
-        <TouchableOpacity onPress={onPressClose} style={styles.closeIcon}>
+        <TouchableOpacity
+          onPress={onPressClose}
+          style={styles.closeIcon}
+          testID="login-screen-close-icon"
+        >
           <FontAwesome5 name="times" size={24} />
         </TouchableOpacity>
         <Text style={styles.header}>{t("LandingScreen.LOG_IN")}</Text>
@@ -92,6 +96,7 @@ const LoginScreen = ({
               ? styles.submitButtonEnabled
               : styles.submitButtonDisabled,
           ]}
+          testID="login-screen-submit-button"
         >
           <Text
             style={[
