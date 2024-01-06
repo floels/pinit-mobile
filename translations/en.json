@@ -15,7 +15,8 @@
     "INVALID_PASSWORD_LOGIN": "The password you entered is incorrect. Please try again."
   },
   "HomeScreen": {
-    "ALL": "All"
+    "ALL": "All",
+    "ERROR_FETCH_PIN_SUGGESTIONS": "An error occurred while attempting to retrieve more pin suggestions."
   },
   "ProfileScreen": {
     "LOG_OUT": "Log out"
