@@ -27,38 +27,45 @@ const PinsBoardContainer = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [fetchError, setFetchError] = useState("");
 
-  const fetchPinSuggestions = async () => {
+  const fetchPinsSuggestionsAndFallBack = async () => {
+    try {
+      await fetchPinsSuggestions();
+    } catch {
+      setFetchError(t("Common.CONNECTION_ERROR"));
+      setIsFetching(false);
+    }
+  };
+
+  const fetchPinsSuggestions = async () => {
     setIsFetching(true);
     setFetchError("");
 
-    let response;
+    const endpoint = `${API_ENDPOINT_GET_PIN_SUGGESTIONS}/?page=${currentPage}`;
+    const newPinsResponse = await fetchWithAuthentication({ endpoint });
 
-    try {
-      const endpoint = `${API_ENDPOINT_GET_PIN_SUGGESTIONS}/?page=${currentPage}`;
-      response = await fetchWithAuthentication({ endpoint });
-    } catch {
-      setFetchError(t("Common.CONNECTION_ERROR"));
-      return;
-    } finally {
-      setIsFetching(false);
-    }
+    setIsFetching(false);
 
-    if (!response.ok) {
+    if (!newPinsResponse.ok) {
       setFetchError(t("HomeScreen.ERROR_FETCH_PIN_SUGGESTIONS"));
       return;
     }
 
     setFetchError("");
-    setCurrentPage(currentPage + 1);
 
-    const responseData = await response.json();
+    await updateStateWithNewResponse(newPinsResponse);
+  };
+
+  const updateStateWithNewResponse = async (newPinsResponse: any) => {
+    const responseData = await newPinsResponse.json();
+
     const newPins = getPinsWithCamelCaseKeys(responseData.results);
-    setPins([...pins, ...newPins]);
+
+    setPins((previousPins) => [...previousPins, ...newPins]);
   };
 
   useEffect(() => {
-    fetchPinSuggestions();
-  }, []);
+    fetchPinsSuggestionsAndFallBack();
+  }, [currentPage]);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     if (isFetching) {
@@ -72,8 +79,7 @@ const PinsBoardContainer = () => {
       windowHeight + currentOffset >
       pinsBoardHeight - MARGIN_SCROLL_BEFORE_NEW_FETCH
     ) {
-      setCurrentPage(currentPage + 1);
-      fetchPinSuggestions();
+      setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 

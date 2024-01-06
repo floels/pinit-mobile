@@ -27,6 +27,4 @@ jest.mock("react-i18next", () => ({
   useTranslation: mockUseTranslation,
 }));
 
-jest.useFakeTimers();
-
 fetchMock.enableMocks();

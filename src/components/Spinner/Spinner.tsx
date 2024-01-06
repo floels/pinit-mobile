@@ -6,11 +6,12 @@ import styles from "./Spinner.styles";
 
 type SpinnerProps = {
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 };
 
 const SPIN_DURATION = 2000;
 
-const Spinner = ({ style }: SpinnerProps) => {
+const Spinner = ({ style, testID }: SpinnerProps) => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const Spinner = ({ style }: SpinnerProps) => {
   });
 
   return (
-    <View style={style}>
+    <View style={style} testID={testID}>
       <Animated.View style={{ transform: [{ rotate: spin }] }}>
         <FontAwesome5 name="spinner" size={40} style={styles.icon} />
       </Animated.View>
