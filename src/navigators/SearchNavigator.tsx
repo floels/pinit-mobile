@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SearchInputScreen from "../screens/SearchInputScreen";
+import SearchInputScreenContainer from "../screens/SearchInputScreenContainer";
 
 import SearchBaseScreen from "@/src/screens/SearchBaseScreen";
 
@@ -26,7 +26,10 @@ const SearchNavigator = () => {
       }}
     >
       <StackNavigator.Screen name="SearchBase" component={SearchBaseScreen} />
-      <StackNavigator.Screen name="SearchInput" component={SearchInputScreen} />
+      <StackNavigator.Screen
+        name="SearchInput"
+        component={SearchInputScreenContainer}
+      />
     </StackNavigator.Navigator>
   );
 };

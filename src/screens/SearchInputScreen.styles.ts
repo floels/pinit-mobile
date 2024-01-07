@@ -12,13 +12,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  searchInput: {
+  searchInputAndClearIcon: {
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: Colors.backgroundNormal,
     borderRadius: 20,
-    paddingLeft: 10,
+    flex: 1,
+  },
+  searchInput: {
+    paddingLeft: 16,
     paddingTop: 10,
     paddingBottom: 10,
     flex: 1,
+  },
+  clearIcon: {
+    marginRight: 12,
   },
   cancelButton: {
     marginLeft: 10,

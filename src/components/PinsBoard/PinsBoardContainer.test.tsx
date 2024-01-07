@@ -10,7 +10,7 @@ import PinsBoardContainer from "./PinsBoardContainer";
 
 import {
   API_BASE_URL,
-  API_ENDPOINT_GET_PIN_SUGGESTIONS,
+  API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
 import enTranslations from "@/translations/en.json";
 
@@ -43,7 +43,7 @@ const mockPinSuggestionsPage = Array.from(
   }),
 );
 
-const endpoint = `${API_BASE_URL}/${API_ENDPOINT_GET_PIN_SUGGESTIONS}/`;
+const endpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 
 it(`should fetch and render first page of pin suggestions upon initial render,
 and fetch second page upon scroll`, async () => {
