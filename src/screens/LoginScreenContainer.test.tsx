@@ -24,7 +24,7 @@ const mockNavigation = {
 
 const mockOnSuccessfulLogin = jest.fn();
 
-const ENDPOINT_URL = `${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}/`;
+const endpoint = `${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}/`;
 
 const renderComponent = () => {
   render(
@@ -54,6 +54,8 @@ const pressSubmit = async () => {
 };
 
 it("should call 'navigation.goBack()' when pressing Close icon", async () => {
+  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
+
   renderComponent();
 
   const closeIcon = screen.getByTestId("login-screen-close-icon");
@@ -61,9 +63,13 @@ it("should call 'navigation.goBack()' when pressing Close icon", async () => {
   await userEvent.press(closeIcon);
 
   expect(mockNavigation.goBack).toHaveBeenCalledTimes(1);
+
+  jest.useRealTimers();
 });
 
 it("should toggle password visibility upon press of corresponding icon", async () => {
+  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
+
   renderComponent();
 
   const passwordInput = screen.getByPlaceholderText(
@@ -81,6 +87,8 @@ it("should toggle password visibility upon press of corresponding icon", async (
 
   await userEvent.press(togglePasswordVisibilityIcon);
   expect(passwordInput.props.secureTextEntry).toBe(true);
+
+  jest.useRealTimers();
 });
 
 it("should not enable submit button before inputs are valid", async () => {
@@ -111,6 +119,8 @@ it("should not enable submit button before inputs are valid", async () => {
 });
 
 it("should persist tokens data and call 'onSuccessfulLogin()' upon successful login", async () => {
+  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
+
   renderComponent();
 
   await fillInputsWithValidCredentials();
@@ -120,7 +130,7 @@ it("should persist tokens data and call 'onSuccessfulLogin()' upon successful lo
   ).toISOString();
 
   fetchMock.mockOnceIf(
-    ENDPOINT_URL,
+    endpoint,
     JSON.stringify({
       access_token: "access_token",
       refresh_token: "refresh_token",
@@ -144,9 +154,13 @@ it("should persist tokens data and call 'onSuccessfulLogin()' upon successful lo
   );
 
   expect(mockOnSuccessfulLogin).toHaveBeenCalledTimes(1);
+
+  jest.useRealTimers();
 });
 
 it("should display right error message upon fetch fail", async () => {
+  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
+
   renderComponent();
 
   await fillInputsWithValidCredentials();
@@ -156,15 +170,19 @@ it("should display right error message upon fetch fail", async () => {
   await pressSubmit();
 
   screen.getByText(enTranslations.Common.CONNECTION_ERROR);
+
+  jest.useRealTimers();
 });
 
 it("should display right error message upon KO response", async () => {
+  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
+
   renderComponent();
 
   await fillInputsWithValidCredentials();
 
   fetchMock.doMockOnceIf(
-    ENDPOINT_URL,
+    endpoint,
     JSON.stringify({ errors: [{ code: ERROR_CODE_INVALID_EMAIL }] }),
     {
       status: 401,
@@ -173,15 +191,17 @@ it("should display right error message upon KO response", async () => {
   await pressSubmit();
   screen.getByText(enTranslations.LandingScreen.INVALID_EMAIL_LOGIN);
 
-  fetchMock.doMockOnceIf(ENDPOINT_URL, JSON.stringify({}), {
+  fetchMock.doMockOnceIf(endpoint, JSON.stringify({}), {
     status: 401,
   });
   await pressSubmit();
   screen.getByText(enTranslations.LandingScreen.INVALID_PASSWORD_LOGIN);
 
-  fetchMock.doMockOnceIf(ENDPOINT_URL, JSON.stringify({}), {
+  fetchMock.doMockOnceIf(endpoint, JSON.stringify({}), {
     status: 400,
   });
   await pressSubmit();
   screen.getByText(enTranslations.Common.UNFORESEEN_ERROR);
+
+  jest.useRealTimers();
 });

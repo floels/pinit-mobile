@@ -6,6 +6,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from "react-native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import PinThumbnail from "./PinThumbnail";
 import styles from "./PinsBoard.styles";
@@ -55,6 +56,7 @@ const PinsBoard = ({
       showsVerticalScrollIndicator={false}
       onScroll={handleScroll}
       scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+      testID="pins-board-scroll-view"
     >
       <View style={styles.thumbnailsGrid}>
         {Array.from({ length: NUMBER_COLUMNS }).map((_, columnIndex) => (
@@ -71,8 +73,19 @@ const PinsBoard = ({
           </View>
         ))}
       </View>
-      {isFetching && <Spinner style={styles.spinner} />}
-      {fetchError && <Text>{fetchError}</Text>}
+      {isFetching && (
+        <Spinner style={styles.spinner} testID="pins-board-spinner" />
+      )}
+      {fetchError && (
+        <View style={styles.error}>
+          <FontAwesome5
+            name="exclamation-circle"
+            style={styles.errorIcon}
+            size={20}
+          />
+          <Text style={styles.errorText}>{fetchError}</Text>
+        </View>
+      )}
     </ScrollView>
   );
 };

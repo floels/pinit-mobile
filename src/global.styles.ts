@@ -8,6 +8,7 @@ export const Colors = {
   fontImportant: "#fff",
   fontSecondary: "gray",
   fontError: "#e60023",
+  fontWarning: "#cc9900",
 };
 
 export const Fonts = {
