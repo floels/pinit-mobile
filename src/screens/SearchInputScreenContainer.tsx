@@ -51,6 +51,10 @@ const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
     setInputValue("");
   };
 
+  const handleSearchInputSubmit = () => {
+    navigation.navigate("SearchResults", { searchTerm: inputValue });
+  };
+
   const fetchSearchSuggestions = async () => {
     let response;
 
@@ -116,6 +120,7 @@ const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
       onInputChange={setInputValue}
       searchSuggestions={searchSuggestions}
       onPressClear={handlePressClear}
+      onSearchInputSubmit={handleSearchInputSubmit}
       onPressCancel={navigation.goBack}
     />
   );
