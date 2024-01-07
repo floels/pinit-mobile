@@ -8,7 +8,7 @@ import {
 
 import PinsBoard from "./PinsBoard";
 
-import { API_ENDPOINT_GET_PIN_SUGGESTIONS } from "@/src/lib/constants";
+import { API_ENDPOINT_PIN_SUGGESTIONS } from "@/src/lib/constants";
 import { PinType } from "@/src/lib/types";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/adapters";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
@@ -40,7 +40,7 @@ const PinsBoardContainer = () => {
     setIsFetching(true);
     setFetchError("");
 
-    const endpoint = `${API_ENDPOINT_GET_PIN_SUGGESTIONS}/?page=${currentPage}`;
+    const endpoint = `${API_ENDPOINT_PIN_SUGGESTIONS}/?page=${currentPage}`;
     const newPinsResponse = await fetchWithAuthentication({ endpoint });
 
     setIsFetching(false);
