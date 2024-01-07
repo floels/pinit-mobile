@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 
 import styles from "./HomeScreen.styles";
 import PinsBoardContainer from "../components/PinsBoard/PinsBoardContainer";
+import { API_ENDPOINT_PIN_SUGGESTIONS } from "../lib/constants";
 
 const HomeScreen = () => {
   const { t } = useTranslation();
@@ -14,7 +15,10 @@ const HomeScreen = () => {
           <Text style={styles.tabText}>{t("HomeScreen.ALL")}</Text>
         </View>
       </View>
-      <PinsBoardContainer />
+      <PinsBoardContainer
+        fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
+        shouldAuthenticate
+      />
     </View>
   );
 };

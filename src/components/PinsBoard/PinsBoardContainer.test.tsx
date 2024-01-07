@@ -43,18 +43,27 @@ const mockPinSuggestionsPage = Array.from(
   }),
 );
 
-const endpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
+const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
+
+const renderComponent = () => {
+  render(
+    <PinsBoardContainer
+      fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
+      shouldAuthenticate
+    />,
+  );
+};
 
 it(`should fetch and render first page of pin suggestions upon initial render,
 and fetch second page upon scroll`, async () => {
   fetchMock.mockOnceIf(
-    `${endpoint}?page=1`,
+    `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
     }),
   );
 
-  render(<PinsBoardContainer />);
+  renderComponent();
 
   await waitFor(() => {
     const pinThumbnails = screen.queryAllByTestId("mocked-pin-thumbnail");
@@ -75,7 +84,7 @@ and fetch second page upon scroll`, async () => {
 
   await waitFor(() => {
     expect(fetch as FetchMock).toHaveBeenLastCalledWith(
-      `${endpoint}?page=2`,
+      `${endpointWithBaseURL}?page=2`,
       expect.anything(),
     );
   });
@@ -85,7 +94,7 @@ it("should display spinner while fetching", async () => {
   const eternalPromise = new Promise<Response>(() => {});
   fetchMock.mockImplementationOnce(() => eternalPromise);
 
-  render(<PinsBoardContainer />);
+  renderComponent();
 
   screen.getByTestId("pins-board-spinner");
 });
@@ -93,7 +102,7 @@ it("should display spinner while fetching", async () => {
 it("should display error message upon fetch error", async () => {
   fetchMock.mockRejectOnce(new Error("Network failure"));
 
-  render(<PinsBoardContainer />);
+  renderComponent();
 
   await waitFor(() => {
     screen.getByText(enTranslations.Common.CONNECTION_ERROR);
@@ -101,11 +110,11 @@ it("should display error message upon fetch error", async () => {
 });
 
 it("should display error message upon KO response", async () => {
-  fetchMock.doMockOnceIf(`${endpoint}?page=1`, JSON.stringify({}), {
+  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 400,
   });
 
-  render(<PinsBoardContainer />);
+  renderComponent();
 
   await waitFor(() => {
     screen.getByText(enTranslations.HomeScreen.ERROR_FETCH_PIN_SUGGESTIONS);
