@@ -8,16 +8,25 @@ import {
 
 import PinsBoard from "./PinsBoard";
 
-import { API_ENDPOINT_PIN_SUGGESTIONS } from "@/src/lib/constants";
+import { API_BASE_URL } from "@/src/lib/constants";
 import { PinType } from "@/src/lib/types";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/adapters";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
+import { appendQueryParam } from "@/src/lib/utils/strings";
+
+type PinsBoardContainerProps = {
+  fetchEndpoint: string;
+  shouldAuthenticate?: boolean;
+};
 
 const MARGIN_SCROLL_BEFORE_NEW_FETCH = 5000; // the margin we leave ourselves
-// in terms of remaining scroll before reaching the end of suggestions.
-// This margin will determine when we trigger the fetching of new suggestions (see below).
+// in terms of remaining scroll before reaching the end of the board.
+// This margin will determine when we trigger the fetching of new pins (see below).
 
-const PinsBoardContainer = () => {
+const PinsBoardContainer = ({
+  fetchEndpoint,
+  shouldAuthenticate,
+}: PinsBoardContainerProps) => {
   const { t } = useTranslation();
 
   const windowHeight = Dimensions.get("window").height;
@@ -27,21 +36,36 @@ const PinsBoardContainer = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [fetchError, setFetchError] = useState("");
 
-  const fetchPinsSuggestionsAndFallBack = async () => {
+  const fetchNextPinsAndFallBack = async () => {
     try {
-      await fetchPinsSuggestions();
+      await fetchNextPins();
     } catch {
       setFetchError(t("Common.CONNECTION_ERROR"));
       setIsFetching(false);
     }
   };
 
-  const fetchPinsSuggestions = async () => {
+  const fetchNextPins = async () => {
     setIsFetching(true);
     setFetchError("");
 
-    const endpoint = `${API_ENDPOINT_PIN_SUGGESTIONS}/?page=${currentPage}`;
-    const newPinsResponse = await fetchWithAuthentication({ endpoint });
+    const endpointWithPageParameter = appendQueryParam({
+      url: fetchEndpoint,
+      key: "page",
+      value: currentPage.toString(),
+    });
+
+    let newPinsResponse;
+
+    if (shouldAuthenticate) {
+      newPinsResponse = await fetchWithAuthentication({
+        endpoint: endpointWithPageParameter,
+      });
+    } else {
+      newPinsResponse = await fetch(
+        `${API_BASE_URL}/${endpointWithPageParameter}`,
+      );
+    }
 
     setIsFetching(false);
 
@@ -64,7 +88,7 @@ const PinsBoardContainer = () => {
   };
 
   useEffect(() => {
-    fetchPinsSuggestionsAndFallBack();
+    fetchNextPinsAndFallBack();
   }, [currentPage]);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {

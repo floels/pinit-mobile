@@ -10,6 +10,7 @@ type SearchInputScreenProps = {
   onInputChange: (value: string) => void;
   searchSuggestions: string[];
   onPressClear: () => void;
+  onSearchInputSubmit: () => void;
   onPressCancel: () => void;
 };
 
@@ -18,6 +19,7 @@ const SearchInputScreen = ({
   onInputChange,
   searchSuggestions,
   onPressClear,
+  onSearchInputSubmit,
   onPressCancel,
 }: SearchInputScreenProps) => {
   const { t } = useTranslation();
@@ -35,6 +37,7 @@ const SearchInputScreen = ({
             autoCapitalize="none"
             autoCorrect={false}
             onChangeText={onInputChange}
+            onSubmitEditing={onSearchInputSubmit}
             style={styles.searchInput}
           />
           {inputValue && (
