@@ -4,6 +4,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import HomeScreen from "@/src/screens/HomeScreen";
 import ProfileScreen from "@/src/screens/ProfileScreen";
+import SearchScreen from "@/src/screens/SearchScreen";
 
 type AuthenticatedNavigatorParamList = {
   Home: undefined;
@@ -54,7 +55,7 @@ const AuthenticatedNavigator = ({
   return (
     <TabNavigator.Navigator screenOptions={screenOptions}>
       <TabNavigator.Screen name="Home" component={HomeScreen} />
-      <TabNavigator.Screen name="Search">{() => null}</TabNavigator.Screen>
+      <TabNavigator.Screen name="Search" component={SearchScreen} />
       <TabNavigator.Screen name="Create">{() => null}</TabNavigator.Screen>
       <TabNavigator.Screen name="Profile">
         {() => <ProfileScreen onLogOut={onSuccessfulLogout} />}

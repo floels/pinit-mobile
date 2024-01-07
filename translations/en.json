@@ -18,6 +18,11 @@
     "ALL": "All",
     "ERROR_FETCH_PIN_SUGGESTIONS": "An error occurred while attempting to retrieve more pin suggestions."
   },
+  "SearchScreen": {
+    "BASE_SCREEN_SEARCH_INPUT_PLACEHOLDER": "Search PinIt",
+    "INPUT_SCREEN_SEARCH_INPUT_PLACEHOLDER": "Search",
+    "CANCEL_SEARCH_INPUT": "Cancel"
+  },
   "ProfileScreen": {
     "LOG_OUT": "Log out"
   }
