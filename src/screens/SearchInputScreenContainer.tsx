@@ -1,15 +1,16 @@
-import { NavigationProp } from "@react-navigation/native";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import debounce from "lodash/debounce";
-
-import { SearchNavigatorParamList } from "../navigators/SearchNavigator";
-import SearchInputScreen from "./SearchInputScreen";
 import { useEffect, useState } from "react";
+
+import SearchInputScreen from "./SearchInputScreen";
 import {
   API_BASE_URL,
   API_ENDPOINT_SEARCH_SUGGESTIONS,
 } from "../lib/constants";
+import { SearchNavigatorParamList } from "../navigators/SearchNavigator";
 
 type SearchInputScreenProps = {
+  route: RouteProp<SearchNavigatorParamList, "SearchInput">;
   navigation: NavigationProp<SearchNavigatorParamList>;
 };
 
@@ -43,7 +44,10 @@ const getSuggestionsWithSearchTermAtTop = ({
   return [searchTerm, ...remainingSuggestions];
 };
 
-const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
+const SearchInputScreenContainer = ({
+  route,
+  navigation,
+}: SearchInputScreenProps) => {
   const [inputValue, setInputValue] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
 
@@ -95,6 +99,14 @@ const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
   );
 
   useEffect(() => {
+    const { initialSearchTerm } = route.params;
+
+    if (initialSearchTerm) {
+      setInputValue(initialSearchTerm);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!inputValue) {
       setSearchSuggestions([]);
       return;
@@ -110,7 +122,6 @@ const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
   useEffect(() => {
     if (!inputValue) {
       setSearchSuggestions([]);
-      return;
     }
   }, [inputValue]);
 

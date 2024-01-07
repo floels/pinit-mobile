@@ -8,11 +8,11 @@ import {
 
 import PinsBoard from "./PinsBoard";
 
+import { API_BASE_URL } from "@/src/lib/constants";
 import { PinType } from "@/src/lib/types";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/adapters";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { appendQueryParam } from "@/src/lib/utils/strings";
-import { API_BASE_URL } from "@/src/lib/constants";
 
 type PinsBoardContainerProps = {
   fetchEndpoint: string;

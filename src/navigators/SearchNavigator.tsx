@@ -1,21 +1,31 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  CardStyleInterpolators,
+  StackCardInterpolationProps,
+  createStackNavigator,
+} from "@react-navigation/stack";
 
 import SearchInputScreenContainer from "../screens/SearchInputScreenContainer";
+import SearchResultsScreen from "../screens/SearchResultsScreen";
 
 import SearchBaseScreen from "@/src/screens/SearchBaseScreen";
-import SearchResultsScreenContainer from "../screens/SearchResultsScreenContainer";
 
 export type SearchNavigatorParamList = {
   SearchBase: undefined;
-  SearchInput: undefined;
+  SearchInput: { initialSearchTerm: string };
   SearchResults: { searchTerm: string };
 };
 
-const appearInPlaceInterpolator = () => ({
-  cardStyle: {
-    opacity: 1,
-  },
-});
+const instantlyAppearInterpolator = (props: StackCardInterpolationProps) => {
+  return {
+    cardStyle: {
+      opacity: 1,
+    },
+  };
+};
+
+const instantlyDisappearInterpolator = (props: StackCardInterpolationProps) => {
+  return CardStyleInterpolators.forHorizontalIOS(props);
+};
 
 const SearchNavigator = () => {
   const StackNavigator = createStackNavigator<SearchNavigatorParamList>();
@@ -30,11 +40,12 @@ const SearchNavigator = () => {
       <StackNavigator.Screen
         name="SearchInput"
         component={SearchInputScreenContainer}
-        options={{ cardStyleInterpolator: appearInPlaceInterpolator }}
+        options={{ cardStyleInterpolator: instantlyAppearInterpolator }}
       />
       <StackNavigator.Screen
         name="SearchResults"
-        component={SearchResultsScreenContainer}
+        component={SearchResultsScreen}
+        options={{ cardStyleInterpolator: instantlyDisappearInterpolator }}
       />
     </StackNavigator.Navigator>
   );

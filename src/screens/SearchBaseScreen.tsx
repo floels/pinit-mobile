@@ -15,7 +15,7 @@ const SearchBaseScreen = ({ navigation }: SearchBaseScreenProps) => {
   const { t } = useTranslation();
 
   const handlePressInput = () => {
-    navigation.navigate("SearchInput");
+    navigation.navigate("SearchInput", { initialSearchTerm: "" });
   };
 
   return (

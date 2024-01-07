@@ -1,29 +1,49 @@
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { View, TouchableOpacity, Text } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./SearchResultsScreen.styles";
+import PinsBoardContainer from "../components/PinsBoard/PinsBoardContainer";
+import { API_ENDPOINT_SEARCH } from "../lib/constants";
+import { SearchNavigatorParamList } from "../navigators/SearchNavigator";
 
-type SearchResultsScreenProps = {
-  searchTerm: string;
-  onPressBack: () => void;
+type SearchResultsScreenContainerProps = {
+  route: RouteProp<SearchNavigatorParamList, "SearchResults">;
+  navigation: NavigationProp<SearchNavigatorParamList>;
 };
 
-const SearchResultsScreen = ({
-  searchTerm,
-  onPressBack,
-}: SearchResultsScreenProps) => {
+const SearchResultsScreenContainer = ({
+  route,
+  navigation,
+}: SearchResultsScreenContainerProps) => {
+  const { searchTerm } = route.params;
+
+  const searchEndpoint = `${API_ENDPOINT_SEARCH}?q=${searchTerm.toLowerCase()}`;
+
+  const handlePressSearchInput = () => {
+    navigation.navigate("SearchInput", { initialSearchTerm: searchTerm });
+  };
+
+  const handlePressBack = () => {
+    navigation.navigate("SearchBase");
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.backButtonAndSearchTerm}>
-        <TouchableOpacity onPress={onPressBack} style={styles.backButton}>
+        <TouchableOpacity onPress={handlePressBack} style={styles.backButton}>
           <FontAwesome5 name="chevron-left" size={20} />
         </TouchableOpacity>
-        <View style={styles.searchTerm}>
+        <TouchableOpacity
+          onPress={handlePressSearchInput}
+          style={styles.searchTerm}
+        >
           <Text>{searchTerm}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
+      <PinsBoardContainer fetchEndpoint={searchEndpoint} />
     </View>
   );
 };
 
-export default SearchResultsScreen;
+export default SearchResultsScreenContainer;
