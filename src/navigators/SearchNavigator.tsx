@@ -21,9 +21,9 @@ const forFade = ({ current }: StackCardInterpolationProps) => ({
   },
 });
 
-const TRANSITION_SPEC = {
+const INSTANT_TRANSITION = {
   animation: "timing" as "timing",
-  config: { duration: 1 },
+  config: { duration: 0 },
 };
 
 const SearchNavigator = () => {
@@ -35,8 +35,8 @@ const SearchNavigator = () => {
         headerShown: false,
         cardStyleInterpolator: forFade,
         transitionSpec: {
-          open: TRANSITION_SPEC,
-          close: TRANSITION_SPEC,
+          open: INSTANT_TRANSITION,
+          close: INSTANT_TRANSITION,
         },
       }}
     >
