@@ -1,5 +1,4 @@
 import {
-  CardStyleInterpolators,
   StackCardInterpolationProps,
   createStackNavigator,
 } from "@react-navigation/stack";
@@ -11,20 +10,20 @@ import SearchBaseScreen from "@/src/screens/SearchBaseScreen";
 
 export type SearchNavigatorParamList = {
   SearchBase: undefined;
-  SearchInput: { initialSearchTerm: string };
+  SearchInput: undefined;
   SearchResults: { searchTerm: string };
 };
 
-const instantlyAppearInterpolator = (props: StackCardInterpolationProps) => {
-  return {
-    cardStyle: {
-      opacity: 1,
-    },
-  };
-};
+// See https://reactnavigation.org/docs/stack-navigator#animation-related-options:
+const forFade = ({ current }: StackCardInterpolationProps) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
-const instantlyDisappearInterpolator = (props: StackCardInterpolationProps) => {
-  return CardStyleInterpolators.forHorizontalIOS(props);
+const TRANSITION_SPEC = {
+  animation: "timing" as "timing",
+  config: { duration: 1 },
 };
 
 const SearchNavigator = () => {
@@ -34,18 +33,21 @@ const SearchNavigator = () => {
     <StackNavigator.Navigator
       screenOptions={{
         headerShown: false,
+        cardStyleInterpolator: forFade,
+        transitionSpec: {
+          open: TRANSITION_SPEC,
+          close: TRANSITION_SPEC,
+        },
       }}
     >
       <StackNavigator.Screen name="SearchBase" component={SearchBaseScreen} />
       <StackNavigator.Screen
         name="SearchInput"
         component={SearchInputScreenContainer}
-        options={{ cardStyleInterpolator: instantlyAppearInterpolator }}
       />
       <StackNavigator.Screen
         name="SearchResults"
         component={SearchResultsScreen}
-        options={{ cardStyleInterpolator: instantlyDisappearInterpolator }}
       />
     </StackNavigator.Navigator>
   );

@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import { View, TouchableOpacity, Text, TextInput } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -14,47 +15,52 @@ type SearchInputScreenProps = {
   onPressCancel: () => void;
 };
 
-const SearchInputScreen = ({
-  inputValue,
-  onInputChange,
-  searchSuggestions,
-  onPressClear,
-  onSearchInputSubmit,
-  onPressCancel,
-}: SearchInputScreenProps) => {
-  const { t } = useTranslation();
+const SearchInputScreen = forwardRef<TextInput, SearchInputScreenProps>(
+  (
+    {
+      inputValue,
+      onInputChange,
+      searchSuggestions,
+      onPressClear,
+      onSearchInputSubmit,
+      onPressCancel,
+    }: SearchInputScreenProps,
+    ref,
+  ) => {
+    const { t } = useTranslation();
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchInputAndCancelButton}>
-        <View style={styles.searchInputAndClearIcon}>
-          <TextInput
-            value={inputValue}
-            placeholder={t(
-              "SearchScreen.INPUT_SCREEN_SEARCH_INPUT_PLACEHOLDER",
+    return (
+      <View style={styles.container}>
+        <View style={styles.searchInputAndCancelButton}>
+          <View style={styles.searchInputAndClearIcon}>
+            <TextInput
+              ref={ref}
+              value={inputValue}
+              placeholder={t(
+                "SearchScreen.INPUT_SCREEN_SEARCH_INPUT_PLACEHOLDER",
+              )}
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={onInputChange}
+              onSubmitEditing={onSearchInputSubmit}
+              style={styles.searchInput}
+            />
+            {inputValue && (
+              <TouchableOpacity onPress={onPressClear} style={styles.clearIcon}>
+                <FontAwesome5 name="times-circle" size={16} solid />
+              </TouchableOpacity>
             )}
-            autoFocus
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={onInputChange}
-            onSubmitEditing={onSearchInputSubmit}
-            style={styles.searchInput}
-          />
-          {inputValue && (
-            <TouchableOpacity onPress={onPressClear} style={styles.clearIcon}>
-              <FontAwesome5 name="times-circle" size={16} solid />
-            </TouchableOpacity>
-          )}
+          </View>
+          <TouchableOpacity onPress={onPressCancel} style={styles.cancelButton}>
+            <Text style={styles.cancelButtonText}>
+              {t("SearchScreen.CANCEL_SEARCH_INPUT")}
+            </Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={onPressCancel} style={styles.cancelButton}>
-          <Text style={styles.cancelButtonText}>
-            {t("SearchScreen.CANCEL_SEARCH_INPUT")}
-          </Text>
-        </TouchableOpacity>
+        <SearchSuggestionsList suggestions={searchSuggestions} />
       </View>
-      <SearchSuggestionsList suggestions={searchSuggestions} />
-    </View>
-  );
-};
+    );
+  },
+);
 
 export default SearchInputScreen;
