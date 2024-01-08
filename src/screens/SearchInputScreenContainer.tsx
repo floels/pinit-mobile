@@ -1,6 +1,7 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { NavigationProp, useFocusEffect } from "@react-navigation/native";
 import debounce from "lodash/debounce";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { TextInput } from "react-native";
 
 import SearchInputScreen from "./SearchInputScreen";
 import {
@@ -10,7 +11,6 @@ import {
 import { SearchNavigatorParamList } from "../navigators/SearchNavigator";
 
 type SearchInputScreenProps = {
-  route: RouteProp<SearchNavigatorParamList, "SearchInput">;
   navigation: NavigationProp<SearchNavigatorParamList>;
 };
 
@@ -44,10 +44,9 @@ const getSuggestionsWithSearchTermAtTop = ({
   return [searchTerm, ...remainingSuggestions];
 };
 
-const SearchInputScreenContainer = ({
-  route,
-  navigation,
-}: SearchInputScreenProps) => {
+const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
+  const searchInputRef = useRef<TextInput>(null);
+
   const [inputValue, setInputValue] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState<string[]>([]);
 
@@ -99,14 +98,6 @@ const SearchInputScreenContainer = ({
   );
 
   useEffect(() => {
-    const { initialSearchTerm } = route.params;
-
-    if (initialSearchTerm) {
-      setInputValue(initialSearchTerm);
-    }
-  }, []);
-
-  useEffect(() => {
     if (!inputValue) {
       setSearchSuggestions([]);
       return;
@@ -125,6 +116,12 @@ const SearchInputScreenContainer = ({
     }
   }, [inputValue]);
 
+  useFocusEffect(() => {
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  });
+
   return (
     <SearchInputScreen
       inputValue={inputValue}
@@ -133,6 +130,7 @@ const SearchInputScreenContainer = ({
       onPressClear={handlePressClear}
       onSearchInputSubmit={handleSearchInputSubmit}
       onPressCancel={navigation.goBack}
+      ref={searchInputRef}
     />
   );
 };

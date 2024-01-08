@@ -20,9 +20,7 @@ const SearchResultsScreenContainer = ({
 
   const searchEndpoint = `${API_ENDPOINT_SEARCH}?q=${searchTerm.toLowerCase()}`;
 
-  const handlePressSearchInput = () => {
-    navigation.navigate("SearchInput", { initialSearchTerm: searchTerm });
-  };
+  const handlePressSearchInput = navigation.goBack;
 
   const handlePressBack = () => {
     navigation.navigate("SearchBase");
