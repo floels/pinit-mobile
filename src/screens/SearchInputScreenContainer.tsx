@@ -36,12 +36,12 @@ const getSuggestionsWithSearchTermAtTop = ({
 
   // If search term is not present, add searchTerm as the first suggestion
   // (and drop the last suggestion received from the API):
-  const remainingSuggestions = originalSuggestions.slice(
+  const remainingOriginalSuggestions = originalSuggestions.slice(
     0,
     MAX_SUGGESTIONS - 1,
   );
 
-  return [searchTerm, ...remainingSuggestions];
+  return [searchTerm, ...remainingOriginalSuggestions];
 };
 
 const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
