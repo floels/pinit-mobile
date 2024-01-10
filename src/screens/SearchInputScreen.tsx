@@ -44,9 +44,14 @@ const SearchInputScreen = forwardRef<TextInput, SearchInputScreenProps>(
               onChangeText={onInputChange}
               onSubmitEditing={onSearchInputSubmit}
               style={styles.searchInput}
+              testID="search-input"
             />
             {inputValue && (
-              <TouchableOpacity onPress={onPressClear} style={styles.clearIcon}>
+              <TouchableOpacity
+                onPress={onPressClear}
+                style={styles.clearIcon}
+                testID="search-input-clear-icon"
+              >
                 <FontAwesome5 name="times-circle" size={16} solid />
               </TouchableOpacity>
             )}
