@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react-native";
-import enTranslations from "@/translations/en.json";
 
 import SearchBaseScreen from "./SearchBaseScreen";
+
+import enTranslations from "@/translations/en.json";
 
 const mockNavigation = {
   navigate: jest.fn(),
