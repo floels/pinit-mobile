@@ -110,12 +110,6 @@ const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
     };
   }, [inputValue]);
 
-  useEffect(() => {
-    if (!inputValue) {
-      setSearchSuggestions([]);
-    }
-  }, [inputValue]);
-
   useFocusEffect(() => {
     if (searchInputRef.current) {
       searchInputRef.current.focus();
