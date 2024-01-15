@@ -97,13 +97,36 @@ it("should display search suggestions as user types, with search input as first 
   await waitFor(() => {
     const searchSuggestions = screen.queryAllByTestId("search-suggestion-item");
 
+    expect(searchSuggestions.length).toEqual(NUMBER_MOCK_SUGGESTIONS);
     within(searchSuggestions[0]).getByText("foo"); // search term should appear as first suggestion
     within(searchSuggestions[1]).getByText("foo suggestion 1");
   });
 });
 
 it("should not repeat search input as first suggestion if it is already included in suggestions", async () => {
-  // TODO;
+  fetchMock.mockOnceIf(
+    `${endpoint}/?search=foo`,
+    JSON.stringify({
+      results: [
+        "foo",
+        ...mockSuggestions.slice(0, NUMBER_MOCK_SUGGESTIONS - 1),
+      ],
+    }),
+  );
+
+  renderComponent();
+
+  const searchInput = screen.getByTestId("search-input");
+
+  await userEvent.type(searchInput, "foo");
+
+  await waitFor(() => {
+    const searchSuggestions = screen.queryAllByTestId("search-suggestion-item");
+
+    expect(searchSuggestions.length).toEqual(NUMBER_MOCK_SUGGESTIONS);
+    within(searchSuggestions[0]).getByText("foo"); // search term should appear as first suggestion
+    within(searchSuggestions[1]).getByText("foo suggestion 1");
+  });
 });
 
 it("should clear suggestions when user clears input", async () => {

@@ -14,6 +14,7 @@ type SearchInputScreenProps = {
   navigation: NavigationProp<SearchNavigatorParamList>;
 };
 
+export const MAX_SUGGESTIONS_TO_RENDER = 12;
 const AUTOCOMPLETE_DEBOUNCE_TIME_MS = 300;
 
 const getSuggestionsWithSearchTermAtTop = ({
@@ -23,22 +24,20 @@ const getSuggestionsWithSearchTermAtTop = ({
   searchTerm: string;
   originalSuggestions: string[];
 }) => {
-  const MAX_SUGGESTIONS = 12;
-
   const isSearchTermIncludedInSuggestions =
     originalSuggestions.includes(searchTerm);
 
   if (isSearchTermIncludedInSuggestions) {
     // NB: normally the API returns 12 suggestions at most
     // so this `slice` is just for precaution.
-    return originalSuggestions.slice(0, MAX_SUGGESTIONS);
+    return originalSuggestions.slice(0, MAX_SUGGESTIONS_TO_RENDER);
   }
 
   // If search term is not present, add searchTerm as the first suggestion
   // (and drop the last suggestion received from the API):
   const remainingOriginalSuggestions = originalSuggestions.slice(
     0,
-    MAX_SUGGESTIONS - 1,
+    MAX_SUGGESTIONS_TO_RENDER - 1,
   );
 
   return [searchTerm, ...remainingOriginalSuggestions];
