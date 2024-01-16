@@ -3,6 +3,8 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./SearchSuggestionsList.styles";
 
+import { MAX_SUGGESTIONS_TO_RENDER } from "@/src/screens/SearchInputScreenContainer";
+
 type SearchSuggestionsListProps = {
   suggestions: string[];
 };
@@ -21,6 +23,7 @@ const SearchSuggestionsList = ({ suggestions }: SearchSuggestionsListProps) => {
         data={suggestions}
         renderItem={renderSuggestionItem}
         keyExtractor={(_, index) => `search-suggestion-item-${index + 1}`}
+        initialNumToRender={MAX_SUGGESTIONS_TO_RENDER}
       />
     </View>
   );
