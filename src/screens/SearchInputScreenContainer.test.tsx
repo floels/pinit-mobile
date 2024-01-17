@@ -6,7 +6,9 @@ import {
   within,
 } from "@testing-library/react-native";
 
-import SearchInputScreenContainer from "./SearchInputScreenContainer";
+import SearchInputScreenContainer, {
+  AUTOCOMPLETE_DEBOUNCE_TIME_MS,
+} from "./SearchInputScreenContainer";
 import {
   API_BASE_URL,
   API_ENDPOINT_SEARCH_SUGGESTIONS,
@@ -22,7 +24,7 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-const endpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_SUGGESTIONS}`;
+const endpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_SUGGESTIONS}/`;
 
 const NUMBER_MOCK_SUGGESTIONS = 12;
 
@@ -39,6 +41,16 @@ const renderComponent = () => {
   render(<SearchInputScreenContainer navigation={mockNavigation} />);
 };
 
+const typeInSearchInput = async (input: string) => {
+  const searchInput = screen.getByTestId("search-input");
+
+  await userEvent.type(searchInput, input);
+};
+
+beforeEach(() => {
+  fetchMock.resetMocks();
+});
+
 it("should navigate to base screen when pressing 'Cancel'", async () => {
   jest.useFakeTimers();
 
@@ -52,6 +64,7 @@ it("should navigate to base screen when pressing 'Cancel'", async () => {
 
   expect(mockNavigation.goBack).toHaveBeenCalledTimes(1);
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });
 
@@ -67,7 +80,7 @@ clear icon when user presses clear icon`, async () => {
   expect(searchInput.props.value).toEqual("");
   expect(screen.queryByTestId("search-input-clear-icon")).toBeNull();
 
-  await userEvent.type(searchInput, "abc");
+  await typeInSearchInput("abc");
 
   expect(searchInput.props.value).toEqual("abc");
 
@@ -77,12 +90,16 @@ clear icon when user presses clear icon`, async () => {
   expect(searchInput.props.value).toEqual("");
   expect(screen.queryByTestId("search-input-clear-icon")).toBeNull();
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });
 
-it("should display search suggestions as user types, with search input as first suggestion", async () => {
-  fetchMock.mockOnceIf(
-    `${endpoint}/?search=foo`,
+it(`should display search suggestions as user types, with search input as first suggestion,
+and clear suggestions when user clears input`, async () => {
+  jest.useFakeTimers();
+
+  fetchMock.doMockOnceIf(
+    `${endpoint}?search=foo`,
     JSON.stringify({
       results: mockSuggestions,
     }),
@@ -90,9 +107,7 @@ it("should display search suggestions as user types, with search input as first 
 
   renderComponent();
 
-  const searchInput = screen.getByTestId("search-input");
-
-  await userEvent.type(searchInput, "foo");
+  await typeInSearchInput("foo");
 
   await waitFor(() => {
     const searchSuggestions = screen.queryAllByTestId("search-suggestion-item");
@@ -101,11 +116,21 @@ it("should display search suggestions as user types, with search input as first 
     within(searchSuggestions[0]).getByText("foo"); // search term should appear as first suggestion
     within(searchSuggestions[1]).getByText("foo suggestion 1");
   });
+
+  const clearIcon = screen.getByTestId("search-input-clear-icon");
+  await userEvent.press(clearIcon);
+
+  await waitFor(() => {
+    expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
+  });
+
+  jest.clearAllTimers();
+  jest.useRealTimers();
 });
 
 it("should not repeat search input as first suggestion if it is already included in suggestions", async () => {
-  fetchMock.mockOnceIf(
-    `${endpoint}/?search=foo`,
+  fetchMock.doMockOnceIf(
+    `${endpoint}?search=foo`,
     JSON.stringify({
       results: [
         "foo",
@@ -116,9 +141,7 @@ it("should not repeat search input as first suggestion if it is already included
 
   renderComponent();
 
-  const searchInput = screen.getByTestId("search-input");
-
-  await userEvent.type(searchInput, "foo");
+  await typeInSearchInput("foo");
 
   await waitFor(() => {
     const searchSuggestions = screen.queryAllByTestId("search-suggestion-item");
@@ -129,28 +152,79 @@ it("should not repeat search input as first suggestion if it is already included
   });
 });
 
-it("should clear suggestions when user clears input", async () => {
-  // TODO;
-});
-
 it("should not display any suggestions upon malformed OK response", async () => {
-  // TODO;
+  fetchMock.doMockOnceIf(`${endpoint}?search=foo`, "");
+
+  renderComponent();
+
+  await typeInSearchInput("foo");
+
+  expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
 });
 
 it("should not display any suggestions upon KO response", async () => {
-  // TODO;
+  fetchMock.doMockOnceIf(`${endpoint}?search=foo`, JSON.stringify({}), {
+    status: 400,
+  });
+
+  renderComponent();
+
+  await typeInSearchInput("foo");
+
+  expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
 });
 
 it("should not display any suggestions upon fetch error", async () => {
-  // TODO;
+  fetchMock.mockRejectOnce(new Error());
+
+  renderComponent();
+
+  await typeInSearchInput("foo");
+
+  expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
 });
 
 it("should fetch only once if user types second character within debounce time", async () => {
-  // TODO;
+  jest.useFakeTimers();
+
+  renderComponent();
+
+  await typeInSearchInput("a");
+
+  jest.advanceTimersByTime(AUTOCOMPLETE_DEBOUNCE_TIME_MS / 2);
+
+  await typeInSearchInput("b");
+
+  await waitFor(() => {
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenLastCalledWith(`${endpoint}?search=ab`);
+  });
+
+  jest.clearAllTimers();
+  jest.useRealTimers();
 });
 
 it("should fetch twice if user types second character after debounce time", async () => {
-  // TODO;
+  jest.useFakeTimers();
+
+  renderComponent();
+
+  await typeInSearchInput("a");
+
+  await waitFor(() => {
+    expect(fetch).toHaveBeenLastCalledWith(`${endpoint}?search=a`);
+  });
+
+  jest.advanceTimersByTime(AUTOCOMPLETE_DEBOUNCE_TIME_MS * 2);
+
+  await typeInSearchInput("b");
+
+  await waitFor(() => {
+    expect(fetch).toHaveBeenLastCalledWith(`${endpoint}?search=ab`);
+  });
+
+  jest.clearAllTimers();
+  jest.useRealTimers();
 });
 
 it("should navigate to search results screen upon submitting search input", async () => {

@@ -15,7 +15,7 @@ type SearchInputScreenProps = {
 };
 
 export const MAX_SUGGESTIONS_TO_RENDER = 12;
-const AUTOCOMPLETE_DEBOUNCE_TIME_MS = 300;
+export const AUTOCOMPLETE_DEBOUNCE_TIME_MS = 300;
 
 const getSuggestionsWithSearchTermAtTop = ({
   searchTerm,

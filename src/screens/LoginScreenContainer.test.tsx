@@ -64,6 +64,7 @@ it("should call 'navigation.goBack()' when pressing Close icon", async () => {
 
   expect(mockNavigation.goBack).toHaveBeenCalledTimes(1);
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });
 
@@ -88,6 +89,7 @@ it("should toggle password visibility upon press of corresponding icon", async (
   await userEvent.press(togglePasswordVisibilityIcon);
   expect(passwordInput.props.secureTextEntry).toBe(true);
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });
 
@@ -129,7 +131,7 @@ it("should persist tokens data and call 'onSuccessfulLogin()' upon successful lo
     new Date().getTime() + 24 * 60 * 60 * 1000,
   ).toISOString();
 
-  fetchMock.mockOnceIf(
+  fetchMock.doMockOnceIf(
     endpoint,
     JSON.stringify({
       access_token: "access_token",
@@ -155,6 +157,7 @@ it("should persist tokens data and call 'onSuccessfulLogin()' upon successful lo
 
   expect(mockOnSuccessfulLogin).toHaveBeenCalledTimes(1);
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });
 
@@ -165,12 +168,13 @@ it("should display right error message upon fetch fail", async () => {
 
   await fillInputsWithValidCredentials();
 
-  fetchMock.mockRejectOnce(new Error("Network failure"));
+  fetchMock.mockRejectOnce(new Error());
 
   await pressSubmit();
 
   screen.getByText(enTranslations.Common.CONNECTION_ERROR);
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });
 
@@ -203,5 +207,6 @@ it("should display right error message upon KO response", async () => {
   await pressSubmit();
   screen.getByText(enTranslations.Common.UNFORESEEN_ERROR);
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });

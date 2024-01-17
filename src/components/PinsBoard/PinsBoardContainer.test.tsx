@@ -56,7 +56,7 @@ const renderComponent = () => {
 
 it(`should fetch and render first page of pin suggestions upon initial render,
 and fetch second page upon scroll`, async () => {
-  fetchMock.mockOnceIf(
+  fetchMock.doMockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
@@ -100,7 +100,7 @@ it("should display spinner while fetching", async () => {
 });
 
 it("should display error message upon fetch error", async () => {
-  fetchMock.mockRejectOnce(new Error("Network failure"));
+  fetchMock.mockRejectOnce(new Error());
 
   renderComponent();
 
