@@ -22,5 +22,6 @@ it("should navigate to login screen when pressing 'Log in' button", async () => 
 
   expect(mockNavigation.navigate).toHaveBeenCalledWith("LoginScreen");
 
+  jest.clearAllTimers();
   jest.useRealTimers();
 });
