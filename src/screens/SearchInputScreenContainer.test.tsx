@@ -1,4 +1,5 @@
 import {
+  fireEvent,
   render,
   screen,
   userEvent,
@@ -35,6 +36,7 @@ const mockSuggestions = Array.from(
 
 const mockNavigation = {
   goBack: jest.fn(),
+  navigate: jest.fn(),
 } as any;
 
 const renderComponent = () => {
@@ -228,5 +230,15 @@ it("should fetch twice if user types second character after debounce time", asyn
 });
 
 it("should navigate to search results screen upon submitting search input", async () => {
-  // TODO;
+  renderComponent();
+
+  await typeInSearchInput("foo");
+
+  const searchInput = screen.getByTestId("search-input");
+
+  fireEvent(searchInput, "submitEditing");
+
+  expect(mockNavigation.navigate).toHaveBeenLastCalledWith("SearchResults", {
+    searchTerm: "foo",
+  });
 });
