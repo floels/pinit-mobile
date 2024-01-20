@@ -116,7 +116,9 @@ const LoginScreen = ({
       </View>
       {isSubmitting && (
         <View style={styles.loadingOverlay}>
-          <Spinner />
+          <Spinner>
+            <FontAwesome5 name="spinner" size={40} style={styles.spinnerIcon} />
+          </Spinner>
         </View>
       )}
     </View>

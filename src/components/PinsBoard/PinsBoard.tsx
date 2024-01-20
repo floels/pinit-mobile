@@ -5,6 +5,7 @@ import {
   Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Animated,
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
@@ -16,19 +17,25 @@ import { PinType } from "@/src/lib/types";
 
 type PinsBoardProps = {
   pins: PinType[];
-  isFetching: boolean;
-  fetchError: string;
+  isFetchingMorePins: boolean;
+  fetchMorePinsError: string;
+  isRefreshing: boolean;
+  refreshError: string;
   handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
 
 const NUMBER_COLUMNS = 2;
 const MARGIN_BETWEEN_COLUMNS = 10;
 const SCROLL_EVENT_THROTTLE = 32;
+export const THRESHOLD_PULL_TO_REFRESH = 100;
+const SIZE_REFRESH_SPINNER = 40;
 
 const PinsBoard = ({
   pins,
-  isFetching,
-  fetchError,
+  isFetchingMorePins,
+  fetchMorePinsError,
+  isRefreshing,
+  refreshError,
   handleScroll,
 }: PinsBoardProps) => {
   const screenWidth = Dimensions.get("window").width;
@@ -49,43 +56,108 @@ const PinsBoard = ({
   //   - thumbnail #4 goes to column #1, etc.
   // We do this by conditioning the rendering of thumbnail #pinThumbnailIndex (zero-based) to:
   // `if (pinThumbnailIndex % NUMBER_COLUMNS === columnIndex)`.
+  const thumbnailsGrid = (
+    <View style={styles.thumbnailsGrid}>
+      {Array.from({ length: NUMBER_COLUMNS }).map((_, columnIndex) => (
+        <View key={`thumbnails-column-${columnIndex + 1}`}>
+          {pins.map((pin, pinIndex) => {
+            if (pinIndex % NUMBER_COLUMNS === columnIndex) {
+              return (
+                <View key={`pin-thumbnail-${pinIndex + 1}`}>
+                  <PinThumbnail pin={pin} width={columnWidth} />
+                </View>
+              );
+            }
+          })}
+        </View>
+      ))}
+    </View>
+  );
+
+  const fetchMorePinsSpinner = (
+    <Spinner containerStyle={styles.fetchMorePinsSpinner}>
+      <FontAwesome5
+        name="spinner"
+        size={40}
+        style={styles.fetchMorePinsSpinnerIcon}
+        testID="pins-board-fetch-more-pins-spinner"
+      />
+    </Spinner>
+  );
+
+  const displayFetchMorePinsError = (
+    <View style={styles.error}>
+      <FontAwesome5
+        name="exclamation-circle"
+        style={styles.errorIcon}
+        size={20}
+      />
+      <Text style={styles.errorText}>{fetchMorePinsError}</Text>
+    </View>
+  );
+
+  const scrollAnimatedValue = new Animated.Value(0);
+
+  const refreshSpinnerPreviewScale = scrollAnimatedValue.interpolate({
+    inputRange: [-THRESHOLD_PULL_TO_REFRESH, 0],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
+  });
+
+  const refreshSpinnerPreviewAngle = scrollAnimatedValue.interpolate({
+    inputRange: [-THRESHOLD_PULL_TO_REFRESH, 0],
+    outputRange: ["360deg", "0deg"],
+    extrapolate: "clamp",
+  });
+
+  const updateAnimatedValueOnScroll = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollAnimatedValue } } }],
+    { useNativeDriver: false },
+  );
+
+  const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    updateAnimatedValueOnScroll(event);
+    handleScroll(event);
+  };
+
+  const refreshSpinnerPreview = (
+    <Animated.View
+      style={{
+        position: "absolute",
+        top: -SIZE_REFRESH_SPINNER,
+        transform: [
+          {
+            scale: refreshSpinnerPreviewScale,
+          },
+          {
+            rotate: refreshSpinnerPreviewAngle,
+          },
+        ],
+      }}
+    >
+      <FontAwesome5 name="spinner" size={SIZE_REFRESH_SPINNER} />
+    </Animated.View>
+  );
+
+  const refreshSpinner = (
+    <Spinner>
+      <FontAwesome5 name="spinner" size={SIZE_REFRESH_SPINNER} />
+    </Spinner>
+  );
+
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
       showsVerticalScrollIndicator={false}
-      onScroll={handleScroll}
+      onScroll={onScroll}
       scrollEventThrottle={SCROLL_EVENT_THROTTLE}
       testID="pins-board-scroll-view"
     >
-      <View style={styles.thumbnailsGrid}>
-        {Array.from({ length: NUMBER_COLUMNS }).map((_, columnIndex) => (
-          <View key={`thumbnails-column-${columnIndex + 1}`}>
-            {pins.map((pin, pinIndex) => {
-              if (pinIndex % NUMBER_COLUMNS === columnIndex) {
-                return (
-                  <View key={`pin-thumbnail-${pinIndex + 1}`}>
-                    <PinThumbnail pin={pin} width={columnWidth} />
-                  </View>
-                );
-              }
-            })}
-          </View>
-        ))}
-      </View>
-      {isFetching && (
-        <Spinner style={styles.spinner} testID="pins-board-spinner" />
-      )}
-      {fetchError && (
-        <View style={styles.error}>
-          <FontAwesome5
-            name="exclamation-circle"
-            style={styles.errorIcon}
-            size={20}
-          />
-          <Text style={styles.errorText}>{fetchError}</Text>
-        </View>
-      )}
+      {isRefreshing ? refreshSpinner : refreshSpinnerPreview}
+      {thumbnailsGrid}
+      {isFetchingMorePins && fetchMorePinsSpinner}
+      {fetchMorePinsError && displayFetchMorePinsError}
     </ScrollView>
   );
 };
