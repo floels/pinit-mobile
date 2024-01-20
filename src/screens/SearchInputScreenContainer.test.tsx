@@ -242,3 +242,35 @@ it("should navigate to search results screen upon submitting search input", asyn
     searchTerm: "foo",
   });
 });
+
+it("should navigate to search results screen upon pressing search suggestion item", async () => {
+  jest.useFakeTimers();
+
+  fetchMock.doMockOnceIf(
+    `${endpoint}?search=foo`,
+    JSON.stringify({
+      results: mockSuggestions,
+    }),
+  );
+
+  renderComponent();
+
+  await typeInSearchInput("foo");
+
+  await waitFor(() => {
+    const searchSuggestions = screen.queryAllByTestId("search-suggestion-item");
+
+    expect(searchSuggestions.length).toBeGreaterThan(0);
+  });
+
+  const firstSuggestionItem = screen.getByText("foo suggestion 1");
+
+  await userEvent.press(firstSuggestionItem);
+
+  expect(mockNavigation.navigate).toHaveBeenLastCalledWith("SearchResults", {
+    searchTerm: "foo suggestion 1",
+  });
+
+  jest.clearAllTimers();
+  jest.useRealTimers();
+});
