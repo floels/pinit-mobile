@@ -14,7 +14,7 @@ type SearchInputScreenProps = {
   navigation: NavigationProp<SearchNavigatorParamList>;
 };
 
-export const MAX_SUGGESTIONS_TO_RENDER = 12;
+const MAX_SUGGESTIONS_TO_RENDER = 12;
 export const AUTOCOMPLETE_DEBOUNCE_TIME_MS = 300;
 
 const getSuggestionsWithSearchTermAtTop = ({
@@ -51,6 +51,16 @@ const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
 
   const handlePressClear = () => {
     setInputValue("");
+  };
+
+  const getSuggestionItemPressHandler = ({
+    suggestion,
+  }: {
+    suggestion: string;
+  }) => {
+    return () => {
+      navigation.navigate("SearchResults", { searchTerm: suggestion });
+    };
   };
 
   const handleSearchInputSubmit = () => {
@@ -123,6 +133,7 @@ const SearchInputScreenContainer = ({ navigation }: SearchInputScreenProps) => {
       onPressClear={handlePressClear}
       onSearchInputSubmit={handleSearchInputSubmit}
       onPressCancel={navigation.goBack}
+      getSuggestionItemPressHandler={getSuggestionItemPressHandler}
       ref={searchInputRef}
     />
   );

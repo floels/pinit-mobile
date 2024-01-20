@@ -13,6 +13,11 @@ type SearchInputScreenProps = {
   onPressClear: () => void;
   onSearchInputSubmit: () => void;
   onPressCancel: () => void;
+  getSuggestionItemPressHandler: ({
+    suggestion,
+  }: {
+    suggestion: string;
+  }) => () => void;
 };
 
 const SearchInputScreen = forwardRef<TextInput, SearchInputScreenProps>(
@@ -24,6 +29,7 @@ const SearchInputScreen = forwardRef<TextInput, SearchInputScreenProps>(
       onPressClear,
       onSearchInputSubmit,
       onPressCancel,
+      getSuggestionItemPressHandler,
     }: SearchInputScreenProps,
     ref,
   ) => {
@@ -62,7 +68,10 @@ const SearchInputScreen = forwardRef<TextInput, SearchInputScreenProps>(
             </Text>
           </TouchableOpacity>
         </View>
-        <SearchSuggestionsList suggestions={searchSuggestions} />
+        <SearchSuggestionsList
+          suggestions={searchSuggestions}
+          getSuggestionItemPressHandler={getSuggestionItemPressHandler}
+        />
       </View>
     );
   },
