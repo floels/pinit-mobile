@@ -96,7 +96,7 @@ it("should display spinner while fetching", async () => {
 
   renderComponent();
 
-  screen.getByTestId("pins-board-spinner");
+  screen.getByTestId("pins-board-fetch-more-pins-spinner");
 });
 
 it("should display error message upon fetch error", async () => {
@@ -117,6 +117,6 @@ it("should display error message upon KO response", async () => {
   renderComponent();
 
   await waitFor(() => {
-    screen.getByText(enTranslations.HomeScreen.ERROR_FETCH_PIN_SUGGESTIONS);
+    screen.getByText(enTranslations.Common.ERROR_FETCH_MORE_PINS);
   });
 });

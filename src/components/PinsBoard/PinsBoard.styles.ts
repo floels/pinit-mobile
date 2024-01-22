@@ -5,6 +5,7 @@ import { Colors } from "@/src/global.styles";
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    position: "relative",
   },
   contentContainer: {
     alignItems: "center",
@@ -15,9 +16,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     width: "100%",
   },
-  spinner: {
+  fetchMorePinsSpinner: {
     marginTop: 60,
     marginBottom: 60,
+  },
+  fetchMorePinsSpinnerIcon: {
+    color: Colors.fontSecondary,
   },
   error: {
     flexDirection: "row",

@@ -1,17 +1,14 @@
 import { useEffect, useRef } from "react";
 import { Animated, Easing, StyleProp, View, ViewStyle } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-
-import styles from "./Spinner.styles";
 
 type SpinnerProps = {
-  style?: StyleProp<ViewStyle>;
-  testID?: string;
+  containerStyle?: StyleProp<ViewStyle>;
+  children: React.ReactNode;
 };
 
 const SPIN_DURATION = 2000;
 
-const Spinner = ({ style, testID }: SpinnerProps) => {
+const Spinner = ({ containerStyle, children }: SpinnerProps) => {
   const spinValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -31,9 +28,9 @@ const Spinner = ({ style, testID }: SpinnerProps) => {
   });
 
   return (
-    <View style={style} testID={testID}>
+    <View style={containerStyle}>
       <Animated.View style={{ transform: [{ rotate: spin }] }}>
-        <FontAwesome5 name="spinner" size={40} style={styles.icon} />
+        {children}
       </Animated.View>
     </View>
   );
