@@ -17,6 +17,7 @@ import { PinType } from "@/src/lib/types";
 
 type PinsBoardProps = {
   pins: PinType[];
+  pinImageAspectRatios: (number | null)[];
   isFetchingMorePins: boolean;
   fetchMorePinsError: string;
   isRefreshing: boolean;
@@ -32,6 +33,7 @@ const SIZE_REFRESH_SPINNER = 40;
 
 const PinsBoard = ({
   pins,
+  pinImageAspectRatios,
   isFetchingMorePins,
   fetchMorePinsError,
   isRefreshing,
@@ -61,10 +63,19 @@ const PinsBoard = ({
       {Array.from({ length: NUMBER_COLUMNS }).map((_, columnIndex) => (
         <View key={`thumbnails-column-${columnIndex + 1}`}>
           {pins.map((pin, pinIndex) => {
-            if (pinIndex % NUMBER_COLUMNS === columnIndex) {
+            const pinBelongsInThisColumn =
+              pinIndex % NUMBER_COLUMNS === columnIndex;
+
+            const pinHasImageAspectRatio = !!pinImageAspectRatios[pinIndex];
+
+            if (pinBelongsInThisColumn && pinHasImageAspectRatio) {
               return (
                 <View key={`pin-thumbnail-${pinIndex + 1}`}>
-                  <PinThumbnail pin={pin} width={columnWidth} />
+                  <PinThumbnail
+                    pin={pin}
+                    pinImageAspectRatio={pinImageAspectRatios[pinIndex]}
+                    width={columnWidth}
+                  />
                 </View>
               );
             }
