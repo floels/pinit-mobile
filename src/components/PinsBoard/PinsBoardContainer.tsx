@@ -4,6 +4,7 @@ import {
   Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Image,
 } from "react-native";
 
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
@@ -13,6 +14,7 @@ import { PinType } from "@/src/lib/types";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/adapters";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { appendQueryParam } from "@/src/lib/utils/strings";
+import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
 
 type PinsBoardContainerProps = {
   fetchEndpoint: string;
@@ -32,30 +34,83 @@ const PinsBoardContainer = ({
   const windowHeight = Dimensions.get("window").height;
 
   const [pins, setPins] = useState<PinType[]>([]);
+  const [pinImageAspectRatios, setPinImageAspectRatios] = useState<
+    (number | null)[]
+  >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isFetchingMorePins, setIsFetchingMorePins] = useState(false);
   const [fetchMorePinsError, setFetchMorePinsError] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshError, setRefreshError] = useState("");
 
-  const resetAllErrors = () => {
-    setFetchMorePinsError("");
-    setRefreshError("");
-  };
-
-  const fetchNextPinsAndFallBack = async () => {
-    try {
-      await fetchNextPins();
-    } catch {
-      setFetchMorePinsError(t("Common.CONNECTION_ERROR"));
-      setIsFetchingMorePins(false);
-    }
-  };
-
-  const fetchNextPins = async () => {
+  const onNextPage = async () => {
     setIsFetchingMorePins(true);
     resetAllErrors();
 
+    let nextPinsAndAspectRatios;
+
+    try {
+      nextPinsAndAspectRatios = await fetchNextPinsAndImageRatios();
+    } catch (error) {
+      if (error instanceof NetworkError) {
+        setFetchMorePinsError(t("Common.CONNECTION_ERROR"));
+        return;
+      }
+      setFetchMorePinsError(t("Common.ERROR_FETCH_MORE_PINS"));
+      return;
+    } finally {
+      setIsFetchingMorePins(false);
+    }
+
+    const { nextPins, nextPinsImageAspectRatios } = nextPinsAndAspectRatios;
+
+    setPins((previousPins) => [...previousPins, ...nextPins]);
+    setPinImageAspectRatios((previousAspectRatios) => [
+      ...previousAspectRatios,
+      ...nextPinsImageAspectRatios,
+    ]);
+  };
+
+  const onRefresh = async () => {
+    setCurrentPage(1);
+    setIsRefreshing(true);
+    resetAllErrors();
+
+    let firstPinsAndAspectRatios;
+
+    try {
+      firstPinsAndAspectRatios = await fetchNextPinsAndImageRatios();
+    } catch (error) {
+      if (error instanceof NetworkError) {
+        setRefreshError(t("Common.CONNECTION_ERROR"));
+        return;
+      }
+      setRefreshError(t("Common.ERROR_FETCH_MORE_PINS"));
+      return;
+    } finally {
+      setIsRefreshing(false);
+    }
+
+    const {
+      nextPins: firstPins,
+      nextPinsImageAspectRatios: firstPinsImageRatios,
+    } = firstPinsAndAspectRatios;
+
+    setPins(firstPins);
+    setPinImageAspectRatios(firstPinsImageRatios);
+  };
+
+  const fetchNextPinsAndImageRatios = async () => {
+    const nextPins = await fetchNextPins();
+
+    const nextPinsImageAspectRatios = await fetchImageRatios({
+      pins: nextPins,
+    });
+
+    return { nextPins, nextPinsImageAspectRatios };
+  };
+
+  const fetchNextPins = async () => {
     const endpointWithPageParameter = appendQueryParam({
       url: fetchEndpoint,
       key: "page",
@@ -64,79 +119,64 @@ const PinsBoardContainer = ({
 
     let newPinsResponse;
 
-    if (shouldAuthenticate) {
-      newPinsResponse = await fetchWithAuthentication({
-        endpoint: endpointWithPageParameter,
-      });
-    } else {
-      newPinsResponse = await fetch(
-        `${API_BASE_URL}/${endpointWithPageParameter}`,
-      );
+    try {
+      if (shouldAuthenticate) {
+        newPinsResponse = await fetchWithAuthentication({
+          endpoint: endpointWithPageParameter,
+        });
+      } else {
+        newPinsResponse = await fetch(
+          `${API_BASE_URL}/${endpointWithPageParameter}`,
+        );
+      }
+    } catch {
+      throw new NetworkError();
     }
-
-    setIsFetchingMorePins(false);
 
     if (!newPinsResponse.ok) {
-      setFetchMorePinsError(t("Common.ERROR_FETCH_MORE_PINS"));
-      return;
+      throw new ResponseKOError();
     }
 
-    resetAllErrors();
-
-    await updateStateWithNewPinsResponse(newPinsResponse);
-  };
-
-  const updateStateWithNewPinsResponse = async (newPinsResponse: Response) => {
     const responseData = await newPinsResponse.json();
 
-    const newPins = getPinsWithCamelCaseKeys(responseData.results);
-
-    setPins((previousPins) => [...previousPins, ...newPins]);
+    return getPinsWithCamelCaseKeys(responseData.results);
   };
 
-  const refreshFirstPinsAndFallBack = async () => {
-    try {
-      await refreshFirstPins();
-    } catch {
-      setRefreshError(t("Common.CONNECTION_ERROR"));
-      setIsRefreshing(false);
-    }
-  };
+  const fetchImageRatios = async ({
+    pins,
+  }: {
+    pins: PinType[];
+  }): Promise<(number | null)[]> => {
+    const aspectRatioPromises = pins.map((pin) => {
+      return new Promise((resolve, reject) => {
+        const imageURL = pin.imageURL;
 
-  const refreshFirstPins = async () => {
-    setIsRefreshing(true);
-    resetAllErrors();
+        if (!imageURL) {
+          resolve(null);
+          return;
+        }
 
-    let getFirstPinsResponse;
-
-    if (shouldAuthenticate) {
-      getFirstPinsResponse = await fetchWithAuthentication({
-        endpoint: fetchEndpoint,
+        Image.getSize(
+          imageURL,
+          (width, height) => {
+            const aspectRatio = width / height;
+            resolve(aspectRatio);
+          },
+          (error) => {
+            reject(error);
+          },
+        );
       });
-    } else {
-      getFirstPinsResponse = await fetch(`${API_BASE_URL}/${fetchEndpoint}`);
-    }
+    });
 
-    setIsRefreshing(false);
+    const imageRatios = await Promise.all(aspectRatioPromises);
 
-    if (!getFirstPinsResponse.ok) {
-      setRefreshError(t("Common.ERROR_REFRESH_PINS"));
-      return;
-    }
-
-    resetAllErrors();
-
-    await updateStateWithGetFirstPinsResponse(getFirstPinsResponse);
+    return imageRatios as (number | null)[];
   };
 
-  const updateStateWithGetFirstPinsResponse = async (
-    getFirstPinsResponse: Response,
-  ) => {
-    const responseData = await getFirstPinsResponse.json();
-
-    const firstPins = getPinsWithCamelCaseKeys(responseData.results);
-
-    setPins(firstPins);
+  const resetAllErrors = () => {
+    setFetchMorePinsError("");
+    setRefreshError("");
   };
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -146,10 +186,8 @@ const PinsBoardContainer = ({
 
     const currentOffset = event.nativeEvent.contentOffset.y;
 
-    // Pull-to-refresh logic:
     if (currentOffset < -THRESHOLD_PULL_TO_REFRESH) {
-      setCurrentPage(1);
-      refreshFirstPinsAndFallBack();
+      onRefresh();
     }
 
     const pinsBoardHeight = event.nativeEvent.contentSize.height;
@@ -164,19 +202,20 @@ const PinsBoardContainer = ({
 
   // Fetch initial pins:
   useEffect(() => {
-    fetchNextPinsAndFallBack();
+    onNextPage();
   }, []);
 
   // React to user scrolling down to next page:
   useEffect(() => {
     if (currentPage > 1) {
-      fetchNextPinsAndFallBack();
+      onNextPage();
     }
   }, [currentPage]);
 
   return (
     <PinsBoard
       pins={pins}
+      pinImageAspectRatios={pinImageAspectRatios}
       isFetchingMorePins={isFetchingMorePins}
       fetchMorePinsError={fetchMorePinsError}
       isRefreshing={isRefreshing}

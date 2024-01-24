@@ -5,6 +5,7 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 import { FetchMock } from "jest-fetch-mock";
+import { Image } from "react-native";
 
 import PinsBoardContainer from "./PinsBoardContainer";
 
@@ -28,6 +29,13 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
   );
 
   return MockedPinThumbnail;
+});
+
+// Mock Image.getSize()
+Image.getSize = jest.fn((uri, success) => {
+  process.nextTick(() => {
+    success(100, 200);
+  });
 });
 
 const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;

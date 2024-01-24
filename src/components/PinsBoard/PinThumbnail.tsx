@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { View, Image, Text } from "react-native";
 
 import styles from "./PinThumbnail.styles";
@@ -8,36 +7,30 @@ import { ellipsizeText } from "@/src/lib/utils/strings";
 
 type PinThumbnailProps = {
   pin: PinType;
+  pinImageAspectRatio: number | null;
   width: number;
 };
 
 const MAX_CHARACTERS_TITLE = 80;
 
-const PinThumbnail = ({ pin, width }: PinThumbnailProps) => {
-  const [imageHeight, setImageHeight] = useState(0);
-
-  const { title, imageURL } = pin;
-
-  useEffect(() => {
-    Image.getSize(imageURL, (originalWidth, originalHeight) => {
-      const scaleFactor = originalWidth / width;
-      const imageHeight = originalHeight / scaleFactor;
-      setImageHeight(imageHeight);
-    });
-  }, []);
-
-  if (!imageHeight) {
-    return null;
-  }
+const PinThumbnail = ({
+  pin,
+  pinImageAspectRatio,
+  width,
+}: PinThumbnailProps) => {
+  const defaultedPinImageAspectRatio = pinImageAspectRatio || 1;
 
   return (
     <View style={[styles.container, { width }]}>
       <Image
         source={{ uri: pin.imageURL }}
-        style={[styles.image, { width, height: imageHeight }]}
+        style={[
+          styles.image,
+          { width, height: width / defaultedPinImageAspectRatio },
+        ]}
       />
       <Text style={styles.title}>
-        {ellipsizeText({ text: title, maxLength: MAX_CHARACTERS_TITLE })}
+        {ellipsizeText({ text: pin.title, maxLength: MAX_CHARACTERS_TITLE })}
       </Text>
     </View>
   );
