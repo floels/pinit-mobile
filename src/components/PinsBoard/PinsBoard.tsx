@@ -21,6 +21,7 @@ type PinsBoardProps = {
   isFetchingMorePins: boolean;
   fetchMorePinsError: string;
   isRefreshing: boolean;
+  hasJustRefreshed: boolean;
   refreshError: string;
   handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 };
@@ -37,6 +38,7 @@ const PinsBoard = ({
   isFetchingMorePins,
   fetchMorePinsError,
   isRefreshing,
+  hasJustRefreshed,
   refreshError,
   handleScroll,
 }: PinsBoardProps) => {
@@ -115,6 +117,12 @@ const PinsBoard = ({
     extrapolate: "clamp",
   });
 
+  const refreshSpinnerPreviewOpacity = scrollAnimatedValue.interpolate({
+    inputRange: [-THRESHOLD_PULL_TO_REFRESH, 0],
+    outputRange: [1, 0],
+    extrapolate: "clamp",
+  });
+
   const refreshSpinnerPreviewAngle = scrollAnimatedValue.interpolate({
     inputRange: [-THRESHOLD_PULL_TO_REFRESH, 0],
     outputRange: ["360deg", "0deg"],
@@ -133,18 +141,21 @@ const PinsBoard = ({
 
   const refreshSpinnerPreview = (
     <Animated.View
-      style={{
-        position: "absolute",
-        top: -SIZE_REFRESH_SPINNER,
-        transform: [
-          {
-            scale: refreshSpinnerPreviewScale,
-          },
-          {
-            rotate: refreshSpinnerPreviewAngle,
-          },
-        ],
-      }}
+      style={[
+        styles.refreshSpinnerPreview,
+        {
+          top: -SIZE_REFRESH_SPINNER,
+          transform: [
+            {
+              scale: refreshSpinnerPreviewScale,
+            },
+            {
+              rotate: refreshSpinnerPreviewAngle,
+            },
+          ],
+          opacity: refreshSpinnerPreviewOpacity,
+        },
+      ]}
     >
       <FontAwesome5 name="spinner" size={SIZE_REFRESH_SPINNER} />
     </Animated.View>
@@ -165,7 +176,8 @@ const PinsBoard = ({
       scrollEventThrottle={SCROLL_EVENT_THROTTLE}
       testID="pins-board-scroll-view"
     >
-      {isRefreshing ? refreshSpinner : refreshSpinnerPreview}
+      {isRefreshing && refreshSpinner}
+      {!isRefreshing && !hasJustRefreshed && refreshSpinnerPreview}
       {thumbnailsGrid}
       {isFetchingMorePins && fetchMorePinsSpinner}
       {fetchMorePinsError && displayFetchMorePinsError}

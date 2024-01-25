@@ -25,6 +25,11 @@ const MARGIN_SCROLL_BEFORE_NEW_FETCH = 5000; // the margin we leave ourselves
 // in terms of remaining scroll before reaching the end of the board.
 // This margin will determine when we trigger the fetching of new pins (see below).
 
+const TIMEOUT_HIDE_SPINNER_PREVIEW_AFTER_REFRESH_MS = 1000; // after the user just
+// refreshed pins, we wait for this timeout before displaying the refresh spinner
+// preview again. Otherwise, there's a weird visual effect if the user continues
+// scrolling down further than the refresh threshold.
+
 const PinsBoardContainer = ({
   fetchEndpoint,
   shouldAuthenticate,
@@ -41,6 +46,7 @@ const PinsBoardContainer = ({
   const [isFetchingMorePins, setIsFetchingMorePins] = useState(false);
   const [fetchMorePinsError, setFetchMorePinsError] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [hasJustRefreshed, setHasJustRefreshed] = useState(false);
   const [refreshError, setRefreshError] = useState("");
 
   const onNextPage = async () => {
@@ -98,6 +104,10 @@ const PinsBoardContainer = ({
 
     setPins(firstPins);
     setPinImageAspectRatios(firstPinsImageRatios);
+    setHasJustRefreshed(true);
+    setTimeout(() => {
+      setHasJustRefreshed(false);
+    }, TIMEOUT_HIDE_SPINNER_PREVIEW_AFTER_REFRESH_MS);
   };
 
   const fetchNextPinsAndImageRatios = async () => {
@@ -219,6 +229,7 @@ const PinsBoardContainer = ({
       isFetchingMorePins={isFetchingMorePins}
       fetchMorePinsError={fetchMorePinsError}
       isRefreshing={isRefreshing}
+      hasJustRefreshed={hasJustRefreshed}
       refreshError={refreshError}
       handleScroll={handleScroll}
     />
