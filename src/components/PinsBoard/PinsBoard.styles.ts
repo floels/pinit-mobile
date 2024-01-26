@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
+  refreshSpinnerPreview: {
+    position: "absolute",
+  },
   thumbnailsGrid: {
     flexDirection: "row",
     justifyContent: "space-around",
