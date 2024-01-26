@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -7,7 +8,9 @@ import {
 import { FetchMock } from "jest-fetch-mock";
 import { Image } from "react-native";
 
-import PinsBoardContainer from "./PinsBoardContainer";
+import PinsBoardContainer, {
+  DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS,
+} from "./PinsBoardContainer";
 
 import {
   API_BASE_URL,
@@ -64,6 +67,8 @@ const renderComponent = () => {
 
 it(`should fetch and render first page of pin suggestions upon initial render,
 and fetch second page upon scroll`, async () => {
+  jest.useFakeTimers();
+
   fetchMock.doMockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
@@ -76,6 +81,12 @@ and fetch second page upon scroll`, async () => {
   await waitFor(() => {
     const pinThumbnails = screen.queryAllByTestId("mocked-pin-thumbnail");
     expect(pinThumbnails.length).toEqual(NUMBER_PIN_SUGGESTIONS_PER_PAGE);
+  });
+
+  act(() => {
+    jest.advanceTimersByTime(
+      2 * DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS,
+    );
   });
 
   const scrollView = screen.getByTestId("pins-board-scroll-view");
@@ -96,6 +107,9 @@ and fetch second page upon scroll`, async () => {
       expect.anything(),
     );
   });
+
+  jest.clearAllTimers();
+  jest.useRealTimers();
 });
 
 it("should display spinner while fetching", async () => {

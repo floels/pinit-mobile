@@ -21,7 +21,7 @@ type PinsBoardContainerProps = {
   shouldAuthenticate?: boolean;
 };
 
-const MARGIN_SCROLL_BEFORE_NEW_FETCH = 5000; // the margin we leave ourselves
+const MARGIN_SCROLL_BEFORE_NEW_FETCH = 10000; // the margin we leave ourselves
 // in terms of remaining scroll before reaching the end of the board.
 // This margin will determine when we trigger the fetching of new pins (see below).
 
@@ -29,6 +29,10 @@ const TIMEOUT_HIDE_SPINNER_PREVIEW_AFTER_REFRESH_MS = 1000; // after the user ju
 // refreshed pins, we wait for this timeout before displaying the refresh spinner
 // preview again. Otherwise, there's a weird visual effect if the user continues
 // scrolling down further than the refresh threshold.
+
+export const DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS = 500; // this debounce
+// is introduced to avoid fetching the two next pages instead of just the next
+// page when the user scrolls down.
 
 const PinsBoardContainer = ({
   fetchEndpoint,
@@ -44,6 +48,7 @@ const PinsBoardContainer = ({
   >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isFetchingMorePins, setIsFetchingMorePins] = useState(false);
+  const [hasJustFetchedMorePins, setHasJustFetchedMorePins] = useState(false);
   const [fetchMorePinsError, setFetchMorePinsError] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hasJustRefreshed, setHasJustRefreshed] = useState(false);
@@ -75,6 +80,10 @@ const PinsBoardContainer = ({
       ...previousAspectRatios,
       ...nextPinsImageAspectRatios,
     ]);
+    setHasJustFetchedMorePins(true);
+    setTimeout(() => {
+      setHasJustFetchedMorePins(false);
+    }, DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS);
   };
 
   const onRefresh = async () => {
@@ -190,7 +199,7 @@ const PinsBoardContainer = ({
   };
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (isFetchingMorePins || isRefreshing) {
+    if (isFetchingMorePins || hasJustFetchedMorePins || isRefreshing) {
       return;
     }
 
@@ -198,6 +207,7 @@ const PinsBoardContainer = ({
 
     if (currentOffset < -THRESHOLD_PULL_TO_REFRESH) {
       onRefresh();
+      return;
     }
 
     const pinsBoardHeight = event.nativeEvent.contentSize.height;
