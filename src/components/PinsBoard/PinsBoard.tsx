@@ -174,6 +174,12 @@ const PinsBoard = ({
       showsVerticalScrollIndicator={false}
       onScroll={onScroll}
       scrollEventThrottle={SCROLL_EVENT_THROTTLE}
+      scrollEnabled={
+        // Disable scroll while refreshing, otherwise it creates
+        // a jump when the user continues scrolling down past the
+        // refresh threshold:
+        !isRefreshing
+      }
       testID="pins-board-scroll-view"
     >
       {isRefreshing && refreshSpinner}
