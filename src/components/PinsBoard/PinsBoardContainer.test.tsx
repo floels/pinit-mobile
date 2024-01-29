@@ -65,6 +65,10 @@ const renderComponent = () => {
   );
 };
 
+beforeEach(() => {
+  fetchMock.resetMocks();
+});
+
 it(`should fetch and render first page of pin suggestions upon initial render,
 and fetch second page upon scroll`, async () => {
   jest.useFakeTimers();
@@ -112,7 +116,7 @@ and fetch second page upon scroll`, async () => {
   jest.useRealTimers();
 });
 
-it("should display spinner while fetching", async () => {
+it("should display spinner while fetching initial pins", async () => {
   const eternalPromise = new Promise<Response>(() => {});
   fetchMock.mockImplementationOnce(() => eternalPromise);
 
@@ -121,7 +125,7 @@ it("should display spinner while fetching", async () => {
   screen.getByTestId("pins-board-fetch-more-pins-spinner");
 });
 
-it("should display error message upon fetch error", async () => {
+it("should display error message upon fetch error when fetching initial pins", async () => {
   fetchMock.mockRejectOnce(new Error());
 
   renderComponent();
@@ -131,7 +135,7 @@ it("should display error message upon fetch error", async () => {
   });
 });
 
-it("should display error message upon KO response", async () => {
+it("should display error message upon KO response when fetching initial pins", async () => {
   fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 400,
   });
@@ -140,5 +144,32 @@ it("should display error message upon KO response", async () => {
 
   await waitFor(() => {
     screen.getByText(enTranslations.Common.ERROR_FETCH_MORE_PINS);
+  });
+});
+
+it("should fetch initial pins again when pulling down", async () => {
+  fetchMock.doMockIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockPinSuggestionsPage,
+    }),
+  );
+
+  renderComponent();
+
+  const scrollView = screen.getByTestId("pins-board-scroll-view");
+  fireEvent.scroll(scrollView, {
+    nativeEvent: {
+      contentOffset: {
+        y: -200,
+      },
+      contentSize: {
+        height: SCROLL_VIEW_HEIGHT,
+      },
+    },
+  });
+
+  await waitFor(() => {
+    expect(fetch as FetchMock).toHaveBeenCalledTimes(2);
   });
 });
