@@ -10,11 +10,11 @@ import {
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 
 import { API_BASE_URL } from "@/src/lib/constants";
+import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
 import { PinType } from "@/src/lib/types";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/adapters";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { appendQueryParam } from "@/src/lib/utils/strings";
-import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
 
 type PinsBoardContainerProps = {
   fetchEndpoint: string;
@@ -25,7 +25,7 @@ const MARGIN_SCROLL_BEFORE_NEW_FETCH = 10000; // the margin we leave ourselves
 // in terms of remaining scroll before reaching the end of the board.
 // This margin will determine when we trigger the fetching of new pins (see below).
 
-const TIMEOUT_HIDE_SPINNER_PREVIEW_AFTER_REFRESH_MS = 1000; // after the user just
+const DEBOUNCE_TIME_REFRESH_MS = 1000; // after the user just
 // refreshed pins, we wait for this timeout before displaying the refresh spinner
 // preview again. Otherwise, there's a weird visual effect if the user continues
 // scrolling down further than the refresh threshold.
@@ -71,6 +71,10 @@ const PinsBoardContainer = ({
       return;
     } finally {
       setIsFetchingMorePins(false);
+      setHasJustFetchedMorePins(true);
+      setTimeout(() => {
+        setHasJustFetchedMorePins(false);
+      }, DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS);
     }
 
     const { nextPins, nextPinsImageAspectRatios } = nextPinsAndAspectRatios;
@@ -80,10 +84,6 @@ const PinsBoardContainer = ({
       ...previousAspectRatios,
       ...nextPinsImageAspectRatios,
     ]);
-    setHasJustFetchedMorePins(true);
-    setTimeout(() => {
-      setHasJustFetchedMorePins(false);
-    }, DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS);
   };
 
   const onRefresh = async () => {
@@ -104,6 +104,10 @@ const PinsBoardContainer = ({
       return;
     } finally {
       setIsRefreshing(false);
+      setHasJustRefreshed(true);
+      setTimeout(() => {
+        setHasJustRefreshed(false);
+      }, DEBOUNCE_TIME_REFRESH_MS);
     }
 
     const {
@@ -113,10 +117,6 @@ const PinsBoardContainer = ({
 
     setPins(firstPins);
     setPinImageAspectRatios(firstPinsImageRatios);
-    setHasJustRefreshed(true);
-    setTimeout(() => {
-      setHasJustRefreshed(false);
-    }, TIMEOUT_HIDE_SPINNER_PREVIEW_AFTER_REFRESH_MS);
   };
 
   const fetchNextPinsAndImageRatios = async () => {
@@ -199,13 +199,24 @@ const PinsBoardContainer = ({
   };
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (isFetchingMorePins || hasJustFetchedMorePins || isRefreshing) {
+    const offsetY = event.nativeEvent.contentOffset.y;
+
+    const isScrollDownEvent = offsetY > 0;
+    const shouldIgnoreScrollDownEvent =
+      isFetchingMorePins || hasJustFetchedMorePins;
+
+    if (isScrollDownEvent && shouldIgnoreScrollDownEvent) {
       return;
     }
 
-    const currentOffset = event.nativeEvent.contentOffset.y;
+    const isScrollUpEvent = offsetY < 0;
+    const shoudIgnoreScrollUpEvent = isRefreshing || hasJustRefreshed;
 
-    if (currentOffset < -THRESHOLD_PULL_TO_REFRESH) {
+    if (isScrollUpEvent && shoudIgnoreScrollUpEvent) {
+      return;
+    }
+
+    if (offsetY < -THRESHOLD_PULL_TO_REFRESH) {
       onRefresh();
       return;
     }
@@ -213,7 +224,7 @@ const PinsBoardContainer = ({
     const pinsBoardHeight = event.nativeEvent.contentSize.height;
 
     if (
-      windowHeight + currentOffset >
+      windowHeight + offsetY >
       pinsBoardHeight - MARGIN_SCROLL_BEFORE_NEW_FETCH
     ) {
       setCurrentPage((prevPage) => prevPage + 1);

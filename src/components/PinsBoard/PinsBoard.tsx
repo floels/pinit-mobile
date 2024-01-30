@@ -157,13 +157,21 @@ const PinsBoard = ({
         },
       ]}
     >
-      <FontAwesome5 name="spinner" size={SIZE_REFRESH_SPINNER} />
+      <FontAwesome5
+        name="spinner"
+        size={SIZE_REFRESH_SPINNER}
+        style={styles.refreshSpinnerPreviewIcon}
+      />
     </Animated.View>
   );
 
   const refreshSpinner = (
     <Spinner>
-      <FontAwesome5 name="spinner" size={SIZE_REFRESH_SPINNER} />
+      <FontAwesome5
+        name="spinner"
+        size={SIZE_REFRESH_SPINNER}
+        style={styles.refreshSpinnerIcon}
+      />
     </Spinner>
   );
 

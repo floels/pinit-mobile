@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     width: "100%",
   },
+  refreshSpinnerPreviewIcon: {
+    color: Colors.fontSecondary,
+  },
+  refreshSpinnerIcon: {
+    color: Colors.fontSecondary,
+  },
   fetchMorePinsSpinner: {
     marginTop: 60,
     marginBottom: 60,
