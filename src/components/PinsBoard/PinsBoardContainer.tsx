@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dimensions,
@@ -48,7 +48,7 @@ const PinsBoardContainer = ({
   >([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isFetchingMorePins, setIsFetchingMorePins] = useState(false);
-  const [hasJustFetchedMorePins, setHasJustFetchedMorePins] = useState(false);
+  const hasJustFetchedMorePins = useRef(false);
   const [fetchMorePinsError, setFetchMorePinsError] = useState("");
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [hasJustRefreshed, setHasJustRefreshed] = useState(false);
@@ -71,9 +71,9 @@ const PinsBoardContainer = ({
       return;
     } finally {
       setIsFetchingMorePins(false);
-      setHasJustFetchedMorePins(true);
+      hasJustFetchedMorePins.current = true;
       setTimeout(() => {
-        setHasJustFetchedMorePins(false);
+        hasJustFetchedMorePins.current = false;
       }, DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS);
     }
 
@@ -203,7 +203,7 @@ const PinsBoardContainer = ({
 
     const isScrollDownEvent = offsetY > 0;
     const shouldIgnoreScrollDownEvent =
-      isFetchingMorePins || hasJustFetchedMorePins;
+      isFetchingMorePins || hasJustFetchedMorePins.current;
 
     if (isScrollDownEvent && shouldIgnoreScrollDownEvent) {
       return;
