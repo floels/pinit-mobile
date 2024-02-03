@@ -18,6 +18,11 @@ import {
 } from "@/src/lib/constants";
 import enTranslations from "@/translations/en.json";
 
+const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
+const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
+const SCROLL_VIEW_HEIGHT =
+  MOCKED_PIN_THUMBNAIL_HEIGHT * NUMBER_PIN_SUGGESTIONS_PER_PAGE;
+
 jest.mock("expo-secure-store", () => ({
   getItemAsync: () => "access_token",
 }));
@@ -28,7 +33,10 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
   );
 
   const MockedPinThumbnail = () => (
-    <View style={{ height: 500 }} testID="mocked-pin-thumbnail" />
+    <View
+      style={{ height: MOCKED_PIN_THUMBNAIL_HEIGHT }}
+      testID="mocked-pin-thumbnail"
+    />
   );
 
   return MockedPinThumbnail;
@@ -37,12 +45,9 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
 // Mock Image.getSize()
 Image.getSize = jest.fn((uri, success) => {
   process.nextTick(() => {
-    success(100, 200);
+    success(100, MOCKED_PIN_THUMBNAIL_HEIGHT);
   });
 });
-
-const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
-const SCROLL_VIEW_HEIGHT = 500 * NUMBER_PIN_SUGGESTIONS_PER_PAGE;
 
 const mockPinSuggestionsPage = Array.from(
   { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
