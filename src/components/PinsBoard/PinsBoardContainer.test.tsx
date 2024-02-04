@@ -70,6 +70,21 @@ const renderComponent = () => {
   );
 };
 
+const pullToRefresh = () => {
+  const scrollView = screen.getByTestId("pins-board-scroll-view");
+
+  fireEvent.scroll(scrollView, {
+    nativeEvent: {
+      contentOffset: {
+        y: -200,
+      },
+      contentSize: {
+        height: SCROLL_VIEW_HEIGHT,
+      },
+    },
+  });
+};
+
 beforeEach(() => {
   fetchMock.resetMocks();
 });
@@ -152,8 +167,8 @@ it("should display error message upon KO response when fetching initial pins", a
   });
 });
 
-it("should fetch initial pins again when pulling down", async () => {
-  fetchMock.doMockIf(
+it("should fetch initial pins again when pulling to refresh", async () => {
+  fetchMock.doMockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
@@ -162,19 +177,69 @@ it("should fetch initial pins again when pulling down", async () => {
 
   renderComponent();
 
-  const scrollView = screen.getByTestId("pins-board-scroll-view");
-  fireEvent.scroll(scrollView, {
-    nativeEvent: {
-      contentOffset: {
-        y: -200,
-      },
-      contentSize: {
-        height: SCROLL_VIEW_HEIGHT,
-      },
-    },
+  await waitFor(() => {
+    expect(
+      screen.queryAllByTestId("mocked-pin-thumbnail").length,
+    ).toBeGreaterThan(0);
   });
+
+  expect(fetch as FetchMock).toHaveBeenCalledTimes(1);
+
+  pullToRefresh();
 
   await waitFor(() => {
     expect(fetch as FetchMock).toHaveBeenCalledTimes(2);
+  });
+});
+
+it("should display error message upon fetch error on refresh", async () => {
+  fetchMock.doMockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockPinSuggestionsPage,
+    }),
+  );
+
+  renderComponent();
+
+  await waitFor(() => {
+    expect(
+      screen.queryAllByTestId("mocked-pin-thumbnail").length,
+    ).toBeGreaterThan(0);
+  });
+
+  fetchMock.mockRejectOnce(new Error());
+
+  pullToRefresh();
+
+  await waitFor(() => {
+    screen.getByText(enTranslations.Common.CONNECTION_ERROR);
+  });
+});
+
+it("should display error message upon KO response on refresh", async () => {
+  fetchMock.doMockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockPinSuggestionsPage,
+    }),
+  );
+
+  renderComponent();
+
+  await waitFor(() => {
+    expect(
+      screen.queryAllByTestId("mocked-pin-thumbnail").length,
+    ).toBeGreaterThan(0);
+  });
+
+  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+    status: 400,
+  });
+
+  pullToRefresh();
+
+  await waitFor(() => {
+    screen.getByText(enTranslations.Common.ERROR_REFRESH_PINS);
   });
 });
