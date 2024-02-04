@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Dimensions,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Image,
-} from "react-native";
+import { NativeScrollEvent, NativeSyntheticEvent, Image } from "react-native";
 
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 
@@ -39,8 +34,6 @@ const PinsBoardContainer = ({
   shouldAuthenticate,
 }: PinsBoardContainerProps) => {
   const { t } = useTranslation();
-
-  const windowHeight = Dimensions.get("window").height;
 
   const [pins, setPins] = useState<PinType[]>([]);
   const [pinImageAspectRatios, setPinImageAspectRatios] = useState<
@@ -201,32 +194,42 @@ const PinsBoardContainer = ({
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const offsetY = event.nativeEvent.contentOffset.y;
 
-    const isScrollDownEvent = offsetY > 0;
-    const shouldIgnoreScrollDownEvent =
-      isFetchingMorePins || hasJustFetchedMorePins.current;
-
-    if (isScrollDownEvent && shouldIgnoreScrollDownEvent) {
-      return;
+    if (offsetY < 0) {
+      handlePullEvent(event);
+    } else if (offsetY > 0) {
+      handleScrollContentEvent(event);
     }
+  };
 
-    const isScrollUpEvent = offsetY < 0;
-    const shoudIgnoreScrollUpEvent = isRefreshing || hasJustRefreshed;
+  const handlePullEvent = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
 
-    if (isScrollUpEvent && shoudIgnoreScrollUpEvent) {
-      return;
-    }
+    const crossesRefreshThreshold = offsetY < -THRESHOLD_PULL_TO_REFRESH;
 
-    if (offsetY < -THRESHOLD_PULL_TO_REFRESH) {
+    const shouldTriggerRefresh =
+      !isRefreshing && !hasJustRefreshed && crossesRefreshThreshold;
+
+    if (shouldTriggerRefresh) {
       onRefresh();
-      return;
     }
+  };
+
+  const handleScrollContentEvent = (
+    event: NativeSyntheticEvent<NativeScrollEvent>,
+  ) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
 
     const pinsBoardHeight = event.nativeEvent.contentSize.height;
 
-    if (
-      windowHeight + offsetY >
-      pinsBoardHeight - MARGIN_SCROLL_BEFORE_NEW_FETCH
-    ) {
+    const crossesScrollThreshold =
+      offsetY > pinsBoardHeight - MARGIN_SCROLL_BEFORE_NEW_FETCH;
+
+    const shouldTriggerNextPage =
+      !isFetchingMorePins &&
+      hasJustFetchedMorePins.current === false &&
+      crossesScrollThreshold;
+
+    if (shouldTriggerNextPage) {
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };

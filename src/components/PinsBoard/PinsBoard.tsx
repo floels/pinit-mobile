@@ -87,6 +87,17 @@ const PinsBoard = ({
     </View>
   );
 
+  const displayRefreshError = (
+    <View style={styles.error}>
+      <FontAwesome5
+        name="exclamation-circle"
+        style={styles.errorIcon}
+        size={20}
+      />
+      <Text style={styles.errorText}>{refreshError}</Text>
+    </View>
+  );
+
   const fetchMorePinsSpinner = (
     <Spinner containerStyle={styles.fetchMorePinsSpinner}>
       <FontAwesome5
@@ -192,6 +203,7 @@ const PinsBoard = ({
     >
       {isRefreshing && refreshSpinner}
       {!isRefreshing && !hasJustRefreshed && refreshSpinnerPreview}
+      {refreshError && displayRefreshError}
       {thumbnailsGrid}
       {isFetchingMorePins && fetchMorePinsSpinner}
       {fetchMorePinsError && displayFetchMorePinsError}
