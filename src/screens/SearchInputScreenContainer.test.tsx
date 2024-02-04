@@ -100,14 +100,14 @@ it(`should display search suggestions as user types, with search input as first 
 and clear suggestions when user clears input`, async () => {
   jest.useFakeTimers();
 
+  renderComponent();
+
   fetchMock.doMockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
       results: mockSuggestions,
     }),
   );
-
-  renderComponent();
 
   await typeInSearchInput("foo");
 
@@ -165,25 +165,59 @@ it("should not display any suggestions upon malformed OK response", async () => 
 });
 
 it("should not display any suggestions upon KO response", async () => {
-  fetchMock.doMockOnceIf(`${endpoint}?search=foo`, JSON.stringify({}), {
+  renderComponent();
+
+  fetchMock.doMockOnceIf(
+    `${endpoint}?search=foo`,
+    JSON.stringify({
+      results: mockSuggestions,
+    }),
+  );
+
+  await typeInSearchInput("foo");
+
+  await waitFor(() => {
+    expect(
+      screen.queryAllByTestId("search-suggestion-item").length,
+    ).toBeGreaterThan(0);
+  });
+
+  fetchMock.doMockOnceIf(`${endpoint}?search=foobar`, JSON.stringify({}), {
     status: 400,
   });
 
-  renderComponent();
+  await typeInSearchInput("bar");
 
-  await typeInSearchInput("foo");
-
-  expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
+  await waitFor(() => {
+    expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
+  });
 });
 
 it("should not display any suggestions upon fetch error", async () => {
-  fetchMock.mockRejectOnce(new Error());
-
   renderComponent();
+
+  fetchMock.doMockOnceIf(
+    `${endpoint}?search=foo`,
+    JSON.stringify({
+      results: mockSuggestions,
+    }),
+  );
 
   await typeInSearchInput("foo");
 
-  expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
+  await waitFor(() => {
+    expect(
+      screen.queryAllByTestId("search-suggestion-item").length,
+    ).toBeGreaterThan(0);
+  });
+
+  fetchMock.mockRejectOnce(new Error());
+
+  await typeInSearchInput("bar");
+
+  await waitFor(() => {
+    expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
+  });
 });
 
 it("should fetch only once if user types second character within debounce time", async () => {
