@@ -6,7 +6,7 @@ type SpinnerProps = {
   children: React.ReactNode;
 };
 
-const SPIN_DURATION = 2000;
+const FULL_SPIN_DURATION_MS = 2000;
 
 const Spinner = ({ containerStyle, children }: SpinnerProps) => {
   const spinValue = useRef(new Animated.Value(0)).current;
@@ -15,21 +15,21 @@ const Spinner = ({ containerStyle, children }: SpinnerProps) => {
     Animated.loop(
       Animated.timing(spinValue, {
         toValue: 1,
-        duration: SPIN_DURATION,
+        duration: FULL_SPIN_DURATION_MS,
         easing: Easing.linear,
         useNativeDriver: true,
       }),
     ).start();
-  }, [spinValue]);
+  }, []);
 
-  const spin = spinValue.interpolate({
+  const rotation = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "360deg"],
   });
 
   return (
     <View style={containerStyle}>
-      <Animated.View style={{ transform: [{ rotate: spin }] }}>
+      <Animated.View style={{ transform: [{ rotate: rotation }] }}>
         {children}
       </Animated.View>
     </View>
