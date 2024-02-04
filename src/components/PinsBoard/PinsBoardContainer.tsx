@@ -93,7 +93,7 @@ const PinsBoardContainer = ({
         setRefreshError(t("Common.CONNECTION_ERROR"));
         return;
       }
-      setRefreshError(t("Common.ERROR_FETCH_MORE_PINS"));
+      setRefreshError(t("Common.ERROR_REFRESH_PINS"));
       return;
     } finally {
       setIsRefreshing(false);
@@ -159,7 +159,7 @@ const PinsBoardContainer = ({
   }: {
     pins: PinType[];
   }): Promise<(number | null)[]> => {
-    const aspectRatioPromises = pins.map((pin) => {
+    const buildGetSizePromiseForPin = (pin: PinType) => {
       return new Promise((resolve, reject) => {
         const imageURL = pin.imageURL;
 
@@ -179,7 +179,9 @@ const PinsBoardContainer = ({
           },
         );
       });
-    });
+    };
+
+    const aspectRatioPromises = pins.map(buildGetSizePromiseForPin);
 
     const imageRatios = await Promise.all(aspectRatioPromises);
 
