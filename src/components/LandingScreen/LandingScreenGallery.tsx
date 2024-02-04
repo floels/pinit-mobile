@@ -67,7 +67,7 @@ const LandingScreenGallery = () => {
       duration: SCROLL_DURATION_MS,
       useNativeDriver: true,
     }).start();
-  });
+  }, []);
 
   const imageIndexes = Array.from(
     { length: NUMBER_IMAGES_PER_COLUMN },
