@@ -5,6 +5,10 @@ export const ellipsizeText = ({
   text: string;
   maxLength: number;
 }) => {
+  if (maxLength <= 0) {
+    throw new Error("Error: maxLength must be greater than 0.");
+  }
+
   if (text.length > maxLength) {
     return text.substring(0, maxLength) + "...";
   }
