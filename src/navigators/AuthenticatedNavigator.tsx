@@ -13,10 +13,6 @@ type AuthenticatedNavigatorParamList = {
   Profile: undefined;
 };
 
-type AuthenticatedNavigatorProps = {
-  onSuccessfulLogout: () => void;
-};
-
 const TAB_BAR_ICON_NAMES: Record<string, string> = {
   Home: "home",
   Search: "search",
@@ -24,9 +20,7 @@ const TAB_BAR_ICON_NAMES: Record<string, string> = {
   Profile: "user",
 };
 
-const AuthenticatedNavigator = ({
-  onSuccessfulLogout,
-}: AuthenticatedNavigatorProps) => {
+const AuthenticatedNavigator = () => {
   const TabNavigator =
     createBottomTabNavigator<AuthenticatedNavigatorParamList>();
 
@@ -57,9 +51,7 @@ const AuthenticatedNavigator = ({
       <TabNavigator.Screen name="Home" component={HomeScreen} />
       <TabNavigator.Screen name="Search" component={SearchScreen} />
       <TabNavigator.Screen name="Create">{() => null}</TabNavigator.Screen>
-      <TabNavigator.Screen name="Profile">
-        {() => <ProfileScreen onLogOut={onSuccessfulLogout} />}
-      </TabNavigator.Screen>
+      <TabNavigator.Screen name="Profile" component={ProfileScreen} />
     </TabNavigator.Navigator>
   );
 };

@@ -1,18 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
+import { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { View, TouchableOpacity, Text } from "react-native";
 
 import styles from "./ProfileScreen.styles";
+import { AuthenticationContext } from "../contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "../lib/constants";
-
-type ProfileScreenProps = {
-  onLogOut: () => void;
-};
 
 const clearTokensData = async () => {
   try {
@@ -24,18 +22,20 @@ const clearTokensData = async () => {
   }
 };
 
-const ProfileScreen = ({ onLogOut }: ProfileScreenProps) => {
+const ProfileScreen = () => {
   const { t } = useTranslation();
 
-  const handleLogOut = () => {
+  const { dispatch } = useContext(AuthenticationContext);
+
+  const handleLogOut = async () => {
     try {
-      clearTokensData();
+      await clearTokensData();
     } catch (error) {
       console.warn("Couldn't clear stored tokens data: ", error);
       return;
     }
 
-    onLogOut();
+    dispatch({ type: "LOGGED_OUT" });
   };
 
   return (

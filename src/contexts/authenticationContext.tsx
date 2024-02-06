@@ -7,8 +7,9 @@ type State = {
 
 type Action = {
   type:
-    | "CHECKED_NO_ACCESS_TOKEN"
     | "FOUND_ACCESS_TOKEN"
+    | "CHECKED_NO_ACCESS_TOKEN"
+    | "LOGGED_IN"
     | "LOGGED_OUT"
     | "GOT_401_RESPONSE";
 };
@@ -23,7 +24,7 @@ const initialState = {
   isAuthenticated: false,
 };
 
-const AuthenticationContext = createContext<ContextType>({
+export const AuthenticationContext = createContext<ContextType>({
   state: initialState,
   dispatch: () => {}, // placeholder function
 });
@@ -40,6 +41,13 @@ const reducer = (state: State, action: Action) => {
     return {
       isCheckingAccessToken: false,
       isAuthenticated: false,
+    };
+  }
+
+  if (action.type === "LOGGED_IN") {
+    return {
+      isCheckingAccessToken: false,
+      isAuthenticated: true,
     };
   }
 
