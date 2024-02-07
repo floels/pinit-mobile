@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationProp } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import LoginScreen from "./LoginScreen";
+import { AuthenticationContext } from "../contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
@@ -23,7 +24,6 @@ import { UnauthenticatedNavigatorParamList } from "../navigators/Unauthenticated
 
 type LoginScreenContainerProps = {
   navigation: NavigationProp<UnauthenticatedNavigatorParamList>;
-  onSuccessfulLogin: () => void;
 };
 
 type Credentials = {
@@ -87,10 +87,7 @@ const persistTokensData = async ({
   );
 };
 
-const LoginScreenContainer = ({
-  navigation,
-  onSuccessfulLogin,
-}: LoginScreenContainerProps) => {
+const LoginScreenContainer = ({ navigation }: LoginScreenContainerProps) => {
   const { t } = useTranslation();
 
   const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -98,6 +95,8 @@ const LoginScreenContainer = ({
   const [canSubmit, setCanSubmit] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
+
+  const { dispatch } = useContext(AuthenticationContext);
 
   const handleTogglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -149,7 +148,7 @@ const LoginScreenContainer = ({
         accessTokenExpirationDate,
       });
 
-      onSuccessfulLogin();
+      dispatch({ type: "LOGGED_IN" });
     } catch (error) {
       handleSubmitError(error);
     } finally {

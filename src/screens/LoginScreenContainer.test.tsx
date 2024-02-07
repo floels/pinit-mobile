@@ -13,6 +13,7 @@ import {
 } from "../lib/constants";
 
 import enTranslations from "@/translations/en.json";
+import { AuthenticationContext } from "../contexts/authenticationContext";
 
 jest.mock("expo-secure-store", () => ({
   setItemAsync: jest.fn(),
@@ -22,16 +23,22 @@ const mockNavigation = {
   goBack: jest.fn(),
 } as any;
 
-const mockOnSuccessfulLogin = jest.fn();
+const mockDispatch = jest.fn();
 
 const endpoint = `${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}/`;
 
 const renderComponent = () => {
+  const initialState = {
+    isCheckingAccessToken: false,
+    isAuthenticated: false,
+  };
+
   render(
-    <LoginScreenContainer
-      navigation={mockNavigation}
-      onSuccessfulLogin={mockOnSuccessfulLogin}
-    />,
+    <AuthenticationContext.Provider
+      value={{ state: initialState, dispatch: mockDispatch }}
+    >
+      <LoginScreenContainer navigation={mockNavigation} />
+    </AuthenticationContext.Provider>,
   );
 };
 
@@ -120,7 +127,7 @@ it("should not enable submit button before inputs are valid", async () => {
   expect(submitButton).toBeEnabled();
 });
 
-it("should persist tokens data and call 'onSuccessfulLogin()' upon successful login", async () => {
+it("should persist tokens data and dispatch 'LOGGED_IN' action upon successful login", async () => {
   jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
 
   renderComponent();
@@ -155,7 +162,7 @@ it("should persist tokens data and call 'onSuccessfulLogin()' upon successful lo
     accessTokenExpirationDate,
   );
 
-  expect(mockOnSuccessfulLogin).toHaveBeenCalledTimes(1);
+  expect(mockDispatch).toHaveBeenCalledWith({ type: "LOGGED_IN" });
 
   jest.clearAllTimers();
   jest.useRealTimers();

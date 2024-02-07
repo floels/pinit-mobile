@@ -3,17 +3,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import LandingScreen from "../screens/LandingScreen";
 import LoginScreenContainer from "../screens/LoginScreenContainer";
 
-type UnauthenticatedNavigatorProps = {
-  onSuccessfulLogin: () => void;
-};
-
 export type UnauthenticatedNavigatorParamList = {
   LoginScreen: undefined;
 };
 
-const UnauthenticatedNavigator = ({
-  onSuccessfulLogin,
-}: UnauthenticatedNavigatorProps) => {
+const UnauthenticatedNavigator = () => {
   const StackNavigator = createStackNavigator();
 
   return (
@@ -23,12 +17,7 @@ const UnauthenticatedNavigator = ({
         name="LoginScreen"
         options={{ presentation: "modal" }}
       >
-        {({ navigation }) => (
-          <LoginScreenContainer
-            navigation={navigation}
-            onSuccessfulLogin={onSuccessfulLogin}
-          />
-        )}
+        {({ navigation }) => <LoginScreenContainer navigation={navigation} />}
       </StackNavigator.Screen>
     </StackNavigator.Navigator>
   );
