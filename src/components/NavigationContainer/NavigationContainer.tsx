@@ -7,7 +7,7 @@ import { ACCESS_TOKEN_STORAGE_KEY } from "@/src/lib/constants";
 import AuthenticatedNavigator from "@/src/navigators/AuthenticatedNavigator";
 import UnauthenticatedNavigator from "@/src/navigators/UnauthenticatedNavigator";
 
-const NavigatorSwitch = () => {
+const NavigatorContainer = () => {
   const { state, dispatch } = useContext(AuthenticationContext);
 
   const { isCheckingAccessToken, isAuthenticated } = state;
@@ -36,7 +36,7 @@ const NavigatorSwitch = () => {
   }, []);
 
   if (isCheckingAccessToken) {
-    return null; // TODO: add splash screen
+    return null;
   }
 
   return (
@@ -50,4 +50,4 @@ const NavigatorSwitch = () => {
   );
 };
 
-export default NavigatorSwitch;
+export default NavigatorContainer;
