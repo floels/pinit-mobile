@@ -1,7 +1,9 @@
-import { AuthenticationContextProvider } from "@/src/contexts/authenticationContext";
-import NavigationContainer from "./NavigationContainer";
 import { render, screen, waitFor } from "@testing-library/react-native";
 import * as SecureStore from "expo-secure-store";
+
+import NavigationContainer from "./NavigationContainer";
+
+import { AuthenticationContextProvider } from "@/src/contexts/authenticationContext";
 
 jest.mock("expo-secure-store");
 
