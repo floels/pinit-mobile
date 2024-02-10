@@ -8,11 +8,11 @@ import {
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
+import PinThumbnailsGrid from "./PinThumbnailsGrid";
 import styles from "./PinsBoard.styles";
 import Spinner from "../Spinner/Spinner";
 
 import { PinType } from "@/src/lib/types";
-import PinThumbnailsGrid from "./PinThumbnailsGrid";
 
 type PinsBoardProps = {
   pins: PinType[];
@@ -23,7 +23,13 @@ type PinsBoardProps = {
   hasJustRefreshed: boolean;
   refreshError: string;
   handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
-  getTapHandlerForPin: ({ pin }: { pin: PinType }) => () => void;
+  getTapHandlerForPin: ({
+    pin,
+    pinImageAspectRatio,
+  }: {
+    pin: PinType;
+    pinImageAspectRatio: number;
+  }) => () => void;
 };
 
 const SCROLL_EVENT_THROTTLE = 32;

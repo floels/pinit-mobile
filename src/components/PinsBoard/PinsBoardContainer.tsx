@@ -19,7 +19,13 @@ import { appendQueryParam } from "@/src/lib/utils/strings";
 type PinsBoardContainerProps = {
   fetchEndpoint: string;
   shouldAuthenticate?: boolean;
-  getTapHandlerForPin: ({ pin }: { pin: PinType }) => () => void;
+  getTapHandlerForPin: ({
+    pin,
+    pinImageAspectRatio,
+  }: {
+    pin: PinType;
+    pinImageAspectRatio: number;
+  }) => () => void;
 };
 
 const MARGIN_SCROLL_BEFORE_NEW_FETCH = 10000; // the margin we leave ourselves

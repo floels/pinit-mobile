@@ -1,13 +1,20 @@
 import { Dimensions, TouchableOpacity, View } from "react-native";
 
 import PinThumbnail from "./PinThumbnail";
-import { PinType } from "@/src/lib/types";
 import styles from "./PinThumbnailsGrid.styles";
+
+import { PinType } from "@/src/lib/types";
 
 type PinsThumbnailsGridProps = {
   pins: PinType[];
   pinImageAspectRatios: (number | null)[];
-  getTapHandlerForPin: ({ pin }: { pin: PinType }) => () => void;
+  getTapHandlerForPin: ({
+    pin,
+    pinImageAspectRatio,
+  }: {
+    pin: PinType;
+    pinImageAspectRatio: number;
+  }) => () => void;
 };
 
 const NUMBER_COLUMNS = 2;
@@ -44,17 +51,19 @@ const PinThumbnailsGrid = ({
             const pinBelongsInThisColumn =
               pinIndex % NUMBER_COLUMNS === columnIndex;
 
-            const pinHasImageAspectRatio = !!pinImageAspectRatios[pinIndex];
+            const pinImageAspectRatio = pinImageAspectRatios[pinIndex];
+
+            const pinHasImageAspectRatio = !!pinImageAspectRatio;
 
             if (pinBelongsInThisColumn && pinHasImageAspectRatio) {
               return (
                 <TouchableOpacity
                   key={`pin-thumbnail-${pinIndex + 1}`}
-                  onPress={getTapHandlerForPin({ pin })}
+                  onPress={getTapHandlerForPin({ pin, pinImageAspectRatio })}
                 >
                   <PinThumbnail
                     pin={pin}
-                    pinImageAspectRatio={pinImageAspectRatios[pinIndex]}
+                    pinImageAspectRatio={pinImageAspectRatio}
                     width={columnWidth}
                   />
                 </TouchableOpacity>

@@ -2,9 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-import ProfileScreen from "@/src/screens/ProfileScreen";
-import SearchNavigator from "./SearchNavigator";
 import HomeNavigator from "./HomeNavigator";
+import SearchNavigator from "./SearchNavigator";
+
+import ProfileScreen from "@/src/screens/ProfileScreen";
 
 type AuthenticatedNavigatorParamList = {
   Home: undefined;
