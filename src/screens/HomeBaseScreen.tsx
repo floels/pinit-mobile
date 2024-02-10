@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import styles from "./HomeScreen.styles";
+import styles from "./HomeBaseScreen.styles";
 import AccessTokenRefresher from "../components/HomeScreen/AccessTokenRefresher";
 import PinsBoardContainer from "../components/PinsBoard/PinsBoardContainer";
 import { API_ENDPOINT_PIN_SUGGESTIONS } from "../lib/constants";
