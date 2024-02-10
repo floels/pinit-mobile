@@ -18,6 +18,7 @@ import {
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
 import enTranslations from "@/translations/en.json";
+import { PinType } from "@/src/lib/types";
 
 const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
 const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
@@ -33,10 +34,10 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
     "react-native/Libraries/Components/View/View",
   );
 
-  return () => (
+  return ({ pin }: { pin: PinType }) => (
     <View
       style={{ height: MOCKED_PIN_THUMBNAIL_HEIGHT }}
-      testID="mocked-pin-thumbnail"
+      testID={`mocked-pin-thumbnail-${pin.id}`}
     />
   );
 });
@@ -51,7 +52,17 @@ Image.getSize = jest.fn((uri, success) => {
 const mockPinSuggestionsPage = Array.from(
   { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
   (_, index) => ({
-    id: `01234567890123${index}`,
+    unique_id: index,
+    title: "Pin title",
+    image_url: "https://some.url.com",
+    author: { username: "johndoe", display_name: "John Doe" },
+  }),
+);
+
+const mockRefreshedPinSuggestionsPage = Array.from(
+  { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
+  (_, index) => ({
+    unique_id: index + NUMBER_PIN_SUGGESTIONS_PER_PAGE,
     title: "Pin title",
     image_url: "https://some.url.com",
     author: { username: "johndoe", display_name: "John Doe" },
@@ -103,7 +114,7 @@ it(`should fetch and render first page of pin suggestions upon initial render,
 and fetch second page upon scroll`, async () => {
   jest.useFakeTimers();
 
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
@@ -113,7 +124,7 @@ and fetch second page upon scroll`, async () => {
   renderComponent();
 
   await waitFor(() => {
-    const pinThumbnails = screen.queryAllByTestId("mocked-pin-thumbnail");
+    const pinThumbnails = screen.queryAllByTestId(/^mocked-pin-thumbnail-/);
     expect(pinThumbnails.length).toEqual(NUMBER_PIN_SUGGESTIONS_PER_PAGE);
   });
 
@@ -166,7 +177,7 @@ it("should display error message upon fetch error when fetching initial pins", a
 });
 
 it("should dispatch relevant action upon 401 response when fetching initial pins", async () => {
-  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 401,
   });
 
@@ -178,7 +189,7 @@ it("should dispatch relevant action upon 401 response when fetching initial pins
 });
 
 it("should display error message upon 400 response when fetching initial pins", async () => {
-  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 400,
   });
 
@@ -189,8 +200,8 @@ it("should display error message upon 400 response when fetching initial pins", 
   });
 });
 
-it("should fetch initial pins again when pulling to refresh", async () => {
-  fetchMock.doMockOnceIf(
+it("should refresh pins when pulling to refresh", async () => {
+  fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
@@ -199,23 +210,24 @@ it("should fetch initial pins again when pulling to refresh", async () => {
 
   renderComponent();
 
-  await waitFor(() => {
-    expect(
-      screen.queryAllByTestId("mocked-pin-thumbnail").length,
-    ).toBeGreaterThan(0);
-  });
-
-  expect(fetch as FetchMock).toHaveBeenCalledTimes(1);
+  fetchMock.mockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockRefreshedPinSuggestionsPage,
+    }),
+  );
 
   pullToRefresh();
 
   await waitFor(() => {
-    expect(fetch as FetchMock).toHaveBeenCalledTimes(2);
+    screen.getByTestId(
+      `mocked-pin-thumbnail-${NUMBER_PIN_SUGGESTIONS_PER_PAGE}`,
+    );
   });
 });
 
 it("should display error message upon fetch error on refresh", async () => {
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
@@ -225,9 +237,7 @@ it("should display error message upon fetch error on refresh", async () => {
   renderComponent();
 
   await waitFor(() => {
-    expect(
-      screen.queryAllByTestId("mocked-pin-thumbnail").length,
-    ).toBeGreaterThan(0);
+    screen.getByTestId("mocked-pin-thumbnail-0");
   });
 
   fetchMock.mockRejectOnce(new Error());
@@ -240,7 +250,7 @@ it("should display error message upon fetch error on refresh", async () => {
 });
 
 it("should dispatch relevant action upon 401 response on refresh", async () => {
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
@@ -250,12 +260,10 @@ it("should dispatch relevant action upon 401 response on refresh", async () => {
   renderComponent();
 
   await waitFor(() => {
-    expect(
-      screen.queryAllByTestId("mocked-pin-thumbnail").length,
-    ).toBeGreaterThan(0);
+    screen.getByTestId("mocked-pin-thumbnail-0");
   });
 
-  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 401,
   });
 
@@ -267,7 +275,7 @@ it("should dispatch relevant action upon 401 response on refresh", async () => {
 });
 
 it("should display error message upon 400 response on refresh", async () => {
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
       results: mockPinSuggestionsPage,
@@ -277,12 +285,10 @@ it("should display error message upon 400 response on refresh", async () => {
   renderComponent();
 
   await waitFor(() => {
-    expect(
-      screen.queryAllByTestId("mocked-pin-thumbnail").length,
-    ).toBeGreaterThan(0);
+    screen.getByTestId("mocked-pin-thumbnail-0");
   });
 
-  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 400,
   });
 
