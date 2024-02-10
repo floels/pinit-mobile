@@ -102,7 +102,7 @@ and clear suggestions when user clears input`, async () => {
 
   renderComponent();
 
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
       results: mockSuggestions,
@@ -131,7 +131,7 @@ and clear suggestions when user clears input`, async () => {
 });
 
 it("should not repeat search input as first suggestion if it is already included in suggestions", async () => {
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
       results: [
@@ -155,7 +155,7 @@ it("should not repeat search input as first suggestion if it is already included
 });
 
 it("should not display any suggestions upon malformed OK response", async () => {
-  fetchMock.doMockOnceIf(`${endpoint}?search=foo`, "");
+  fetchMock.mockOnceIf(`${endpoint}?search=foo`, "");
 
   renderComponent();
 
@@ -167,7 +167,7 @@ it("should not display any suggestions upon malformed OK response", async () => 
 it("should not display any suggestions upon KO response", async () => {
   renderComponent();
 
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
       results: mockSuggestions,
@@ -182,7 +182,7 @@ it("should not display any suggestions upon KO response", async () => {
     ).toBeGreaterThan(0);
   });
 
-  fetchMock.doMockOnceIf(`${endpoint}?search=foobar`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpoint}?search=foobar`, JSON.stringify({}), {
     status: 400,
   });
 
@@ -196,7 +196,7 @@ it("should not display any suggestions upon KO response", async () => {
 it("should not display any suggestions upon fetch error", async () => {
   renderComponent();
 
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
       results: mockSuggestions,
@@ -280,7 +280,7 @@ it("should navigate to search results screen upon submitting search input", asyn
 it("should navigate to search results screen upon pressing search suggestion item", async () => {
   jest.useFakeTimers();
 
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
       results: mockSuggestions,

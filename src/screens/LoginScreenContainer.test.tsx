@@ -138,7 +138,7 @@ it("should persist tokens data and dispatch 'LOGGED_IN' action upon successful l
     new Date().getTime() + 24 * 60 * 60 * 1000,
   ).toISOString();
 
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     endpoint,
     JSON.stringify({
       access_token: "access_token",
@@ -192,7 +192,7 @@ it("should display right error message upon KO response", async () => {
 
   await fillInputsWithValidCredentials();
 
-  fetchMock.doMockOnceIf(
+  fetchMock.mockOnceIf(
     endpoint,
     JSON.stringify({ errors: [{ code: ERROR_CODE_INVALID_EMAIL }] }),
     {
@@ -202,13 +202,13 @@ it("should display right error message upon KO response", async () => {
   await pressSubmit();
   screen.getByText(enTranslations.LandingScreen.INVALID_EMAIL_LOGIN);
 
-  fetchMock.doMockOnceIf(endpoint, JSON.stringify({}), {
+  fetchMock.mockOnceIf(endpoint, JSON.stringify({}), {
     status: 401,
   });
   await pressSubmit();
   screen.getByText(enTranslations.LandingScreen.INVALID_PASSWORD_LOGIN);
 
-  fetchMock.doMockOnceIf(endpoint, JSON.stringify({}), {
+  fetchMock.mockOnceIf(endpoint, JSON.stringify({}), {
     status: 400,
   });
   await pressSubmit();
