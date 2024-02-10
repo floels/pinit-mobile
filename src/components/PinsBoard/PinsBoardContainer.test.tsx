@@ -17,8 +17,8 @@ import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
-import enTranslations from "@/translations/en.json";
 import { PinType } from "@/src/lib/types";
+import enTranslations from "@/translations/en.json";
 
 const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
 const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
@@ -73,6 +73,8 @@ const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 
 const mockDispatch = jest.fn();
 
+const mockGetTapHandlerForPin = () => () => {};
+
 const renderComponent = () => {
   const initialState = {
     isCheckingAccessToken: false,
@@ -86,6 +88,7 @@ const renderComponent = () => {
       <PinsBoardContainer
         fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
         shouldAuthenticate
+        getTapHandlerForPin={mockGetTapHandlerForPin}
       />
     </AuthenticationContext.Provider>,
   );

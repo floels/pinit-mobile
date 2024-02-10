@@ -2,9 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-import HomeScreen from "@/src/screens/HomeScreen";
+import HomeNavigator from "./HomeNavigator";
+import SearchNavigator from "./SearchNavigator";
+
 import ProfileScreen from "@/src/screens/ProfileScreen";
-import SearchScreen from "@/src/screens/SearchScreen";
 
 type AuthenticatedNavigatorParamList = {
   Home: undefined;
@@ -48,8 +49,8 @@ const AuthenticatedNavigator = () => {
 
   return (
     <TabNavigator.Navigator screenOptions={screenOptions}>
-      <TabNavigator.Screen name="Home" component={HomeScreen} />
-      <TabNavigator.Screen name="Search" component={SearchScreen} />
+      <TabNavigator.Screen name="Home" component={HomeNavigator} />
+      <TabNavigator.Screen name="Search" component={SearchNavigator} />
       <TabNavigator.Screen name="Create">{() => null}</TabNavigator.Screen>
       <TabNavigator.Screen name="Profile" component={ProfileScreen} />
     </TabNavigator.Navigator>

@@ -3,10 +3,9 @@ import {
   createStackNavigator,
 } from "@react-navigation/stack";
 
-import SearchInputScreenContainer from "../screens/SearchInputScreenContainer";
-import SearchResultsScreen from "../screens/SearchResultsScreen";
-
+import SearchResultsNavigator from "@/src/navigators/SearchResultsNavigator";
 import SearchBaseScreen from "@/src/screens/SearchBaseScreen";
+import SearchInputScreenContainer from "@/src/screens/SearchInputScreenContainer";
 
 export type SearchNavigatorParamList = {
   SearchBase: undefined;
@@ -47,7 +46,7 @@ const SearchNavigator = () => {
       />
       <StackNavigator.Screen
         name="SearchResults"
-        component={SearchResultsScreen}
+        component={SearchResultsNavigator}
       />
     </StackNavigator.Navigator>
   );

@@ -7,7 +7,7 @@ import { ellipsizeText } from "@/src/lib/utils/strings";
 
 type PinThumbnailProps = {
   pin: PinType;
-  pinImageAspectRatio: number | null;
+  pinImageAspectRatio: number;
   width: number;
 };
 
@@ -18,16 +18,11 @@ const PinThumbnail = ({
   pinImageAspectRatio,
   width,
 }: PinThumbnailProps) => {
-  const defaultedPinImageAspectRatio = pinImageAspectRatio || 1;
-
   return (
     <View style={[styles.container, { width }]}>
       <Image
         source={{ uri: pin.imageURL }}
-        style={[
-          styles.image,
-          { width, height: width / defaultedPinImageAspectRatio },
-        ]}
+        style={[styles.image, { width, height: width / pinImageAspectRatio }]}
       />
       <Text style={styles.title}>
         {ellipsizeText({ text: pin.title, maxLength: MAX_CHARACTERS_TITLE })}

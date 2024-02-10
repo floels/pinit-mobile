@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import LandingScreen from "../screens/LandingScreen";
-import LoginScreenContainer from "../screens/LoginScreenContainer";
+import LandingScreen from "@/src/screens/LandingScreen";
+import LoginScreenContainer from "@/src/screens/LoginScreenContainer";
 
 export type UnauthenticatedNavigatorParamList = {
   LoginScreen: undefined;
@@ -16,9 +16,8 @@ const UnauthenticatedNavigator = () => {
       <StackNavigator.Screen
         name="LoginScreen"
         options={{ presentation: "modal" }}
-      >
-        {({ navigation }) => <LoginScreenContainer navigation={navigation} />}
-      </StackNavigator.Screen>
+        component={LoginScreenContainer}
+      />
     </StackNavigator.Navigator>
   );
 };
