@@ -4,6 +4,7 @@ import { Colors, Fonts } from "../global.styles";
 
 const styles = StyleSheet.create({
   container: {
+    height: "100%",
     paddingTop: 80,
     paddingLeft: 20,
     paddingRight: 20,

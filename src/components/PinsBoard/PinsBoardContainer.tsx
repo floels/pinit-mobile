@@ -4,6 +4,7 @@ import { NativeScrollEvent, NativeSyntheticEvent, Image } from "react-native";
 
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 
+import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import { API_BASE_URL } from "@/src/lib/constants";
 import {
   NetworkError,
@@ -14,7 +15,6 @@ import { PinType } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/serializers";
 import { appendQueryParam } from "@/src/lib/utils/strings";
-import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 
 type PinsBoardContainerProps = {
   fetchEndpoint: string;

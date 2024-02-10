@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, TextInput } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./LoginScreen.styles";
-import Spinner from "../components/Spinner/Spinner";
+import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
 
 type LoginScreenProps = {
   email: string;
@@ -114,13 +114,7 @@ const LoginScreen = ({
           </Text>
         </TouchableOpacity>
       </View>
-      {isSubmitting && (
-        <View style={styles.loadingOverlay}>
-          <Spinner>
-            <FontAwesome5 name="spinner" size={40} style={styles.spinnerIcon} />
-          </Spinner>
-        </View>
-      )}
+      {isSubmitting && <LoadingOverlay />}
     </View>
   );
 };
