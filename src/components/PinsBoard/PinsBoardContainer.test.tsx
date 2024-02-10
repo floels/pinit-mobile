@@ -17,6 +17,7 @@ import {
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
 import enTranslations from "@/translations/en.json";
+import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 
 const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
 const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
@@ -59,12 +60,23 @@ const mockPinSuggestionsPage = Array.from(
 
 const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 
+const mockDispatch = jest.fn();
+
 const renderComponent = () => {
+  const initialState = {
+    isCheckingAccessToken: false,
+    isAuthenticated: false,
+  };
+
   render(
-    <PinsBoardContainer
-      fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
-      shouldAuthenticate
-    />,
+    <AuthenticationContext.Provider
+      value={{ state: initialState, dispatch: mockDispatch }}
+    >
+      <PinsBoardContainer
+        fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
+        shouldAuthenticate
+      />
+    </AuthenticationContext.Provider>,
   );
 };
 
@@ -153,7 +165,19 @@ it("should display error message upon fetch error when fetching initial pins", a
   });
 });
 
-it("should display error message upon KO response when fetching initial pins", async () => {
+it("should dispatch relevant action upon 401 response when fetching initial pins", async () => {
+  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+    status: 401,
+  });
+
+  renderComponent();
+
+  await waitFor(() => {
+    expect(mockDispatch).toHaveBeenCalledWith({ type: "GOT_401_RESPONSE" });
+  });
+});
+
+it("should display error message upon 400 response when fetching initial pins", async () => {
   fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 400,
   });
@@ -215,7 +239,34 @@ it("should display error message upon fetch error on refresh", async () => {
   });
 });
 
-it("should display error message upon KO response on refresh", async () => {
+it("should dispatch relevant action upon 401 response on refresh", async () => {
+  fetchMock.doMockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockPinSuggestionsPage,
+    }),
+  );
+
+  renderComponent();
+
+  await waitFor(() => {
+    expect(
+      screen.queryAllByTestId("mocked-pin-thumbnail").length,
+    ).toBeGreaterThan(0);
+  });
+
+  fetchMock.doMockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+    status: 401,
+  });
+
+  pullToRefresh();
+
+  await waitFor(() => {
+    expect(mockDispatch).toHaveBeenCalledWith({ type: "GOT_401_RESPONSE" });
+  });
+});
+
+it("should display error message upon 400 response on refresh", async () => {
   fetchMock.doMockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({

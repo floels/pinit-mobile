@@ -17,8 +17,7 @@ const NavigatorContainer = () => {
 
     try {
       accessToken = await SecureStore.getItemAsync(ACCESS_TOKEN_STORAGE_KEY);
-    } catch (error) {
-      console.warn("Couldn't read access token from storage: ", error);
+    } catch {
       dispatch({ type: "CHECKED_NO_ACCESS_TOKEN" });
       return;
     }
