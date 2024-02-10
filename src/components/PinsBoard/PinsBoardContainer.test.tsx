@@ -73,6 +73,8 @@ const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 
 const mockDispatch = jest.fn();
 
+const mockGetTapHandlerForPin = () => () => {};
+
 const renderComponent = () => {
   const initialState = {
     isCheckingAccessToken: false,
@@ -86,6 +88,7 @@ const renderComponent = () => {
       <PinsBoardContainer
         fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
         shouldAuthenticate
+        getTapHandlerForPin={mockGetTapHandlerForPin}
       />
     </AuthenticationContext.Provider>,
   );

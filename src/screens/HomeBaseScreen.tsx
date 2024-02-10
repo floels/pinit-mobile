@@ -2,12 +2,12 @@ import { NavigationProp } from "@react-navigation/native";
 import { View } from "react-native";
 
 import styles from "./HomeBaseScreen.styles";
-import AccessTokenRefresher from "../components/HomeScreen/AccessTokenRefresher";
-import PinsBoardContainer from "../components/PinsBoard/PinsBoardContainer";
-import { API_ENDPOINT_PIN_SUGGESTIONS } from "../lib/constants";
-import { HomeNavigatorParamList } from "../navigators/HomeNavigator";
 
+import AccessTokenRefresher from "@/src/components/HomeScreen/AccessTokenRefresher";
+import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
+import { API_ENDPOINT_PIN_SUGGESTIONS } from "@/src/lib/constants";
 import { PinType } from "@/src/lib/types";
+import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator";
 
 type HomeScreenProps = {
   navigation: NavigationProp<HomeNavigatorParamList>;

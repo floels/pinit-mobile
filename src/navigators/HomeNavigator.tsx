@@ -1,7 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { PinType } from "../lib/types";
-
+import { PinType } from "@/src/lib/types";
 import HomeBaseScreen from "@/src/screens/HomeBaseScreen";
 import PinDetailsScreen from "@/src/screens/PinDetailsScreen";
 
