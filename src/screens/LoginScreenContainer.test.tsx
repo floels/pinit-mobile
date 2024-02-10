@@ -3,6 +3,7 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import * as SecureStore from "expo-secure-store";
 
 import LoginScreenContainer from "./LoginScreenContainer";
+import { AuthenticationContext } from "../contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
@@ -13,7 +14,6 @@ import {
 } from "../lib/constants";
 
 import enTranslations from "@/translations/en.json";
-import { AuthenticationContext } from "../contexts/authenticationContext";
 
 jest.mock("expo-secure-store", () => ({
   setItemAsync: jest.fn(),

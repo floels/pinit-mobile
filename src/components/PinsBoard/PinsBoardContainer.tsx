@@ -7,8 +7,8 @@ import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 import { API_BASE_URL } from "@/src/lib/constants";
 import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
 import { PinType } from "@/src/lib/types";
-import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/adapters";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
+import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/serializers";
 import { appendQueryParam } from "@/src/lib/utils/strings";
 
 type PinsBoardContainerProps = {

@@ -32,14 +32,12 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
     "react-native/Libraries/Components/View/View",
   );
 
-  const MockedPinThumbnail = () => (
+  return () => (
     <View
       style={{ height: MOCKED_PIN_THUMBNAIL_HEIGHT }}
       testID="mocked-pin-thumbnail"
     />
   );
-
-  return MockedPinThumbnail;
 });
 
 // Mock Image.getSize()
