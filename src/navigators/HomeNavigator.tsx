@@ -1,10 +1,12 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeBaseScreen from "@/src/screens/HomeBaseScreen";
+import { PinType } from "../lib/types";
+import PinDetailsScreen from "../screens/PinDetailsScreen";
 
-type HomeNavigatorParamList = {
+export type HomeNavigatorParamList = {
   HomeBase: undefined;
-  PinDetails: undefined;
+  PinDetails: { pin: PinType };
 };
 
 const HomeNavigator = () => {
@@ -17,6 +19,7 @@ const HomeNavigator = () => {
       }}
     >
       <StackNavigator.Screen name="HomeBase" component={HomeBaseScreen} />
+      <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
     </StackNavigator.Navigator>
   );
 };

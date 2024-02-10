@@ -19,6 +19,7 @@ import { appendQueryParam } from "@/src/lib/utils/strings";
 type PinsBoardContainerProps = {
   fetchEndpoint: string;
   shouldAuthenticate?: boolean;
+  getTapHandlerForPin: ({ pin }: { pin: PinType }) => () => void;
 };
 
 const MARGIN_SCROLL_BEFORE_NEW_FETCH = 10000; // the margin we leave ourselves
@@ -37,6 +38,7 @@ export const DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS = 500; // this debo
 const PinsBoardContainer = ({
   fetchEndpoint,
   shouldAuthenticate,
+  getTapHandlerForPin,
 }: PinsBoardContainerProps) => {
   const { t } = useTranslation();
 
@@ -281,6 +283,7 @@ const PinsBoardContainer = ({
       hasJustRefreshed={hasJustRefreshed}
       refreshError={refreshError}
       handleScroll={handleScroll}
+      getTapHandlerForPin={getTapHandlerForPin}
     />
   );
 };

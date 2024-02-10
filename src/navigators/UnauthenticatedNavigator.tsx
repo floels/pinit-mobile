@@ -16,9 +16,8 @@ const UnauthenticatedNavigator = () => {
       <StackNavigator.Screen
         name="LoginScreen"
         options={{ presentation: "modal" }}
-      >
-        {({ navigation }) => <LoginScreenContainer navigation={navigation} />}
-      </StackNavigator.Screen>
+        component={LoginScreenContainer}
+      />
     </StackNavigator.Navigator>
   );
 };

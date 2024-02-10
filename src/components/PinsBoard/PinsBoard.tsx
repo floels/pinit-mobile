@@ -6,6 +6,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
@@ -24,6 +25,7 @@ type PinsBoardProps = {
   hasJustRefreshed: boolean;
   refreshError: string;
   handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  getTapHandlerForPin: ({ pin }: { pin: PinType }) => () => void;
 };
 
 const NUMBER_COLUMNS = 2;
@@ -41,6 +43,7 @@ const PinsBoard = ({
   hasJustRefreshed,
   refreshError,
   handleScroll,
+  getTapHandlerForPin,
 }: PinsBoardProps) => {
   const screenWidth = Dimensions.get("window").width;
 
@@ -72,13 +75,16 @@ const PinsBoard = ({
 
             if (pinBelongsInThisColumn && pinHasImageAspectRatio) {
               return (
-                <View key={`pin-thumbnail-${pinIndex + 1}`}>
+                <TouchableOpacity
+                  key={`pin-thumbnail-${pinIndex + 1}`}
+                  onPress={getTapHandlerForPin({ pin })}
+                >
                   <PinThumbnail
                     pin={pin}
                     pinImageAspectRatio={pinImageAspectRatios[pinIndex]}
                     width={columnWidth}
                   />
-                </View>
+                </TouchableOpacity>
               );
             }
           })}
