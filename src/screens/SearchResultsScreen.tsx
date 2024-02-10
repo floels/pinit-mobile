@@ -18,7 +18,7 @@ const SearchResultsScreenContainer = ({
 }: SearchResultsScreenContainerProps) => {
   const { searchTerm } = route.params;
 
-  const searchEndpoint = `${API_ENDPOINT_SEARCH}?q=${searchTerm.toLowerCase()}`;
+  const searchEndpoint = `${API_ENDPOINT_SEARCH}/?q=${searchTerm.toLowerCase()}`;
 
   const handlePressSearchInput = navigation.goBack;
 

@@ -1,15 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NativeScrollEvent, NativeSyntheticEvent, Image } from "react-native";
 
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 
 import { API_BASE_URL } from "@/src/lib/constants";
-import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
+import {
+  NetworkError,
+  Response401Error,
+  ResponseKOError,
+} from "@/src/lib/customErrors";
 import { PinType } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/serializers";
 import { appendQueryParam } from "@/src/lib/utils/strings";
+import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 
 type PinsBoardContainerProps = {
   fetchEndpoint: string;
@@ -35,6 +40,8 @@ const PinsBoardContainer = ({
 }: PinsBoardContainerProps) => {
   const { t } = useTranslation();
 
+  const { dispatch } = useContext(AuthenticationContext);
+
   const [pins, setPins] = useState<PinType[]>([]);
   const [pinImageAspectRatios, setPinImageAspectRatios] = useState<
     (number | null)[]
@@ -56,10 +63,16 @@ const PinsBoardContainer = ({
     try {
       nextPinsAndAspectRatios = await fetchNextPinsAndImageRatios();
     } catch (error) {
+      if (error instanceof Response401Error) {
+        dispatch({ type: "GOT_401_RESPONSE" });
+        return;
+      }
+
       if (error instanceof NetworkError) {
         setFetchMorePinsError(t("Common.CONNECTION_ERROR"));
         return;
       }
+
       setFetchMorePinsError(t("Common.ERROR_FETCH_MORE_PINS"));
       return;
     } finally {
@@ -89,10 +102,16 @@ const PinsBoardContainer = ({
     try {
       firstPinsAndAspectRatios = await fetchNextPinsAndImageRatios();
     } catch (error) {
+      if (error instanceof Response401Error) {
+        dispatch({ type: "GOT_401_RESPONSE" });
+        return;
+      }
+
       if (error instanceof NetworkError) {
         setRefreshError(t("Common.CONNECTION_ERROR"));
         return;
       }
+
       setRefreshError(t("Common.ERROR_REFRESH_PINS"));
       return;
     } finally {
@@ -143,6 +162,10 @@ const PinsBoardContainer = ({
       }
     } catch {
       throw new NetworkError();
+    }
+
+    if (newPinsResponse.status === 401) {
+      throw new Response401Error();
     }
 
     if (!newPinsResponse.ok) {

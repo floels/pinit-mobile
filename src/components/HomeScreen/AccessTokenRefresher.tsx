@@ -61,7 +61,7 @@ const AccessTokenRefresher = () => {
     let response;
 
     try {
-      const url = `${API_BASE_URL}/${API_ENDPOINT_REFRESH_TOKEN}`;
+      const url = `${API_BASE_URL}/${API_ENDPOINT_REFRESH_TOKEN}/`;
 
       response = await fetch(url, {
         method: "POST",
