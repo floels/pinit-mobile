@@ -12,12 +12,12 @@ import PinsBoardContainer, {
   DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS,
 } from "./PinsBoardContainer";
 
+import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
 import enTranslations from "@/translations/en.json";
-import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 
 const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
 const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
@@ -65,7 +65,7 @@ const mockDispatch = jest.fn();
 const renderComponent = () => {
   const initialState = {
     isCheckingAccessToken: false,
-    isAuthenticated: false,
+    isAuthenticated: true,
   };
 
   render(
