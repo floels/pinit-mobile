@@ -1,7 +1,6 @@
 import { NavigationProp } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
-import { View, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./SearchBaseScreen.styles";
