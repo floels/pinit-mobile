@@ -19,6 +19,7 @@ import { appendQueryParam } from "@/src/lib/utils/strings";
 type PinsBoardContainerProps = {
   fetchEndpoint: string;
   shouldAuthenticate?: boolean;
+  emptyResultsMessageKey?: string;
   getTapHandlerForPin: ({
     pin,
     pinImageAspectRatio,
@@ -44,6 +45,7 @@ export const DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS = 500; // this debo
 const PinsBoardContainer = ({
   fetchEndpoint,
   shouldAuthenticate,
+  emptyResultsMessageKey,
   getTapHandlerForPin,
 }: PinsBoardContainerProps) => {
   const { t } = useTranslation();
@@ -267,7 +269,8 @@ const PinsBoardContainer = ({
     }
   };
 
-  // Fetch initial pins:
+  // Fetch first page on component mount and whenever
+  // 'fetchEndpoint' changes:
   useEffect(() => {
     setCurrentPage(1);
     setPins([]);
@@ -290,6 +293,7 @@ const PinsBoardContainer = ({
       isRefreshing={isRefreshing}
       hasJustRefreshed={hasJustRefreshed}
       refreshError={refreshError}
+      emptyResultsMessageKey={emptyResultsMessageKey}
       handleScroll={handleScroll}
       getTapHandlerForPin={getTapHandlerForPin}
     />

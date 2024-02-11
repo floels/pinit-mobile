@@ -89,6 +89,7 @@ const renderComponent = () => {
         fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
         shouldAuthenticate
         getTapHandlerForPin={mockGetTapHandlerForPin}
+        emptyResultsMessageKey="SearchScreen.NO_RESULTS"
       />
     </AuthenticationContext.Provider>,
   );
@@ -158,6 +159,21 @@ and fetch second page upon scroll`, async () => {
 
   jest.clearAllTimers();
   jest.useRealTimers();
+});
+
+it("should display relevant message if search results are empty", async () => {
+  fetchMock.mockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: [],
+    }),
+  );
+
+  renderComponent();
+
+  await waitFor(() => {
+    screen.getByText(enTranslations.SearchScreen.NO_RESULTS);
+  });
 });
 
 it("should display spinner while fetching initial pins", async () => {

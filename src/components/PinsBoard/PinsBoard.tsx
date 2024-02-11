@@ -13,6 +13,7 @@ import styles from "./PinsBoard.styles";
 import Spinner from "../Spinner/Spinner";
 
 import { PinType } from "@/src/lib/types";
+import { useTranslation } from "react-i18next";
 
 type PinsBoardProps = {
   pins: PinType[];
@@ -22,6 +23,7 @@ type PinsBoardProps = {
   isRefreshing: boolean;
   hasJustRefreshed: boolean;
   refreshError: string;
+  emptyResultsMessageKey?: string;
   handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   getTapHandlerForPin: ({
     pin,
@@ -44,9 +46,12 @@ const PinsBoard = ({
   isRefreshing,
   hasJustRefreshed,
   refreshError,
+  emptyResultsMessageKey,
   handleScroll,
   getTapHandlerForPin,
 }: PinsBoardProps) => {
+  const { t } = useTranslation();
+
   const displayRefreshError = (
     <View style={styles.error}>
       <FontAwesome5
@@ -79,6 +84,29 @@ const PinsBoard = ({
       <Text style={styles.errorText}>{fetchMorePinsError}</Text>
     </View>
   );
+
+  let displayEmptyResultsMessageIfNeeded;
+
+  const shouldDisplayEmptyResultsMessage =
+    !!emptyResultsMessageKey &&
+    !isFetchingMorePins &&
+    !fetchMorePinsError &&
+    !isRefreshing &&
+    !refreshError &&
+    pins.length === 0;
+
+  if (shouldDisplayEmptyResultsMessage) {
+    displayEmptyResultsMessageIfNeeded = (
+      <View style={styles.error}>
+        <FontAwesome5
+          name="exclamation-circle"
+          style={styles.errorIcon}
+          size={20}
+        />
+        <Text style={styles.errorText}>{t(emptyResultsMessageKey)}</Text>
+      </View>
+    );
+  }
 
   const scrollAnimatedValue = new Animated.Value(0);
 
@@ -164,6 +192,7 @@ const PinsBoard = ({
       {isRefreshing && refreshSpinner}
       {!isRefreshing && !hasJustRefreshed && refreshSpinnerPreview}
       {refreshError && displayRefreshError}
+      {displayEmptyResultsMessageIfNeeded}
       <PinThumbnailsGrid
         pins={pins}
         pinImageAspectRatios={pinImageAspectRatios}
