@@ -1,29 +1,25 @@
 import { StyleSheet } from "react-native";
 
-import { Colors } from "../global.styles";
-
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 80,
-    width: "100%",
+    paddingTop: 130,
+    paddingLeft: 6,
+    paddingRight: 6,
   },
-  backButtonAndSearchTerm: {
+  backButtonAndSearchInput: {
+    position: "absolute",
+    top: 80,
+    left: 6, // to match the paddingLeft of the parent
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 20,
-    paddingRight: 10,
-    marginBottom: 20,
+    zIndex: 10, // so that the search suggestions overlay the search results
   },
   backButton: {
-    marginRight: 20,
+    marginLeft: 10,
+    marginRight: 10,
   },
-  searchTerm: {
+  searchInputContainer: {
     flex: 1,
-    backgroundColor: Colors.backgroundNormal,
-    paddingLeft: 16,
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderRadius: 20,
   },
 });
 

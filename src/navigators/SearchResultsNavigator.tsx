@@ -5,7 +5,7 @@ import { SearchNavigatorParamList } from "./SearchNavigator";
 
 import { PinType } from "@/src/lib/types";
 import PinDetailsScreen from "@/src/screens/PinDetailsScreen";
-import SearchResultsBaseScreen from "@/src/screens/SearchResultsBaseScreen";
+import SearchResultsBaseScreenContainer from "@/src/screens/SearchResultsBaseScreenContainer";
 
 type SearchResultsNavigatorProps = {
   route: RouteProp<SearchNavigatorParamList, "SearchResults">;
@@ -36,10 +36,10 @@ const SearchResultsNavigator = ({
     >
       <StackNavigator.Screen name="SearchResultsBase">
         {({ navigation }) => (
-          <SearchResultsBaseScreen
-            searchTerm={searchTerm}
-            handlePressBack={handlePressBackInSearchResultsBaseScreen}
+          <SearchResultsBaseScreenContainer
             navigation={navigation}
+            initialSearchTerm={searchTerm}
+            handlePressBack={handlePressBackInSearchResultsBaseScreen}
           />
         )}
       </StackNavigator.Screen>

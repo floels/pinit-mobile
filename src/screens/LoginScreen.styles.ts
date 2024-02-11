@@ -7,7 +7,6 @@ const inputsFontWeight = Fonts.fontWeightSemiBold;
 
 const styles = StyleSheet.create({
   container: {
-    position: "relative",
     height: "100%",
   },
   closeIconAndHeader: {

@@ -1,11 +1,13 @@
 import { StyleSheet } from "react-native";
 
-import { Fonts } from "@/src/global.styles";
+import { Colors, Fonts } from "@/src/global.styles";
 
 const styles = StyleSheet.create({
   container: {
     paddingLeft: 16,
     paddingRight: 16,
+    backgroundColor: Colors.backgroundBase,
+    minHeight: 10000, // arbitrarily high number, so it covers all screen
   },
   suggestionContainer: {
     flexDirection: "row",

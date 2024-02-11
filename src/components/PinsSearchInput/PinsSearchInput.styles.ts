@@ -1,23 +1,22 @@
 import { StyleSheet } from "react-native";
 
-import { Colors, Fonts } from "../global.styles";
+import { Colors, Fonts } from "../../global.styles";
 
 const styles = StyleSheet.create({
-  container: {
-    paddingTop: 80,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
   searchInputAndCancelButton: {
     flexDirection: "row",
     alignItems: "center",
   },
-  searchInputAndClearIcon: {
+  searchInputAndIcons: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: Colors.backgroundNormal,
     borderRadius: 20,
     flex: 1,
+  },
+  searchIcon: {
+    color: Colors.fontSecondary,
+    marginLeft: 12,
   },
   searchInput: {
     paddingLeft: 16,
@@ -33,6 +32,9 @@ const styles = StyleSheet.create({
   },
   cancelButtonText: {
     fontWeight: Fonts.fontWeightSemiBold,
+  },
+  suggestionsListContainer: {
+    width: "100%",
   },
 });
 

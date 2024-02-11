@@ -269,8 +269,10 @@ const PinsBoardContainer = ({
 
   // Fetch initial pins:
   useEffect(() => {
+    setCurrentPage(1);
+    setPins([]);
     onNextPage();
-  }, []);
+  }, [fetchEndpoint]);
 
   // React to user scrolling down to next page:
   useEffect(() => {
