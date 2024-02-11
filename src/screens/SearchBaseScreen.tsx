@@ -1,9 +1,9 @@
 import { NavigationProp } from "@react-navigation/native";
-import { useTranslation } from "react-i18next";
-import { View, Text, TouchableOpacity } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { useRef, useState } from "react";
+import { TextInput, View } from "react-native";
 
 import styles from "./SearchBaseScreen.styles";
+import PinsSearchInputContainer from "../components/PinsSearchInput/PinsSearchInputContainer";
 import { SearchNavigatorParamList } from "../navigators/SearchNavigator";
 
 type SearchBaseScreenProps = {
@@ -11,23 +11,49 @@ type SearchBaseScreenProps = {
 };
 
 const SearchBaseScreen = ({ navigation }: SearchBaseScreenProps) => {
-  const { t } = useTranslation();
+  const searchInputRef = useRef<TextInput>(null);
 
-  const handlePressInput = () => {
-    navigation.navigate("SearchInput");
+  const [searchInputValue, setSearchInputValue] = useState("");
+  const [isSearchInputFocused, setIsSearchInputFocused] = useState(false);
+
+  const handleSearchInputFocus = () => {
+    setIsSearchInputFocused(true);
   };
+
+  const handlePressSearchInputCancel = () => {
+    setSearchInputValue("");
+    searchInputRef.current?.blur();
+    setIsSearchInputFocused(false);
+  };
+
+  const handlePressSearchInputClear = () => {
+    setSearchInputValue("");
+  };
+
+  const handleSearchInputSubmit = () => {
+    navigation.navigate("SearchResults", { searchTerm: searchInputValue });
+  };
+
+  const getPressHandlerForSearchSuggestion =
+    ({ suggestion }: { suggestion: string }) =>
+    () => {
+      navigation.navigate("SearchResults", { searchTerm: suggestion });
+    };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={handlePressInput}
-        style={styles.searchIconAndInput}
-      >
-        <FontAwesome5 name="search" size={16} style={styles.searchIcon} />
-        <Text style={styles.searchInput}>
-          {t("SearchScreen.BASE_SCREEN_SEARCH_INPUT_PLACEHOLDER")}
-        </Text>
-      </TouchableOpacity>
+      <PinsSearchInputContainer
+        inputValue={searchInputValue}
+        isInputFocused={isSearchInputFocused}
+        withSearchIcon
+        handleInputFocus={handleSearchInputFocus}
+        handlePressCancel={handlePressSearchInputCancel}
+        handlePressClear={handlePressSearchInputClear}
+        handleInputChange={setSearchInputValue}
+        handleSubmit={handleSearchInputSubmit}
+        getPressHandlerForSuggestion={getPressHandlerForSearchSuggestion}
+        ref={searchInputRef}
+      />
     </View>
   );
 };

@@ -5,7 +5,7 @@ import styles from "./SearchSuggestionsList.styles";
 
 type SearchSuggestionsListProps = {
   suggestions: string[];
-  getSuggestionItemPressHandler: ({
+  getPressHandlerForSuggestion: ({
     suggestion,
   }: {
     suggestion: string;
@@ -16,13 +16,13 @@ const INITAL_NUMBER_ITEMS_TO_RENDER = 12;
 
 const SearchSuggestionsList = ({
   suggestions,
-  getSuggestionItemPressHandler,
+  getPressHandlerForSuggestion,
 }: SearchSuggestionsListProps) => {
   const renderSuggestionItem = ({ item }: { item: string }) => (
     <TouchableOpacity
       style={styles.suggestionContainer}
       testID="search-suggestion-item"
-      onPress={getSuggestionItemPressHandler({ suggestion: item })}
+      onPress={getPressHandlerForSuggestion({ suggestion: item })}
     >
       <FontAwesome5 name="search" size={16} style={styles.suggestionIcon} />
       <Text style={styles.suggestionText}>{item}</Text>

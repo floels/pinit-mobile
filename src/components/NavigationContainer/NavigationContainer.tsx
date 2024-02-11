@@ -1,8 +1,9 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import { useContext, useEffect } from "react";
 
 import { AuthenticationContext } from "@/src/contexts/authenticationContext";
+import { Colors } from "@/src/global.styles";
 import { ACCESS_TOKEN_STORAGE_KEY } from "@/src/lib/constants";
 import AuthenticatedNavigator from "@/src/navigators/AuthenticatedNavigator";
 import UnauthenticatedNavigator from "@/src/navigators/UnauthenticatedNavigator";
@@ -38,8 +39,17 @@ const NavigatorContainer = () => {
     return null;
   }
 
+  // See https://reactnavigation.org/docs/themes/#basic-usage
+  const theme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: Colors.backgroundBase,
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={theme}>
       {isAuthenticated ? (
         <AuthenticatedNavigator />
       ) : (
