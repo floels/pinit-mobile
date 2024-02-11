@@ -18,7 +18,8 @@
   },
   "SearchScreen": {
     "PINS_SEARCH_INPUT_PLACEHOLDER": "Search PinIt",
-    "CANCEL_SEARCH_INPUT": "Cancel"
+    "CANCEL_SEARCH_INPUT": "Cancel",
+    "NO_RESULTS": "No pin matches your search. Try another search term!"
   },
   "ProfileScreen": {
     "LOG_OUT": "Log out"

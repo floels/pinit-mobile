@@ -77,6 +77,7 @@ const SearchResultsBaseScreen = forwardRef(
         <PinsBoardContainer
           fetchEndpoint={searchEndpoint}
           getTapHandlerForPin={getTapHandlerForPin}
+          emptyResultsMessageKey="SearchScreen.NO_RESULTS"
         />
       </View>
     );
