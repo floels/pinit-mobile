@@ -1,25 +1,41 @@
-import { RouteProp } from "@react-navigation/native";
-import { Text, View, Image, Dimensions } from "react-native";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { Text, View, Image, Dimensions, TouchableOpacity } from "react-native";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import { HomeNavigatorParamList } from "../navigators/HomeNavigator";
+import styles, { SIDE_PADDING } from "./PinDetailsScreen.styles";
 
 type PinDetailsScreenProps = {
   route: RouteProp<HomeNavigatorParamList, "PinDetails">;
+  navigation: NavigationProp<HomeNavigatorParamList>;
 };
 
-const PinDetailsScreen = ({ route }: PinDetailsScreenProps) => {
+const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
   const { pin, pinImageAspectRatio } = route.params;
 
   const screenWidth = Dimensions.get("window").width;
-  const pinImageHeight = screenWidth / pinImageAspectRatio;
+  const imageWidth = screenWidth - 2 * SIDE_PADDING;
+  const pinImageHeight = imageWidth / pinImageAspectRatio;
 
   return (
-    <View>
-      <Image
-        source={{ uri: pin.imageURL }}
-        style={{ width: screenWidth, height: pinImageHeight }}
-      />
-      <Text>{pin.title}</Text>
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
+          <FontAwesome5
+            name="chevron-left"
+            size={20}
+            style={styles.backButtonIcon}
+          />
+        </TouchableOpacity>
+        <Image
+          source={{ uri: pin.imageURL }}
+          style={[styles.image, { width: imageWidth, height: pinImageHeight }]}
+        />
+        <View>
+          <Text>{pin.authorDisplayName}</Text>
+        </View>
+        <Text>{pin.title}</Text>
+      </View>
     </View>
   );
 };
