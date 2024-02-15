@@ -29,10 +29,17 @@ const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
         </TouchableOpacity>
         <Image
           source={{ uri: pin.imageURL }}
-          style={[styles.image, { width: imageWidth, height: pinImageHeight }]}
+          style={[
+            styles.pinImage,
+            { width: imageWidth, height: pinImageHeight },
+          ]}
         />
-        <View>
-          <Text>{pin.authorDisplayName}</Text>
+        <View style={styles.authorData}>
+          <Image
+            source={{ uri: pin.authorProfilePictureURL }}
+            style={styles.authorProfilePictureImage}
+          />
+          <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
         </View>
         <Text>{pin.title}</Text>
       </View>

@@ -14,6 +14,7 @@ export const Colors = {
 export const Fonts = {
   fontSize100: 12,
   fontSize200: 16,
+  fontSize300: 20,
   fontSize400: 28,
   fontWeightSemiBold: "600" as "600",
 };
