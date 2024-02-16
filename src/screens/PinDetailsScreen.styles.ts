@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Colors } from "../global.styles";
+import { Colors, Fonts } from "../global.styles";
 
 export const SIDE_PADDING = 6;
 
@@ -27,9 +27,23 @@ const styles = StyleSheet.create({
   backButtonIcon: {
     color: "white",
   },
-  image: {
+  pinImage: {
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
+  },
+  authorData: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  authorName: {
+    fontSize: Fonts.fontSize300,
+    fontWeight: Fonts.fontWeightSemiBold,
+  },
+  authorProfilePictureImage: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    margin: 20,
   },
 });
 
