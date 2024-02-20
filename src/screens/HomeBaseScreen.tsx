@@ -6,7 +6,7 @@ import styles from "./HomeBaseScreen.styles";
 import AccessTokenRefresher from "@/src/components/HomeScreen/AccessTokenRefresher";
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
 import { API_ENDPOINT_PIN_SUGGESTIONS } from "@/src/lib/constants";
-import { PinType } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator";
 
 type HomeScreenProps = {
@@ -18,7 +18,7 @@ const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
     pin,
     pinImageAspectRatio,
   }: {
-    pin: PinType;
+    pin: Pin;
     pinImageAspectRatio: number;
   }) => {
     return () => {

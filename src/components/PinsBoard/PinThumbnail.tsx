@@ -2,11 +2,11 @@ import { View, Image, Text } from "react-native";
 
 import styles from "./PinThumbnail.styles";
 
-import { PinType } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 import { ellipsizeText } from "@/src/lib/utils/strings";
 
 type PinThumbnailProps = {
-  pin: PinType;
+  pin: Pin;
   pinImageAspectRatio: number;
   width: number;
 };

@@ -10,18 +10,20 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles, { SIDE_PADDING } from "./PinDetailsScreen.styles";
 
-import { PinType } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 
 type PinDetailsScreenProps = {
-  pin: PinType;
+  pin: Pin;
   pinImageAspectRatio: number;
   handlePressBack: () => void;
+  handlePressAuthor: () => void;
 };
 
 const PinDetailsScreen = ({
   pin,
   pinImageAspectRatio,
   handlePressBack,
+  handlePressAuthor,
 }: PinDetailsScreenProps) => {
   const screenWidth = Dimensions.get("window").width;
   const imageWidth = screenWidth - 2 * SIDE_PADDING;
@@ -45,13 +47,16 @@ const PinDetailsScreen = ({
               { width: imageWidth, height: pinImageHeight },
             ]}
           />
-          <View style={styles.authorData}>
+          <TouchableOpacity
+            onPress={handlePressAuthor}
+            style={styles.authorData}
+          >
             <Image
               source={{ uri: pin.authorProfilePictureURL }}
               style={styles.authorProfilePictureImage}
             />
             <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
-          </View>
+          </TouchableOpacity>
           <Text style={styles.pinTitle}>{pin.title}</Text>
           <Text style={styles.pinDescription}>{pin.description}</Text>
         </View>

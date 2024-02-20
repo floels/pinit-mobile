@@ -1,12 +1,17 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { PinType } from "@/src/lib/types";
+import { AccountPublicDetails, Pin } from "@/src/lib/types";
 import HomeBaseScreen from "@/src/screens/HomeBaseScreen";
 import PinDetailsScreenContainer from "@/src/screens/PinDetailsScreenContainer";
+import { UseQueryResult } from "@tanstack/react-query";
+import AccountDetailsScreen from "@/src/screens/AccountDetailsScreen";
 
 export type HomeNavigatorParamList = {
   HomeBase: undefined;
-  PinDetails: { pin: PinType; pinImageAspectRatio: number };
+  PinDetails: { pin: Pin; pinImageAspectRatio: number };
+  AuthorAccountDetails: {
+    accountDetailsQuery: UseQueryResult<AccountPublicDetails, Error>;
+  };
 };
 
 const HomeNavigator = () => {
@@ -22,6 +27,10 @@ const HomeNavigator = () => {
       <StackNavigator.Screen
         name="PinDetails"
         component={PinDetailsScreenContainer}
+      />
+      <StackNavigator.Screen
+        name="AuthorAccountDetails"
+        component={AccountDetailsScreen}
       />
     </StackNavigator.Navigator>
   );

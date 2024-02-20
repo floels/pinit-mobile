@@ -3,16 +3,16 @@ import { Dimensions, TouchableOpacity, View } from "react-native";
 import PinThumbnail from "./PinThumbnail";
 import styles from "./PinThumbnailsGrid.styles";
 
-import { PinType } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 
 type PinsThumbnailsGridProps = {
-  pins: PinType[];
+  pins: Pin[];
   pinImageAspectRatios: (number | null)[];
   getTapHandlerForPin: ({
     pin,
     pinImageAspectRatio,
   }: {
-    pin: PinType;
+    pin: Pin;
     pinImageAspectRatio: number;
   }) => () => void;
 };

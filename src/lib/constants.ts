@@ -5,6 +5,7 @@ export const API_ENDPOINT_REFRESH_TOKEN = "token/refresh";
 export const API_ENDPOINT_PIN_SUGGESTIONS = "pin-suggestions";
 export const API_ENDPOINT_SEARCH_SUGGESTIONS = "search-suggestions";
 export const API_ENDPOINT_SEARCH = "search";
+export const API_ENDPOINT_ACCOUNT_DETAILS = "accounts";
 
 // API error codes
 export const ERROR_CODE_INVALID_EMAIL = "invalid_email";

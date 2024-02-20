@@ -13,10 +13,10 @@ import PinThumbnailsGrid from "./PinThumbnailsGrid";
 import styles from "./PinsBoard.styles";
 import Spinner from "../Spinner/Spinner";
 
-import { PinType } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 
 type PinsBoardProps = {
-  pins: PinType[];
+  pins: Pin[];
   pinImageAspectRatios: (number | null)[];
   isFetchingMorePins: boolean;
   fetchMorePinsError: string;
@@ -29,7 +29,7 @@ type PinsBoardProps = {
     pin,
     pinImageAspectRatio,
   }: {
-    pin: PinType;
+    pin: Pin;
     pinImageAspectRatio: number;
   }) => () => void;
 };
