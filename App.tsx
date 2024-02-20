@@ -1,10 +1,10 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
+
+import "./src/lib/i18n";
 import { AuthenticationContextProvider } from "./src/contexts/authenticationContext";
 
 import NavigationContainer from "@/src/components/NavigationContainer/NavigationContainer";
-
-import "./src/lib/i18n";
-import { useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());

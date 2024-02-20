@@ -8,12 +8,12 @@ import {
 import * as SecureStore from "expo-secure-store";
 
 import ProfileScreen from "./ProfileScreen";
-import { AuthenticationContext } from "../contexts/authenticationContext";
+import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
-} from "../lib/constants";
+} from "@/src/lib/constants";
 
 jest.mock("@/src/components/LoadingOverlay/LoadingOverlay", () => {
   const View = jest.requireActual(

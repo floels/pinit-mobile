@@ -1,8 +1,8 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 
 import PinDetailsScreen from "./PinDetailsScreen";
-import { HomeNavigatorParamList } from "../navigators/HomeNavigator";
-import { useAccountDetailsQuery } from "../hooks/useAccountDetails";
+import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
+import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator";
 
 type PinDetailsScreenContainerProps = {
   route: RouteProp<HomeNavigatorParamList, "PinDetails">;
@@ -17,9 +17,18 @@ const PinDetailsScreenContainer = ({
 
   // Pre-fetch pin author information, so the account details
   // screen renders immediately if the user taps the author's name:
-  const accountDetailsQuery = useAccountDetailsQuery({
+  const accountDetailsQueryFull = useAccountDetailsQuery({
     username: pin.authorUsername,
   });
+
+  // We select only the relevant attribute of the query,
+  // because some attribute of a 'UseQueryResult' are not
+  // serializable, which triggers a warning from React Navigation:
+  const accountDetailsQuery = {
+    data: accountDetailsQueryFull.data,
+    isLoading: accountDetailsQueryFull.isLoading,
+    isError: accountDetailsQueryFull.isError,
+  };
 
   const handlePressAuthor = () => {
     navigation.navigate("AuthorAccountDetails", { accountDetailsQuery });

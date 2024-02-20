@@ -5,7 +5,7 @@ import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
-} from "../constants";
+} from "@/src/lib/constants";
 
 export const persistTokensData = async ({
   accessToken,

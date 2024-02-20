@@ -1,22 +1,16 @@
-import { useContext } from "react";
-import { AuthenticationContext } from "../contexts/authenticationContext";
-import { API_BASE_URL, API_ENDPOINT_ACCOUNT_DETAILS } from "../lib/constants";
-import { Response401Error, ResponseKOError } from "../lib/customErrors";
-import { getAccountWithCamelCaseKeys } from "../lib/utils/serializers";
 import { useQuery } from "@tanstack/react-query";
+
+import {
+  API_BASE_URL,
+  API_ENDPOINT_ACCOUNT_DETAILS,
+} from "@/src/lib/constants";
+import { ResponseKOError } from "@/src/lib/customErrors";
+import { getAccountWithCamelCaseKeys } from "@/src/lib/utils/serializers";
 
 const fetchAccountDetails = async ({ username }: { username: string }) => {
   const response = await fetch(
     `${API_BASE_URL}/${API_ENDPOINT_ACCOUNT_DETAILS}/${username}/`,
   );
-
-  if (response.status === 401) {
-    const { dispatch } = useContext(AuthenticationContext);
-
-    dispatch({ type: "GOT_401_RESPONSE" });
-
-    throw new Response401Error();
-  }
 
   if (!response.ok) {
     throw new ResponseKOError();
