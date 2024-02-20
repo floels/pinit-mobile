@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   ScrollView,
   View,
@@ -13,7 +14,6 @@ import styles from "./PinsBoard.styles";
 import Spinner from "../Spinner/Spinner";
 
 import { PinType } from "@/src/lib/types";
-import { useTranslation } from "react-i18next";
 
 type PinsBoardProps = {
   pins: PinType[];

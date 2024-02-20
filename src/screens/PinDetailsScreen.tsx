@@ -1,4 +1,3 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
 import {
   Text,
   View,
@@ -9,24 +8,28 @@ import {
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-import { HomeNavigatorParamList } from "../navigators/HomeNavigator";
 import styles, { SIDE_PADDING } from "./PinDetailsScreen.styles";
 
+import { PinType } from "@/src/lib/types";
+
 type PinDetailsScreenProps = {
-  route: RouteProp<HomeNavigatorParamList, "PinDetails">;
-  navigation: NavigationProp<HomeNavigatorParamList>;
+  pin: PinType;
+  pinImageAspectRatio: number;
+  handlePressBack: () => void;
 };
 
-const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
-  const { pin, pinImageAspectRatio } = route.params;
-
+const PinDetailsScreen = ({
+  pin,
+  pinImageAspectRatio,
+  handlePressBack,
+}: PinDetailsScreenProps) => {
   const screenWidth = Dimensions.get("window").width;
   const imageWidth = screenWidth - 2 * SIDE_PADDING;
   const pinImageHeight = imageWidth / pinImageAspectRatio;
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
+      <TouchableOpacity style={styles.backButton} onPress={handlePressBack}>
         <FontAwesome5
           name="chevron-left"
           size={20}
