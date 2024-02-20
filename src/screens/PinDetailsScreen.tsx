@@ -1,5 +1,12 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
-import { Text, View, Image, Dimensions, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import { HomeNavigatorParamList } from "../navigators/HomeNavigator";
@@ -19,30 +26,33 @@ const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
-        <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
-          <FontAwesome5
-            name="chevron-left"
-            size={20}
-            style={styles.backButtonIcon}
-          />
-        </TouchableOpacity>
-        <Image
-          source={{ uri: pin.imageURL }}
-          style={[
-            styles.pinImage,
-            { width: imageWidth, height: pinImageHeight },
-          ]}
+      <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
+        <FontAwesome5
+          name="chevron-left"
+          size={20}
+          style={styles.backButtonIcon}
         />
-        <View style={styles.authorData}>
+      </TouchableOpacity>
+      <ScrollView style={styles.backgroundAndContent}>
+        <View style={styles.content}>
           <Image
-            source={{ uri: pin.authorProfilePictureURL }}
-            style={styles.authorProfilePictureImage}
+            source={{ uri: pin.imageURL }}
+            style={[
+              styles.pinImage,
+              { width: imageWidth, height: pinImageHeight },
+            ]}
           />
-          <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
+          <View style={styles.authorData}>
+            <Image
+              source={{ uri: pin.authorProfilePictureURL }}
+              style={styles.authorProfilePictureImage}
+            />
+            <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
+          </View>
+          <Text style={styles.pinTitle}>{pin.title}</Text>
+          <Text style={styles.pinDescription}>{pin.description}</Text>
         </View>
-        <Text>{pin.title}</Text>
-      </View>
+      </ScrollView>
     </View>
   );
 };
