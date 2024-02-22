@@ -5,7 +5,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import styles from "./SearchResultsBaseScreen.styles";
 import PinsBoardContainer from "../components/PinsBoard/PinsBoardContainer";
 import PinsSearchInputContainer from "../components/PinsSearchInput/PinsSearchInputContainer";
-import { PinType } from "../lib/types";
+import { Pin } from "../lib/types";
 
 type SearchResultsBaseScreenProps = {
   showBackButton: boolean;
@@ -27,7 +27,7 @@ type SearchResultsBaseScreenProps = {
     pin,
     pinImageAspectRatio,
   }: {
-    pin: PinType;
+    pin: Pin;
     pinImageAspectRatio: number;
   }) => () => void;
 };

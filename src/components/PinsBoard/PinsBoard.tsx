@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   ScrollView,
   View,
@@ -10,13 +11,12 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import PinThumbnailsGrid from "./PinThumbnailsGrid";
 import styles from "./PinsBoard.styles";
-import Spinner from "../Spinner/Spinner";
+import Spinner from "@/src/components/Spinner/Spinner";
 
-import { PinType } from "@/src/lib/types";
-import { useTranslation } from "react-i18next";
+import { Pin } from "@/src/lib/types";
 
 type PinsBoardProps = {
-  pins: PinType[];
+  pins: Pin[];
   pinImageAspectRatios: (number | null)[];
   isFetchingMorePins: boolean;
   fetchMorePinsError: string;
@@ -29,7 +29,7 @@ type PinsBoardProps = {
     pin,
     pinImageAspectRatio,
   }: {
-    pin: PinType;
+    pin: Pin;
     pinImageAspectRatio: number;
   }) => () => void;
 };

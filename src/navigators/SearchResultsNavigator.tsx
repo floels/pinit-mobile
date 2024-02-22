@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import { SearchNavigatorParamList } from "./SearchNavigator";
 
-import { PinType } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 import PinDetailsScreen from "@/src/screens/PinDetailsScreen";
 import SearchResultsBaseScreenContainer from "@/src/screens/SearchResultsBaseScreenContainer";
 
@@ -14,7 +14,7 @@ type SearchResultsNavigatorProps = {
 
 export type SearchResultsNavigatorParamList = {
   SearchResultsBase: undefined;
-  PinDetails: { pin: PinType; pinImageAspectRatio: number };
+  PinDetails: { pin: Pin; pinImageAspectRatio: number };
 };
 
 const SearchResultsNavigator = ({

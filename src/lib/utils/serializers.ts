@@ -13,3 +13,16 @@ export const getPinWithCamelCaseKeys = (pin: any) => {
 export const getPinsWithCamelCaseKeys = (pins: any[]) => {
   return pins.map(getPinWithCamelCaseKeys);
 };
+
+export const getAccountWithCamelCaseKeys = (account: any) => {
+  return {
+    type: account.type,
+    username: account.username,
+    displayName: account.display_name,
+    initial: account.initial,
+    profilePictureURL: account.profile_picture_url,
+    backgroundPictureURL: account.background_picture_url,
+    ownerEmail: account.owner_email,
+    description: account.description,
+  };
+};

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Colors, Fonts } from "../../global.styles";
+import { Colors, Fonts } from "@/src/global.styles";
 
 const styles = StyleSheet.create({
   searchInputAndCancelButton: {

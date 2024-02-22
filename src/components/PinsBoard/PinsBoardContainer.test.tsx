@@ -17,7 +17,7 @@ import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
-import { PinType } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 import enTranslations from "@/translations/en.json";
 
 const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
@@ -34,7 +34,7 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
     "react-native/Libraries/Components/View/View",
   );
 
-  return ({ pin }: { pin: PinType }) => (
+  return ({ pin }: { pin: Pin }) => (
     <View
       style={{ height: MOCKED_PIN_THUMBNAIL_HEIGHT }}
       testID={`mocked-pin-thumbnail-${pin.id}`}

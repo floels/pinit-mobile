@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+
 import { Colors, Fonts } from "../global.styles";
 
 export const SIDE_PADDING = 6;
