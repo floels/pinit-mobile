@@ -8,11 +8,11 @@ import {
 } from "@testing-library/react-native";
 
 import SearchBaseScreen from "./SearchBaseScreen";
-import { AUTOCOMPLETE_DEBOUNCE_TIME_MS } from "../components/PinsSearchInput/PinsSearchInputContainer";
+import { AUTOCOMPLETE_DEBOUNCE_TIME_MS } from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
 import {
   API_BASE_URL,
   API_ENDPOINT_SEARCH_SUGGESTIONS,
-} from "../lib/constants";
+} from "@/src/lib/constants";
 
 const mockNavigation = {
   navigate: jest.fn(),

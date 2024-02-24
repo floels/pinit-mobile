@@ -1,7 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 
-import { ACCESS_TOKEN_STORAGE_KEY, API_BASE_URL } from "../constants";
-import { MissingAccessTokenError } from "../customErrors";
+import { ACCESS_TOKEN_STORAGE_KEY, API_BASE_URL } from "@/src/lib/constants";
+import { MissingAccessTokenError } from "@/src/lib/customErrors";
 
 export const fetchWithAuthentication = async ({
   endpoint,

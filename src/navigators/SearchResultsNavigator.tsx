@@ -4,8 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SearchNavigatorParamList } from "./SearchNavigator";
 
 import { Pin } from "@/src/lib/types";
-import PinDetailsScreen from "@/src/screens/PinDetailsScreen";
 import SearchResultsBaseScreenContainer from "@/src/screens/SearchResultsBaseScreenContainer";
+import PinDetailsScreenContainer from "@/src/screens/PinDetailsScreenContainer";
 
 type SearchResultsNavigatorProps = {
   route: RouteProp<SearchNavigatorParamList, "SearchResults">;
@@ -23,8 +23,6 @@ const SearchResultsNavigator = ({
 }: SearchResultsNavigatorProps) => {
   const { searchTerm } = route.params;
 
-  const handlePressBackInSearchResultsBaseScreen = navigation.goBack;
-
   const StackNavigator =
     createStackNavigator<SearchResultsNavigatorParamList>();
 
@@ -39,11 +37,14 @@ const SearchResultsNavigator = ({
           <SearchResultsBaseScreenContainer
             navigation={navigation}
             initialSearchTerm={searchTerm}
-            handlePressBack={handlePressBackInSearchResultsBaseScreen}
+            handlePressBack={navigation.goBack}
           />
         )}
       </StackNavigator.Screen>
-      <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
+      <StackNavigator.Screen
+        name="PinDetails"
+        component={PinDetailsScreenContainer}
+      />
     </StackNavigator.Navigator>
   );
 };
