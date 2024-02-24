@@ -1,4 +1,7 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack";
 import AuthenticatedMainNavigator from "../AuthenticatedMainNavigator/AuthenticatedMainNavigator";
 import CreatePinScreen from "./CreatePinScreen";
 
@@ -15,6 +18,7 @@ const AuthenticatedNavigator = () => {
     <StackNavigator.Navigator
       screenOptions={{
         headerShown: false,
+        ...TransitionPresets.ModalSlideFromBottomIOS,
       }}
     >
       <StackNavigator.Screen
