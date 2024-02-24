@@ -1,15 +1,17 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-import styles from "./AccountDetailsScreen.styles";
-import { Colors } from "@/src/global.styles";
-import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator";
+import styles from "./AccountDetails.styles";
 
-type AccountDetailsScreenProps = {
-  route: RouteProp<HomeNavigatorParamList, "AuthorAccountDetails">;
-  navigation: NavigationProp<HomeNavigatorParamList>;
+import { Colors } from "@/src/global.styles";
+import { AccountPublicDetails } from "@/src/lib/types";
+
+type AccountDetailsProps = {
+  accountDetails: AccountPublicDetails | undefined;
+  isError: boolean;
+  isLoading: boolean;
+  onPressBack: () => void;
 };
 
 const Logo = (props: any) => (
@@ -21,14 +23,12 @@ const Logo = (props: any) => (
   </Svg>
 );
 
-const AccountDetailsScreen = ({
-  route,
-  navigation,
-}: AccountDetailsScreenProps) => {
-  const { accountDetailsQuery } = route.params;
-
-  const { data: accountDetails, isError, isLoading } = accountDetailsQuery;
-
+const AccountDetails = ({
+  accountDetails,
+  isLoading,
+  isError,
+  onPressBack,
+}: AccountDetailsProps) => {
   if (isLoading) {
     return null; // TODO: display spinner
   }
@@ -78,7 +78,7 @@ const AccountDetailsScreen = ({
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={navigation.goBack} style={styles.backButton}>
+      <TouchableOpacity onPress={onPressBack} style={styles.backButton}>
         <FontAwesome5
           name="chevron-left"
           size={20}
@@ -95,4 +95,4 @@ const AccountDetailsScreen = ({
   );
 };
 
-export default AccountDetailsScreen;
+export default AccountDetails;

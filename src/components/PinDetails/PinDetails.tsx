@@ -8,23 +8,23 @@ import {
 } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
-import styles, { SIDE_PADDING } from "./PinDetailsScreen.styles";
+import styles, { SIDE_PADDING } from "./PinDetails.styles";
 
 import { Pin } from "@/src/lib/types";
 
-type PinDetailsScreenProps = {
+type PinDetailsProps = {
   pin: Pin;
   pinImageAspectRatio: number;
   handlePressBack: () => void;
   handlePressAuthor: () => void;
 };
 
-const PinDetailsScreen = ({
+const PinDetails = ({
   pin,
   pinImageAspectRatio,
   handlePressBack,
   handlePressAuthor,
-}: PinDetailsScreenProps) => {
+}: PinDetailsProps) => {
   const screenWidth = Dimensions.get("window").width;
   const imageWidth = screenWidth - 2 * SIDE_PADDING;
   const pinImageHeight = imageWidth / pinImageAspectRatio;
@@ -65,4 +65,4 @@ const PinDetailsScreen = ({
   );
 };
 
-export default PinDetailsScreen;
+export default PinDetails;

@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import LandingScreen from "@/src/screens/LandingScreen";
-import LoginScreenContainer from "@/src/screens/LoginScreenContainer";
+import LandingScreen from "@/src/navigators/UnauthenticatedNavigator/LandingScreen";
+import LoginScreenContainer from "@/src/navigators/UnauthenticatedNavigator/LoginScreenContainer";
 
 export type UnauthenticatedNavigatorParamList = {
   LoginScreen: undefined;

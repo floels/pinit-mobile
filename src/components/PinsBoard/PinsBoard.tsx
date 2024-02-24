@@ -11,8 +11,8 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import PinThumbnailsGrid from "./PinThumbnailsGrid";
 import styles from "./PinsBoard.styles";
-import Spinner from "@/src/components/Spinner/Spinner";
 
+import Spinner from "@/src/components/Spinner/Spinner";
 import { Pin } from "@/src/lib/types";
 
 type PinsBoardProps = {

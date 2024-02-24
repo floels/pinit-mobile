@@ -1,15 +1,16 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 
-import PinDetailsScreen from "./PinDetailsScreen";
+import { SearchResultsNavigatorParamList } from "./SearchResultsNavigator";
+
+import PinDetails from "@/src/components/PinDetails/PinDetails";
 import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
-import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator";
 
 type PinDetailsScreenContainerProps = {
-  route: RouteProp<HomeNavigatorParamList, "PinDetails">;
-  navigation: NavigationProp<HomeNavigatorParamList>;
+  route: RouteProp<SearchResultsNavigatorParamList, "PinDetails">;
+  navigation: NavigationProp<SearchResultsNavigatorParamList>;
 };
 
-const PinDetailsScreenContainer = ({
+const PinDetailsScreen = ({
   route,
   navigation,
 }: PinDetailsScreenContainerProps) => {
@@ -35,7 +36,7 @@ const PinDetailsScreenContainer = ({
   };
 
   return (
-    <PinDetailsScreen
+    <PinDetails
       pin={pin}
       pinImageAspectRatio={pinImageAspectRatio}
       handlePressBack={navigation.goBack}
@@ -44,4 +45,4 @@ const PinDetailsScreenContainer = ({
   );
 };
 
-export default PinDetailsScreenContainer;
+export default PinDetailsScreen;

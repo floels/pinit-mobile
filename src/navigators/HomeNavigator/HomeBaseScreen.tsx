@@ -7,7 +7,7 @@ import AccessTokenRefresher from "@/src/components/HomeScreen/AccessTokenRefresh
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
 import { API_ENDPOINT_PIN_SUGGESTIONS } from "@/src/lib/constants";
 import { Pin } from "@/src/lib/types";
-import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator";
+import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
 
 type HomeScreenProps = {
   navigation: NavigationProp<HomeNavigatorParamList>;

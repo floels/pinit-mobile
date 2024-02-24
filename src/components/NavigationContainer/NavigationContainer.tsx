@@ -5,8 +5,8 @@ import { useContext, useEffect } from "react";
 import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import { Colors } from "@/src/global.styles";
 import { ACCESS_TOKEN_STORAGE_KEY } from "@/src/lib/constants";
-import AuthenticatedNavigator from "@/src/navigators/AuthenticatedNavigator";
-import UnauthenticatedNavigator from "@/src/navigators/UnauthenticatedNavigator";
+import AuthenticatedNavigator from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
+import UnauthenticatedNavigator from "@/src/navigators/UnauthenticatedNavigator/UnauthenticatedNavigator";
 
 const NavigatorContainer = () => {
   const { state, dispatch } = useContext(AuthenticationContext);
