@@ -3,9 +3,9 @@ import { View, TouchableOpacity, TextInput } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./SearchResultsBaseScreen.styles";
-import PinsBoardContainer from "../components/PinsBoard/PinsBoardContainer";
-import PinsSearchInputContainer from "../components/PinsSearchInput/PinsSearchInputContainer";
-import { Pin } from "../lib/types";
+import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
+import PinsSearchInputContainer from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
+import { Pin } from "@/src/lib/types";
 
 type SearchResultsBaseScreenProps = {
   showBackButton: boolean;

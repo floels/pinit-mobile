@@ -4,8 +4,8 @@ import Svg, { Path } from "react-native-svg";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./AccountDetailsScreen.styles";
-import { Colors } from "../global.styles";
-import { HomeNavigatorParamList } from "../navigators/HomeNavigator";
+import { Colors } from "@/src/global.styles";
+import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator";
 
 type AccountDetailsScreenProps = {
   route: RouteProp<HomeNavigatorParamList, "AuthorAccountDetails">;

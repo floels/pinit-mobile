@@ -5,13 +5,13 @@ import { useTranslation } from "react-i18next";
 import { View, TouchableOpacity, Text } from "react-native";
 
 import styles from "./ProfileScreen.styles";
-import LoadingOverlay from "../components/LoadingOverlay/LoadingOverlay";
-import { AuthenticationContext } from "../contexts/authenticationContext";
+import LoadingOverlay from "@/src/components/LoadingOverlay/LoadingOverlay";
+import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
-} from "../lib/constants";
+} from "@/src/lib/constants";
 
 const clearTokensData = async () => {
   await Promise.all([

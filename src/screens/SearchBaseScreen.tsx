@@ -3,8 +3,8 @@ import { useRef, useState } from "react";
 import { TextInput, View } from "react-native";
 
 import styles from "./SearchBaseScreen.styles";
-import PinsSearchInputContainer from "../components/PinsSearchInput/PinsSearchInputContainer";
-import { SearchNavigatorParamList } from "../navigators/SearchNavigator";
+import PinsSearchInputContainer from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
+import { SearchNavigatorParamList } from "@/src/navigators/SearchNavigator";
 
 type SearchBaseScreenProps = {
   navigation: NavigationProp<SearchNavigatorParamList>;

@@ -3,7 +3,7 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import * as SecureStore from "expo-secure-store";
 
 import LoginScreenContainer from "./LoginScreenContainer";
-import { AuthenticationContext } from "../contexts/authenticationContext";
+import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
@@ -11,7 +11,7 @@ import {
   API_ENDPOINT_OBTAIN_TOKEN,
   ERROR_CODE_INVALID_EMAIL,
   REFRESH_TOKEN_STORAGE_KEY,
-} from "../lib/constants";
+} from "@/src/lib/constants";
 
 import enTranslations from "@/translations/en.json";
 
