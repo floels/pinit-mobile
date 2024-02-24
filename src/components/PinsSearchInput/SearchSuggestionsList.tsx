@@ -1,5 +1,5 @@
 import { FlatList, View, Text, TouchableOpacity } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./SearchSuggestionsList.styles";
 
@@ -24,7 +24,7 @@ const SearchSuggestionsList = ({
       testID="search-suggestion-item"
       onPress={getPressHandlerForSuggestion({ suggestion: item })}
     >
-      <FontAwesome5 name="search" size={16} style={styles.suggestionIcon} />
+      <FontAwesome5Icon name="search" size={16} style={styles.suggestionIcon} />
       <Text style={styles.suggestionText}>{item}</Text>
     </TouchableOpacity>
   );

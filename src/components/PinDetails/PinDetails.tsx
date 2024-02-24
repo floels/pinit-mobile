@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles, { SIDE_PADDING } from "./PinDetails.styles";
 
@@ -32,7 +32,7 @@ const PinDetails = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={handlePressBack}>
-        <FontAwesome5
+        <FontAwesome5Icon
           name="chevron-left"
           size={20}
           style={styles.backButtonIcon}

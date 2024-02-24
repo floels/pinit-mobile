@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import styles from "./HomeBaseScreen.styles";
 
-import AccessTokenRefresher from "@/src/components/HomeScreen/AccessTokenRefresher";
+import AccessTokenRefresher from "@/src/components/AccessTokenRefresher/AccessTokenRefresher";
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
 import { API_ENDPOINT_PIN_SUGGESTIONS } from "@/src/lib/constants";
 import { Pin } from "@/src/lib/types";

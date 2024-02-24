@@ -1,7 +1,7 @@
 import { Ref, forwardRef } from "react";
 import { useTranslation } from "react-i18next";
 import { View, TouchableOpacity, Text, TextInput } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./PinsSearchInput.styles";
 import SearchSuggestionsList from "./SearchSuggestionsList";
@@ -50,7 +50,7 @@ const PinsSearchInput = forwardRef(
           <View style={styles.searchInputAndIcons}>
             {showSearchIcon && (
               <View testID="pins-search-input-search-icon">
-                <FontAwesome5
+                <FontAwesome5Icon
                   name="search"
                   size={16}
                   style={styles.searchIcon}
@@ -75,7 +75,7 @@ const PinsSearchInput = forwardRef(
                 style={styles.clearIcon}
                 testID="pins-search-input-clear-icon"
               >
-                <FontAwesome5 name="times-circle" size={16} solid />
+                <FontAwesome5Icon name="times-circle" size={16} solid />
               </TouchableOpacity>
             )}
           </View>

@@ -7,7 +7,7 @@ import {
   NativeScrollEvent,
   Animated,
 } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import PinThumbnailsGrid from "./PinThumbnailsGrid";
 import styles from "./PinsBoard.styles";
@@ -54,7 +54,7 @@ const PinsBoard = ({
 
   const displayRefreshError = (
     <View style={styles.error}>
-      <FontAwesome5
+      <FontAwesome5Icon
         name="exclamation-circle"
         style={styles.errorIcon}
         size={20}
@@ -65,7 +65,7 @@ const PinsBoard = ({
 
   const fetchMorePinsSpinner = (
     <Spinner containerStyle={styles.fetchMorePinsSpinner}>
-      <FontAwesome5
+      <FontAwesome5Icon
         name="spinner"
         size={40}
         style={styles.fetchMorePinsSpinnerIcon}
@@ -76,7 +76,7 @@ const PinsBoard = ({
 
   const displayFetchMorePinsError = (
     <View style={styles.error}>
-      <FontAwesome5
+      <FontAwesome5Icon
         name="exclamation-circle"
         style={styles.errorIcon}
         size={20}
@@ -98,7 +98,7 @@ const PinsBoard = ({
   if (shouldDisplayEmptyResultsMessage) {
     displayEmptyResultsMessageIfNeeded = (
       <View style={styles.error}>
-        <FontAwesome5
+        <FontAwesome5Icon
           name="exclamation-circle"
           style={styles.errorIcon}
           size={20}
@@ -156,7 +156,7 @@ const PinsBoard = ({
         },
       ]}
     >
-      <FontAwesome5
+      <FontAwesome5Icon
         name="spinner"
         size={SIZE_REFRESH_SPINNER}
         style={styles.refreshSpinnerPreviewIcon}
@@ -166,7 +166,7 @@ const PinsBoard = ({
 
   const refreshSpinner = (
     <Spinner>
-      <FontAwesome5
+      <FontAwesome5Icon
         name="spinner"
         size={SIZE_REFRESH_SPINNER}
         style={styles.refreshSpinnerIcon}
