@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Text, View, TouchableOpacity, TextInput } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./LoginScreen.styles";
 
@@ -43,7 +43,7 @@ const LoginScreen = ({
           style={styles.closeIcon}
           testID="login-screen-close-icon"
         >
-          <FontAwesome5 name="times" size={24} />
+          <FontAwesome5Icon name="times" size={24} />
         </TouchableOpacity>
         <Text style={styles.header}>{t("LandingScreen.LOG_IN")}</Text>
       </View>
@@ -74,7 +74,7 @@ const LoginScreen = ({
               onPress={onTogglePasswordVisibility}
               testID="login-screen-toggle-password-visibility-icon"
             >
-              <FontAwesome5
+              <FontAwesome5Icon
                 name="eye"
                 size={24}
                 style={styles.togglePasswordVisibilityIcon}
@@ -84,7 +84,7 @@ const LoginScreen = ({
         </View>
         {submitError && (
           <View style={styles.submitError}>
-            <FontAwesome5
+            <FontAwesome5Icon
               name="exclamation-circle"
               style={styles.submitErrorIcon}
               size={20}

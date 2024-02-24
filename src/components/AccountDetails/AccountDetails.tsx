@@ -1,6 +1,6 @@
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./AccountDetails.styles";
 
@@ -79,7 +79,7 @@ const AccountDetails = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onPressBack} style={styles.backButton}>
-        <FontAwesome5
+        <FontAwesome5Icon
           name="chevron-left"
           size={20}
           style={backButtonIconStyle}

@@ -1,6 +1,6 @@
 import { Ref, forwardRef } from "react";
 import { View, TouchableOpacity, TextInput } from "react-native";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./SearchResultsBaseScreen.styles";
 
@@ -58,7 +58,7 @@ const SearchResultsBaseScreen = forwardRef(
               onPress={handlePressBack}
               style={styles.backButton}
             >
-              <FontAwesome5 name="chevron-left" size={20} />
+              <FontAwesome5Icon name="chevron-left" size={20} />
             </TouchableOpacity>
           )}
           <View style={styles.searchInputContainer}>
