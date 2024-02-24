@@ -3,9 +3,10 @@ import { useRef, useState } from "react";
 import { TextInput } from "react-native";
 
 import SearchResultsBaseScreen from "./SearchResultsBaseScreen";
+
 import { API_ENDPOINT_SEARCH } from "@/src/lib/constants";
 import { Pin } from "@/src/lib/types";
-import { SearchResultsNavigatorParamList } from "@/src/navigators/SearchResultsNavigator";
+import { SearchResultsNavigatorParamList } from "@/src/navigators/SearchResultsNavigator/SearchResultsNavigator";
 
 type SearchResultsBaseScreenContainerProps = {
   navigation: NavigationProp<SearchResultsNavigatorParamList>;

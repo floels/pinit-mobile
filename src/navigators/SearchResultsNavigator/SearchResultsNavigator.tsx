@@ -1,11 +1,12 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { SearchNavigatorParamList } from "./SearchNavigator";
+import AccountDetailsScreen from "./AccountDetailsScreen";
+import PinDetailsScreen from "./PinDetailsScreen";
+import { SearchNavigatorParamList } from "../SearchNavigator/SearchNavigator";
 
-import { Pin } from "@/src/lib/types";
-import SearchResultsBaseScreenContainer from "@/src/screens/SearchResultsBaseScreenContainer";
-import PinDetailsScreenContainer from "@/src/screens/PinDetailsScreenContainer";
+import { AccountPublicDetails, Pin } from "@/src/lib/types";
+import SearchResultsBaseScreenContainer from "@/src/navigators/SearchResultsNavigator/SearchResultsBaseScreenContainer";
 
 type SearchResultsNavigatorProps = {
   route: RouteProp<SearchNavigatorParamList, "SearchResults">;
@@ -15,6 +16,13 @@ type SearchResultsNavigatorProps = {
 export type SearchResultsNavigatorParamList = {
   SearchResultsBase: undefined;
   PinDetails: { pin: Pin; pinImageAspectRatio: number };
+  AuthorAccountDetails: {
+    accountDetailsQuery: {
+      data: AccountPublicDetails | undefined;
+      isLoading: boolean;
+      isError: boolean;
+    };
+  };
 };
 
 const SearchResultsNavigator = ({
@@ -41,9 +49,10 @@ const SearchResultsNavigator = ({
           />
         )}
       </StackNavigator.Screen>
+      <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
       <StackNavigator.Screen
-        name="PinDetails"
-        component={PinDetailsScreenContainer}
+        name="AuthorAccountDetails"
+        component={AccountDetailsScreen}
       />
     </StackNavigator.Navigator>
   );

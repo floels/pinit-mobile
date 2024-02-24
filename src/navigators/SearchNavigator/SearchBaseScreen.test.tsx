@@ -8,6 +8,7 @@ import {
 } from "@testing-library/react-native";
 
 import SearchBaseScreen from "./SearchBaseScreen";
+
 import { AUTOCOMPLETE_DEBOUNCE_TIME_MS } from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
 import {
   API_BASE_URL,

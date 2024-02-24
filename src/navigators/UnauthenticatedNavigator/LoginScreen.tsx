@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, TextInput } from "react-native";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./LoginScreen.styles";
+
 import LoadingOverlay from "@/src/components/LoadingOverlay/LoadingOverlay";
 
 type LoginScreenProps = {

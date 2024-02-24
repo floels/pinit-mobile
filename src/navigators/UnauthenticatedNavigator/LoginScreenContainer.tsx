@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import LoginScreen from "./LoginScreen";
+
 import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   API_BASE_URL,
@@ -16,7 +17,7 @@ import {
 } from "@/src/lib/customErrors";
 import { persistTokensData } from "@/src/lib/utils/authentication";
 import { isValidEmail, isValidPassword } from "@/src/lib/utils/validation";
-import { UnauthenticatedNavigatorParamList } from "@/src/navigators/UnauthenticatedNavigator";
+import { UnauthenticatedNavigatorParamList } from "@/src/navigators/UnauthenticatedNavigator/UnauthenticatedNavigator";
 
 type LoginScreenContainerProps = {
   navigation: NavigationProp<UnauthenticatedNavigatorParamList>;

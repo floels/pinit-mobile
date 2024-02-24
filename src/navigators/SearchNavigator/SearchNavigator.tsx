@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SearchResultsNavigator from "@/src/navigators/SearchResultsNavigator";
-import SearchBaseScreen from "@/src/screens/SearchBaseScreen";
+import SearchBaseScreen from "@/src/navigators/SearchNavigator/SearchBaseScreen";
+import SearchResultsNavigator from "@/src/navigators/SearchResultsNavigator/SearchResultsNavigator";
 
 export type SearchNavigatorParamList = {
   SearchBase: undefined;

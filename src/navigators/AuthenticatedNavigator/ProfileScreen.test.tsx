@@ -8,6 +8,7 @@ import {
 import * as SecureStore from "expo-secure-store";
 
 import ProfileScreen from "./ProfileScreen";
+
 import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,

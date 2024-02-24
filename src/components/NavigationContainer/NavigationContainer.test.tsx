@@ -7,21 +7,27 @@ import { AuthenticationContextProvider } from "@/src/contexts/authenticationCont
 
 jest.mock("expo-secure-store");
 
-jest.mock("@/src/navigators/AuthenticatedNavigator", () => {
-  const View = jest.requireActual(
-    "react-native/Libraries/Components/View/View",
-  );
+jest.mock(
+  "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator",
+  () => {
+    const View = jest.requireActual(
+      "react-native/Libraries/Components/View/View",
+    );
 
-  return () => <View testID="mocked-authenticated-navigator" />;
-});
+    return () => <View testID="mocked-authenticated-navigator" />;
+  },
+);
 
-jest.mock("@/src/navigators/UnauthenticatedNavigator", () => {
-  const View = jest.requireActual(
-    "react-native/Libraries/Components/View/View",
-  );
+jest.mock(
+  "@/src/navigators/UnauthenticatedNavigator/UnauthenticatedNavigator",
+  () => {
+    const View = jest.requireActual(
+      "react-native/Libraries/Components/View/View",
+    );
 
-  return () => <View testID="mocked-unauthenticated-navigator" />;
-});
+    return () => <View testID="mocked-unauthenticated-navigator" />;
+  },
+);
 
 const renderComponent = () => {
   render(

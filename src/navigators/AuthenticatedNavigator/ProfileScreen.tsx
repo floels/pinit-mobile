@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import { View, TouchableOpacity, Text } from "react-native";
 
 import styles from "./ProfileScreen.styles";
+
 import LoadingOverlay from "@/src/components/LoadingOverlay/LoadingOverlay";
 import { AuthenticationContext } from "@/src/contexts/authenticationContext";
 import {

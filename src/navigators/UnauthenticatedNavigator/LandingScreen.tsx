@@ -6,7 +6,7 @@ import styles from "./LandingScreen.styles";
 import LandingScreenContent from "@/src/components/LandingScreen/LandingScreenContent";
 import LandingScreenGallery from "@/src/components/LandingScreen/LandingScreenGallery";
 import LandingScreenGradient from "@/src/components/LandingScreen/LandingScreenGradient";
-import { UnauthenticatedNavigatorParamList } from "@/src/navigators/UnauthenticatedNavigator";
+import { UnauthenticatedNavigatorParamList } from "@/src/navigators/UnauthenticatedNavigator/UnauthenticatedNavigator";
 
 type LandingScreenProps = {
   navigation: NavigationProp<UnauthenticatedNavigatorParamList>;
