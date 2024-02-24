@@ -1,13 +1,18 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { RouteProp } from "@react-navigation/native";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-import HomeNavigator from "../HomeNavigator/HomeNavigator";
-import SearchNavigator from "../SearchNavigator/SearchNavigator";
+import HomeNavigator from "@/src/navigators/HomeNavigator/HomeNavigator";
+import SearchNavigator from "@/src/navigators/SearchNavigator/SearchNavigator";
+import { AuthenticatedNavigatorParamList } from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
 
 import ProfileScreen from "@/src/navigators/AuthenticatedMainNavigator/ProfileScreen";
 import { useState } from "react";
 import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
+
+type AuthenticatedMainNavigatorProps = {
+  navigation: NavigationProp<AuthenticatedNavigatorParamList, "Main">;
+};
 
 type AuthenticatedMainNavigatorParamList = {
   Home: undefined;
@@ -23,7 +28,9 @@ const TAB_BAR_ICON_NAMES: Record<string, string> = {
   Profile: "user",
 };
 
-const AuthenticatedMainNavigator = () => {
+const AuthenticatedMainNavigator = ({
+  navigation,
+}: AuthenticatedMainNavigatorProps) => {
   const [isCreateSelectModalVisible, setIsCreateSelectModalVisible] =
     useState(false);
 
@@ -58,7 +65,12 @@ const AuthenticatedMainNavigator = () => {
     setIsCreateSelectModalVisible(true);
   };
 
-  const handlePressCreatePin = () => {};
+  const handlePressCreatePin = () => {
+    navigation.navigate("CreatePin");
+
+    setIsCreateSelectModalVisible(false); // otherwise the modal will
+    // still be visible on top of the "Create pin" screen
+  };
 
   const handleCloseCreateSelectModal = () => {
     setIsCreateSelectModalVisible(false);
