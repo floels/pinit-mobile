@@ -1,10 +1,10 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
+import AccountDetailsScreen from "./AccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 
 import { AccountPublicDetails, Pin } from "@/src/lib/types";
 import HomeBaseScreen from "@/src/navigators/HomeNavigator/HomeBaseScreen";
-import AccountDetailsScreen from "./AccountDetailsScreen";
 
 export type HomeNavigatorParamList = {
   HomeBase: undefined;

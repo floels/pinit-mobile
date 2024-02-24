@@ -1,8 +1,8 @@
 import { useTranslation } from "react-i18next";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./CreateSelectModal.styles";
-import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 type CreateSelectModalProps = {
   handlePressCreatePin: () => void;
@@ -19,8 +19,8 @@ const CreateSelectModal = ({
     <View style={styles.container}>
       <Modal
         animationType="slide"
-        visible={true}
-        transparent={true}
+        visible
+        transparent
         onRequestClose={handleClose}
       >
         <View style={styles.modal}>
