@@ -7,7 +7,10 @@ import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/Authe
 
 export type CreatePinNavigatorParamList = {
   SelectImage: undefined;
-  EnterPinDetails: { selectedImageURI: string };
+  EnterPinDetails: {
+    selectedImageURI: string;
+    providedImageAspectRatio: number | null;
+  };
 };
 
 type CreatePinNavigatorProps = {

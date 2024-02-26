@@ -30,6 +30,7 @@
   },
   "CreatePin": {
     "CAMERA_ROLL_ACCESS_REQUIRED": "Camera roll access is required to create a pin.",
-    "NEXT": "Next"
+    "NEXT": "Next",
+    "CREATE_A_PIN": "Create a pin"
   }
 }
