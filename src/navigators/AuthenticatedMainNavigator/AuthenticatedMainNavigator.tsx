@@ -1,14 +1,13 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { useState } from "react";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
+import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
+import ProfileScreen from "@/src/navigators/AuthenticatedMainNavigator/ProfileScreen";
+import { AuthenticatedNavigatorParamList } from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
 import HomeNavigator from "@/src/navigators/HomeNavigator/HomeNavigator";
 import SearchNavigator from "@/src/navigators/SearchNavigator/SearchNavigator";
-import { AuthenticatedNavigatorParamList } from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
-
-import ProfileScreen from "@/src/navigators/AuthenticatedMainNavigator/ProfileScreen";
-import { useState } from "react";
-import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
 
 type AuthenticatedMainNavigatorProps = {
   navigation: NavigationProp<AuthenticatedNavigatorParamList, "Main">;

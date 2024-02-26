@@ -27,5 +27,8 @@
   },
   "ProfileScreen": {
     "LOG_OUT": "Log out"
+  },
+  "CreatePinScreen": {
+    "CAMERA_ROLL_ACCESS_REQUIRED": "Camera roll access is required to create a pin."
   }
 }
