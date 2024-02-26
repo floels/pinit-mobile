@@ -2,7 +2,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
-import SelectPinImageScreen from "./SelectPinImageScreen";
+import SelectPinImageScreenContainer from "./SelectPinImageScreenContainer";
 import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/AuthenticatedNavigator";
 
 export type CreatePinNavigatorParamList = {
@@ -25,7 +25,7 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
     >
       <StackNavigator.Screen name="SelectImage">
         {({ navigation }) => (
-          <SelectPinImageScreen
+          <SelectPinImageScreenContainer
             handlePressClose={props.navigation.goBack}
             navigation={navigation}
           />

@@ -1,9 +1,14 @@
 import { render, screen, waitFor } from "@testing-library/react-native";
 import * as MediaLibrary from "expo-media-library";
 
-import CameraRollViewContainer from "./CameraRollViewContainer";
+import SelectPinImageScreenContainer from "./SelectPinImageScreenContainer";
 
 import messages from "@/translations/en.json";
+
+jest.mock("@react-navigation/native", () => ({
+  ...jest.requireActual("@react-navigation/native"),
+  useFocusEffect: jest.fn(),
+}));
 
 jest.mock("expo-media-library", () => ({
   usePermissions: jest.fn(),
@@ -13,6 +18,19 @@ jest.mock("expo-media-library", () => ({
 }));
 
 const mockedUsePermissions = MediaLibrary.usePermissions as jest.Mock;
+
+const mockNavigation = {
+  navigate: jest.fn(),
+} as any;
+
+const renderComponent = () => {
+  render(
+    <SelectPinImageScreenContainer
+      handlePressClose={() => {}}
+      navigation={mockNavigation}
+    />,
+  );
+};
 
 it("requests camera roll access if permissions hasn't yet been granted", async () => {
   const mockRequestCameraRollAccessPermission = jest
@@ -24,7 +42,7 @@ it("requests camera roll access if permissions hasn't yet been granted", async (
     mockRequestCameraRollAccessPermission,
   ]);
 
-  render(<CameraRollViewContainer />);
+  renderComponent();
 
   await waitFor(() =>
     expect(mockRequestCameraRollAccessPermission).toHaveBeenCalled(),
@@ -37,7 +55,7 @@ it("displays error message if camera roll access is refused", async () => {
     jest.fn().mockResolvedValue({ status: "denied" }),
   ]);
 
-  render(<CameraRollViewContainer />);
+  renderComponent();
 
   await waitFor(() => {
     screen.getByText(messages.CreatePin.CAMERA_ROLL_ACCESS_REQUIRED);
@@ -50,7 +68,7 @@ it("renders CameraRollView if camera roll access is granted", async () => {
     jest.fn().mockResolvedValue({ status: "granted" }),
   ]);
 
-  render(<CameraRollViewContainer />);
+  renderComponent();
 
   await waitFor(() => {
     const image1 = screen.getByTestId("camera-roll-image-0");

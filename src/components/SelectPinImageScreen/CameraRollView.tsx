@@ -1,15 +1,32 @@
 import { Asset } from "expo-media-library";
-import { Dimensions, FlatList, Image, TouchableOpacity } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles, { SPACE_BETWEEN_COLUMNS } from "./CameraRollView.styles";
 
 type CameraRollViewProps = {
   cameraRollPhotos: Asset[];
+  selectedImageIndex: number | null;
+  getPressHandlerForImage: ({
+    imageIndex,
+  }: {
+    imageIndex: number;
+  }) => () => void;
 };
 
 const NUMBER_COLUMNS = 4;
 
-const CameraRollView = ({ cameraRollPhotos }: CameraRollViewProps) => {
+const CameraRollView = ({
+  cameraRollPhotos,
+  selectedImageIndex,
+  getPressHandlerForImage,
+}: CameraRollViewProps) => {
   const screenWidth = Dimensions.get("screen").width;
 
   const imageWidth =
@@ -27,14 +44,24 @@ const CameraRollView = ({ cameraRollPhotos }: CameraRollViewProps) => {
           ? styles.image
           : [styles.image, styles.imageNotInLastColumn];
 
+        const isImageSelected = index === selectedImageIndex;
+
         return (
-          <TouchableOpacity style={imageStyle}>
+          <TouchableOpacity
+            style={imageStyle}
+            onPress={getPressHandlerForImage({ imageIndex: index })}
+          >
             <Image
               source={{ uri: item.uri }}
               width={imageWidth}
               height={imageWidth}
               testID={`camera-roll-image-${index}`}
             />
+            {isImageSelected && (
+              <View style={styles.selectedImageOverlay}>
+                <FontAwesome5Icon name="check" size={30} color="white" />
+              </View>
+            )}
           </TouchableOpacity>
         );
       }}
