@@ -2,8 +2,9 @@ import {
   createStackNavigator,
   TransitionPresets,
 } from "@react-navigation/stack";
-import AuthenticatedMainNavigator from "../AuthenticatedMainNavigator/AuthenticatedMainNavigator";
+
 import CreatePinScreen from "./CreatePinScreen";
+import AuthenticatedMainNavigator from "../AuthenticatedMainNavigator/AuthenticatedMainNavigator";
 
 export type AuthenticatedNavigatorParamList = {
   Main: undefined;
