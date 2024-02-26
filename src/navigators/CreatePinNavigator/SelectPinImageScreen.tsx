@@ -1,27 +1,55 @@
-import { NavigationProp } from "@react-navigation/native";
+import { Asset } from "expo-media-library";
 import { useTranslation } from "react-i18next";
 import { TouchableOpacity, View, Text } from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-import { CreatePinNavigatorParamList } from "./CreatePinNavigator";
 import styles from "./SelectPinImageScreen.styles";
 
-import CameraRollViewContainer from "@/src/components/SelectPinImageScreen/CameraRollViewContainer";
+import CameraRollView from "@/src/components/SelectPinImageScreen/CameraRollView";
 
 type SelectPinImageScreenProps = {
+  refusedCameraRollAccess: boolean;
+  cameraRollPhotos: Asset[];
+  selectedImageIndex: number | null;
+  getPressHandlerForImage: ({
+    imageIndex,
+  }: {
+    imageIndex: number;
+  }) => () => void;
   handlePressClose: () => void;
-  navigation: NavigationProp<CreatePinNavigatorParamList>;
+  handlePressNext: () => void;
 };
 
 const SelectPinImageScreen = ({
+  refusedCameraRollAccess,
+  cameraRollPhotos,
+  selectedImageIndex,
+  getPressHandlerForImage,
   handlePressClose,
-  navigation,
+  handlePressNext,
 }: SelectPinImageScreenProps) => {
   const { t } = useTranslation();
 
-  const handlePressNext = () => {
-    navigation.navigate("EnterPinDetails", { selectedImageURI: "" });
-  };
+  let displayCameraRoll;
+
+  if (refusedCameraRollAccess) {
+    displayCameraRoll = (
+      <View>
+        <FontAwesome5Icon name="exclamation-triangle" size={24} />
+        <Text>{t("CreatePin.CAMERA_ROLL_ACCESS_REQUIRED")}</Text>
+      </View>
+    );
+  } else {
+    displayCameraRoll = (
+      <CameraRollView
+        cameraRollPhotos={cameraRollPhotos}
+        selectedImageIndex={selectedImageIndex}
+        getPressHandlerForImage={getPressHandlerForImage}
+      />
+    );
+  }
+
+  const shouldShowNextButton = selectedImageIndex !== null;
 
   return (
     <View style={styles.container}>
@@ -29,11 +57,13 @@ const SelectPinImageScreen = ({
         <TouchableOpacity onPress={handlePressClose} style={styles.closeButton}>
           <FontAwesome5Icon name="times" size={24} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handlePressNext}>
-          <Text>{t("CreatePin.NEXT")}</Text>
-        </TouchableOpacity>
+        {shouldShowNextButton && (
+          <TouchableOpacity onPress={handlePressNext} style={styles.nextButton}>
+            <Text style={styles.nextButtonText}>{t("CreatePin.NEXT")}</Text>
+          </TouchableOpacity>
+        )}
       </View>
-      <CameraRollViewContainer />
+      {displayCameraRoll}
     </View>
   );
 };
