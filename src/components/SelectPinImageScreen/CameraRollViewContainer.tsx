@@ -47,7 +47,7 @@ const CameraRollViewContainer = () => {
     return (
       <View>
         <FontAwesome5Icon name="exclamation-triangle" size={24} />
-        <Text>{t("CreatePinScreen.CAMERA_ROLL_ACCESS_REQUIRED")}</Text>
+        <Text>{t("CreatePin.CAMERA_ROLL_ACCESS_REQUIRED")}</Text>
       </View>
     );
   }

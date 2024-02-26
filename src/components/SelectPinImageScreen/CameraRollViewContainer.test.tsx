@@ -40,7 +40,7 @@ it("displays error message if camera roll access is refused", async () => {
   render(<CameraRollViewContainer />);
 
   await waitFor(() => {
-    screen.getByText(messages.CreatePinScreen.CAMERA_ROLL_ACCESS_REQUIRED);
+    screen.getByText(messages.CreatePin.CAMERA_ROLL_ACCESS_REQUIRED);
   });
 });
 
