@@ -3,8 +3,8 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 
-import CreatePinScreen from "./CreatePinScreen";
-import AuthenticatedMainNavigator from "../AuthenticatedMainNavigator/AuthenticatedMainNavigator";
+import AuthenticatedMainNavigator from "@/src/navigators/AuthenticatedMainNavigator/AuthenticatedMainNavigator";
+import CreatePinNavigator from "@/src/navigators/CreatePinNavigator/CreatePinNavigator";
 
 export type AuthenticatedNavigatorParamList = {
   Main: undefined;
@@ -26,7 +26,7 @@ const AuthenticatedNavigator = () => {
         name="Main"
         component={AuthenticatedMainNavigator}
       />
-      <StackNavigator.Screen name="CreatePin" component={CreatePinScreen} />
+      <StackNavigator.Screen name="CreatePin" component={CreatePinNavigator} />
     </StackNavigator.Navigator>
   );
 };
