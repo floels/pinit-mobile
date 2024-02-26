@@ -1,8 +1,7 @@
 import { Asset } from "expo-media-library";
 import { Dimensions, FlatList, Image, TouchableOpacity } from "react-native";
-import { SPACE_BETWEEN_COLUMNS } from "./CameraRollView.styles";
 
-import styles from "./CameraRollView.styles";
+import styles, { SPACE_BETWEEN_COLUMNS } from "./CameraRollView.styles";
 
 type CameraRollViewProps = {
   cameraRollPhotos: Asset[];
@@ -34,6 +33,7 @@ const CameraRollView = ({ cameraRollPhotos }: CameraRollViewProps) => {
               source={{ uri: item.uri }}
               width={imageWidth}
               height={imageWidth}
+              testID={`camera-roll-image-${index}`}
             />
           </TouchableOpacity>
         );
