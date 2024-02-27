@@ -31,6 +31,11 @@
   "CreatePin": {
     "CAMERA_ROLL_ACCESS_REQUIRED": "Camera roll access is required to create a pin.",
     "NEXT": "Next",
-    "CREATE_A_PIN": "Create a pin"
+    "CREATE_A_PIN": "Create a pin",
+    "LABEL_PIN_TITLE": "Title",
+    "PLACEHOLDER_PIN_TITLE": "Tell us about your Pin",
+    "LABEL_PIN_DESCRIPTION": "Description",
+    "PLACEHOLDER_PIN_DESCRIPTION": "Add a description to your Pin",
+    "SUBMIT_BUTTON_TEXT": "Create"
   }
 }

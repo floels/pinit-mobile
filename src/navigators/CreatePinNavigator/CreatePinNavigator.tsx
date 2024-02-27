@@ -1,7 +1,7 @@
 import { NavigationProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
+import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
 import SelectPinImageScreenContainer from "./SelectPinImageScreenContainer";
 import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/AuthenticatedNavigator";
 
@@ -36,7 +36,7 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
       </StackNavigator.Screen>
       <StackNavigator.Screen
         name="EnterPinDetails"
-        component={EnterPinDetailsScreen}
+        component={EnterPinDetailsScreenContainer}
       />
     </StackNavigator.Navigator>
   );
