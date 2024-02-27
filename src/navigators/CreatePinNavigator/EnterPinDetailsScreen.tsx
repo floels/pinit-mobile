@@ -12,6 +12,7 @@ type EnterPinDetailsScreenProps = {
   handleChangePinTitle: (title: string) => void;
   handleChangePinDescription: (description: string) => void;
   handlePressBack: () => void;
+  handleSubmit: () => void;
 };
 
 const IMAGE_WIDTH = 100;
@@ -21,9 +22,10 @@ const EnterPinDetailsScreen = ({
   imageAspectRatio,
   pinTitle,
   pinDescription,
+  handlePressBack,
   handleChangePinTitle,
   handleChangePinDescription,
-  handlePressBack,
+  handleSubmit,
 }: EnterPinDetailsScreenProps) => {
   const { t } = useTranslation();
 
@@ -72,7 +74,7 @@ const EnterPinDetailsScreen = ({
         />
       </View>
       <View style={styles.submitButtonContainer}>
-        <TouchableOpacity style={styles.submitButton}>
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>
             {t("CreatePin.SUBMIT_BUTTON_TEXT")}
           </Text>

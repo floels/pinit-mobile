@@ -6,6 +6,7 @@ export const API_ENDPOINT_PIN_SUGGESTIONS = "pin-suggestions";
 export const API_ENDPOINT_SEARCH_SUGGESTIONS = "search-suggestions";
 export const API_ENDPOINT_SEARCH = "search";
 export const API_ENDPOINT_ACCOUNT_DETAILS = "accounts";
+export const API_ENDPOINT_CREATE_PIN = "create-pin";
 
 // API error codes
 export const ERROR_CODE_INVALID_EMAIL = "invalid_email";

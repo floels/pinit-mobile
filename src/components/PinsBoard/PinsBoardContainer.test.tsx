@@ -81,12 +81,14 @@ const renderComponent = () => {
     isAuthenticated: true,
   };
 
+  const pinSuggestionsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
+
   render(
     <AuthenticationContext.Provider
       value={{ state: initialState, dispatch: mockDispatch }}
     >
       <PinsBoardContainer
-        fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
+        fetchEndpoint={pinSuggestionsEndpoint}
         shouldAuthenticate
         getTapHandlerForPin={mockGetTapHandlerForPin}
         emptyResultsMessageKey="SearchScreen.NO_RESULTS"
