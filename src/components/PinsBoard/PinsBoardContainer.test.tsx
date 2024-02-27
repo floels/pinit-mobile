@@ -27,7 +27,7 @@ const SCROLL_VIEW_HEIGHT =
 
 jest.mock("expo-secure-store", () => ({
   getItemAsync: () => "access_token",
-}));
+})); // needed to be able to fetch with authentication
 
 jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
   const View = jest.requireActual(

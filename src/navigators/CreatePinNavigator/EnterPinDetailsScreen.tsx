@@ -5,7 +5,6 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import styles from "./EnterPinDetailsScreen.styles";
 
 import LoadingOverlay from "@/src/components/LoadingOverlay/LoadingOverlay";
-import Spinner from "@/src/components/Spinner/Spinner";
 
 type EnterPinDetailsScreenProps = {
   selectedImageURI: string;
@@ -66,6 +65,7 @@ const EnterPinDetailsScreen = ({
           onChangeText={handleChangePinTitle}
           value={pinTitle}
           style={styles.pinTitleInput}
+          testID="pin-title-input"
         />
       </View>
       <View style={styles.pinDescriptionLabelAndInput}>
@@ -76,10 +76,15 @@ const EnterPinDetailsScreen = ({
           placeholder={t("CreatePin.PLACEHOLDER_PIN_DESCRIPTION")}
           onChangeText={handleChangePinDescription}
           value={pinDescription}
+          testID="pin-description-input"
         />
       </View>
       <View style={styles.submitButtonContainer}>
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleSubmit}
+          testID="create-pin-submit-button"
+        >
           <Text style={styles.submitButtonText}>
             {t("CreatePin.SUBMIT_BUTTON_TEXT")}
           </Text>
