@@ -6,7 +6,7 @@ import styles from "./SearchResultsBaseScreen.styles";
 
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
 import PinsSearchInputContainer from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
-import { Pin } from "@/src/lib/types";
+import { PinWithAuthorDetails } from "@/src/lib/types";
 
 type SearchResultsBaseScreenProps = {
   showBackButton: boolean;
@@ -28,7 +28,7 @@ type SearchResultsBaseScreenProps = {
     pin,
     pinImageAspectRatio,
   }: {
-    pin: Pin;
+    pin: PinWithAuthorDetails;
     pinImageAspectRatio: number;
   }) => () => void;
 };

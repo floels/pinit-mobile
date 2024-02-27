@@ -5,15 +5,15 @@ import { SearchResultsNavigatorParamList } from "./SearchResultsNavigator";
 import PinDetails from "@/src/components/PinDetails/PinDetails";
 import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
 
-type PinDetailsScreenContainerProps = {
-  route: RouteProp<SearchResultsNavigatorParamList, "PinDetails">;
+type PinDetailsScreenProps = {
+  route: RouteProp<
+    SearchResultsNavigatorParamList,
+    "SearchResultsNavigatorPinDetails"
+  >;
   navigation: NavigationProp<SearchResultsNavigatorParamList>;
 };
 
-const PinDetailsScreen = ({
-  route,
-  navigation,
-}: PinDetailsScreenContainerProps) => {
+const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
   const { pin, pinImageAspectRatio } = route.params;
 
   // Pre-fetch pin author information, so the account details
@@ -32,7 +32,9 @@ const PinDetailsScreen = ({
   };
 
   const handlePressAuthor = () => {
-    navigation.navigate("AuthorAccountDetails", { accountDetailsQuery });
+    navigation.navigate("SearchResultsNavigatorAuthorAccountDetails", {
+      accountDetailsQuery,
+    });
   };
 
   return (

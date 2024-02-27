@@ -1,16 +1,19 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
+import { useAccountContext } from "@/src/contexts/accountContext";
 import ProfileScreen from "@/src/navigators/AuthenticatedMainNavigator/ProfileScreen";
 import { AuthenticatedNavigatorParamList } from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
 import HomeNavigator from "@/src/navigators/HomeNavigator/HomeNavigator";
 import SearchNavigator from "@/src/navigators/SearchNavigator/SearchNavigator";
 
 type AuthenticatedMainNavigatorProps = {
-  navigation: NavigationProp<AuthenticatedNavigatorParamList, "Main">;
+  navigation: NavigationProp<AuthenticatedNavigatorParamList>;
+  route: RouteProp<AuthenticatedNavigatorParamList, "Main">;
 };
 
 type AuthenticatedMainNavigatorParamList = {
@@ -29,7 +32,15 @@ const TAB_BAR_ICON_NAMES: Record<string, string> = {
 
 const AuthenticatedMainNavigator = ({
   navigation,
+  route,
 }: AuthenticatedMainNavigatorProps) => {
+  const { createdPin, createdPinImageAspectRatio } = route.params || {}; // 'route.params' is undefined
+  // except when we just created a pin.
+
+  const {
+    state: { account },
+  } = useAccountContext();
+
   const [isCreateSelectModalVisible, setIsCreateSelectModalVisible] =
     useState(false);
 
@@ -68,11 +79,41 @@ const AuthenticatedMainNavigator = ({
     navigation.navigate("CreatePin");
 
     setIsCreateSelectModalVisible(false); // otherwise the modal will
-    // still be visible on top of the "Create pin" screen
+    // still be visible on the "Create pin" screen
   };
 
   const handleCloseCreateSelectModal = () => {
     setIsCreateSelectModalVisible(false);
+  };
+
+  useEffect(() => {
+    if (createdPin) {
+      showPinCreationToast();
+    }
+  }, [createdPin, createdPinImageAspectRatio]);
+
+  const showPinCreationToast = () => {
+    const createdPinWithAuthorDetails = {
+      ...createdPin,
+      authorUsername: account?.username,
+      authorDisplayName: account?.displayName,
+      authorProfilePictureURL: account?.profilePictureURL,
+    };
+
+    const handlePressView = () => {
+      // Here we need to navigate to a screen which is not part of the 'AuthenticatedMainNavigator'.
+      // This is why we need to disable type-checking on the first argument:
+      navigation.navigate("HomeNavigatorPinDetails" as any, {
+        pin: createdPinWithAuthorDetails,
+        pinImageAspectRatio: createdPinImageAspectRatio,
+      });
+    };
+
+    Toast.show({
+      type: "pinCreationSuccess",
+      position: "bottom",
+      props: { handlePressView },
+    });
   };
 
   return (

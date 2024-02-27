@@ -4,7 +4,7 @@ import AccountDetails from "@/src/components/AccountDetails/AccountDetails";
 import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
 
 type AccountDetailsScreenProps = {
-  route: RouteProp<HomeNavigatorParamList, "AuthorAccountDetails">;
+  route: RouteProp<HomeNavigatorParamList, "HomeNavigatorAuthorAccountDetails">;
   navigation: NavigationProp<HomeNavigatorParamList>;
 };
 

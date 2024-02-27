@@ -119,6 +119,7 @@ const AccountDetails = ({
 
   return (
     <View style={styles.container}>
+      {backButton}
       {picturesBlock}
       <Text style={styles.displayName}>{accountDetails.displayName}</Text>
       <View style={styles.logoAndUsername}>

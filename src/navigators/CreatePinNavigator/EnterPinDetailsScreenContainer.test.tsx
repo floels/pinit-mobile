@@ -108,8 +108,8 @@ it("should display error connection toast upon fetch error", async () => {
 
   expect(Toast.show).toHaveBeenLastCalledWith(
     expect.objectContaining({
-      type: "error",
-      text1: enTranslations.Common.CONNECTION_ERROR_TOAST_TITLE,
+      type: "pinCreationError",
+      text1: enTranslations.Common.CONNECTION_ERROR,
     }),
   );
 });
@@ -123,8 +123,8 @@ it("should display error response toast upon KO response", async () => {
 
   expect(Toast.show).toHaveBeenLastCalledWith(
     expect.objectContaining({
-      type: "error",
-      text1: enTranslations.CreatePin.CREATION_ERROR_TOAST_TITLE,
+      type: "pinCreationError",
+      text1: enTranslations.CreatePin.CREATION_ERROR_MESSAGE,
     }),
   );
 });

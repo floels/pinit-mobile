@@ -1,11 +1,14 @@
-export type Pin = {
+export type PinBasicDetails = {
   id: string;
   title: string;
   imageURL: string;
+  description?: string;
+};
+
+export type PinWithAuthorDetails = PinBasicDetails & {
   authorUsername: string;
   authorDisplayName: string;
-  authorProfilePictureURL?: string;
-  description?: string;
+  authorProfilePictureURL: string;
 };
 
 enum TypesOfAccount {
