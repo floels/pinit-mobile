@@ -3,6 +3,7 @@ import { useState } from "react";
 import "./src/lib/i18n";
 import Toast from "react-native-toast-message";
 
+import { AccountContextProvider } from "./src/contexts/accountContext";
 import { AuthenticationContextProvider } from "./src/contexts/authenticationContext";
 
 import NavigationContainer from "@/src/components/NavigationContainer/NavigationContainer";
@@ -14,7 +15,9 @@ const App = () => {
     <>
       <QueryClientProvider client={queryClient}>
         <AuthenticationContextProvider>
-          <NavigationContainer />
+          <AccountContextProvider>
+            <NavigationContainer />
+          </AccountContextProvider>
         </AuthenticationContextProvider>
       </QueryClientProvider>
       <Toast />

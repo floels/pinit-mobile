@@ -1,10 +1,10 @@
 import { NavigationProp } from "@react-navigation/native";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import LoginScreen from "./LoginScreen";
 
-import { AuthenticationContext } from "@/src/contexts/authenticationContext";
+import { useAuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   API_BASE_URL,
   API_ENDPOINT_OBTAIN_TOKEN,
@@ -76,7 +76,7 @@ const LoginScreenContainer = ({ navigation }: LoginScreenContainerProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const { dispatch } = useContext(AuthenticationContext);
+  const { dispatch } = useAuthenticationContext();
 
   const handleTogglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);

@@ -1,15 +1,15 @@
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
-import { AuthenticationContext } from "@/src/contexts/authenticationContext";
+import { useAuthenticationContext } from "@/src/contexts/authenticationContext";
 import { Colors } from "@/src/global.styles";
 import { ACCESS_TOKEN_STORAGE_KEY } from "@/src/lib/constants";
 import AuthenticatedNavigator from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
 import UnauthenticatedNavigator from "@/src/navigators/UnauthenticatedNavigator/UnauthenticatedNavigator";
 
 const NavigatorContainer = () => {
-  const { state, dispatch } = useContext(AuthenticationContext);
+  const { state, dispatch } = useAuthenticationContext();
 
   const { isCheckingAccessToken, isAuthenticated } = state;
 

@@ -22,11 +22,11 @@ jest.mock("react-native-toast-message", () => ({
   show: jest.fn(),
 }));
 
-const mockedGetSize = jest.fn();
+const mockGetSize = jest.fn();
 
 jest.mock("react-native/Libraries/Image/Image", () => ({
   ...jest.requireActual("react-native/Libraries/Image/Image"),
-  getSize: mockedGetSize,
+  getSize: mockGetSize,
 }));
 
 const mockNavigation = {
@@ -136,13 +136,13 @@ it("should fetch image size if aspect ratio wasn't provided", async () => {
     },
   });
 
-  expect(mockedGetSize).toHaveBeenCalledWith("ph://AAAA", expect.any(Function));
+  expect(mockGetSize).toHaveBeenCalledWith("ph://AAAA", expect.any(Function));
 });
 
 it("should not fetch image size if aspect ratio was provided", async () => {
-  mockedGetSize.mockReset();
+  mockGetSize.mockReset();
 
   renderComponent();
 
-  expect(mockedGetSize).not.toHaveBeenCalled();
+  expect(mockGetSize).not.toHaveBeenCalled();
 });

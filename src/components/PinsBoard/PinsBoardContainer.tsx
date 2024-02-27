@@ -1,10 +1,10 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NativeScrollEvent, NativeSyntheticEvent, Image } from "react-native";
 
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 
-import { AuthenticationContext } from "@/src/contexts/authenticationContext";
+import { useAuthenticationContext } from "@/src/contexts/authenticationContext";
 import { API_BASE_URL } from "@/src/lib/constants";
 import {
   NetworkError,
@@ -50,7 +50,7 @@ const PinsBoardContainer = ({
 }: PinsBoardContainerProps) => {
   const { t } = useTranslation();
 
-  const { dispatch } = useContext(AuthenticationContext);
+  const { dispatch } = useAuthenticationContext();
 
   const [pins, setPins] = useState<Pin[]>([]);
   const [pinImageAspectRatios, setPinImageAspectRatios] = useState<

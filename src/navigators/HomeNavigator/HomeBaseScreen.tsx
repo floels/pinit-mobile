@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 import styles from "./HomeBaseScreen.styles";
 
-import AccessTokenRefresher from "@/src/components/AccessTokenRefresher/AccessTokenRefresher";
+import AuthenticatedSetupBuilder from "@/src/components/AuthenticatedSetupBuilder/AuthenticatedSetupBuilder";
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
 import {
   API_BASE_URL,
@@ -33,7 +33,7 @@ const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
 
   return (
     <View style={styles.container}>
-      <AccessTokenRefresher />
+      <AuthenticatedSetupBuilder />
       <PinsBoardContainer
         fetchEndpoint={pinSuggestionsEndpoint}
         shouldAuthenticate

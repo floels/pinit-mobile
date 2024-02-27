@@ -1,4 +1,10 @@
-import { Dispatch, ReactNode, createContext, useReducer } from "react";
+import {
+  Dispatch,
+  ReactNode,
+  createContext,
+  useContext,
+  useReducer,
+} from "react";
 
 type State = {
   isCheckingAccessToken: boolean;
@@ -73,4 +79,16 @@ export const AuthenticationContextProvider = ({
       {children}
     </AuthenticationContext.Provider>
   );
+};
+
+export const useAuthenticationContext = () => {
+  const context = useContext(AuthenticationContext);
+
+  if (context === undefined) {
+    throw new Error(
+      "'useAuthenticationContext' must be used within an AuthenticationContextProvider",
+    );
+  }
+
+  return context;
 };

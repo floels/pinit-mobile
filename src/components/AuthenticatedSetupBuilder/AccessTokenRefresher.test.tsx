@@ -25,15 +25,22 @@ jest.mock("expo-secure-store", () => ({
 
 const refreshEndpoint = `${API_BASE_URL}/${API_ENDPOINT_REFRESH_TOKEN}/`;
 
+const mockSetHasFinishedFetching = jest.fn();
+
 const renderComponent = () => {
-  render(<AccessTokenRefresher />);
+  render(
+    <AccessTokenRefresher
+      setHasFinishedFetching={mockSetHasFinishedFetching}
+    />,
+  );
 };
 
 beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it("should not refresh the access token if the expiration date is after the cutoff", async () => {
+it(`should not refresh the access token if the expiration date 
+is after the cutoff, and should call 'hasFinishedFetching'`, async () => {
   const nowTime = new Date().getTime();
 
   const accessTokenExpirationDate = new Date(
@@ -41,8 +48,10 @@ it("should not refresh the access token if the expiration date is after the cuto
   );
 
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve(accessTokenExpirationDate.toISOString()),
+    accessTokenExpirationDate.toISOString(),
   );
+
+  expect(mockSetHasFinishedFetching).not.toHaveBeenCalled();
 
   renderComponent();
 
@@ -51,9 +60,12 @@ it("should not refresh the access token if the expiration date is after the cuto
   // pass even if there was a bug that led the component to fetch.
 
   expect(fetch).not.toHaveBeenCalled();
+
+  expect(mockSetHasFinishedFetching).toHaveBeenCalled();
 });
 
-it("should refresh the access token if the expiration date is before the cutoff", async () => {
+it(`should refresh the access token if the expiration date 
+is before the cutoff, and should call 'hasFinishedFetching'`, async () => {
   const nowTime = new Date().getTime();
 
   const accessTokenExpirationDate = new Date(
@@ -61,10 +73,10 @@ it("should refresh the access token if the expiration date is before the cutoff"
   );
 
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve(accessTokenExpirationDate.toISOString()),
+    accessTokenExpirationDate.toISOString(),
   );
-  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve("refresh_token"),
+  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
+    () => "refresh_token",
   );
 
   const refreshedTokenExpirationDate = "2024-02-09T07:09:45+00:00";
@@ -76,6 +88,8 @@ it("should refresh the access token if the expiration date is before the cutoff"
       access_token_expiration_utc: refreshedTokenExpirationDate,
     }),
   );
+
+  mockSetHasFinishedFetching.mockReset();
 
   renderComponent();
 
@@ -89,14 +103,14 @@ it("should refresh the access token if the expiration date is before the cutoff"
       refreshedTokenExpirationDate,
     );
   });
+
+  expect(mockSetHasFinishedFetching).toHaveBeenCalled();
 });
 
 it("should refresh the access token if the expiration date is absent", async () => {
-  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve(null),
-  );
-  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve("refresh_token"),
+  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => null);
+  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
+    () => "refresh_token",
   );
 
   renderComponent();
@@ -107,11 +121,9 @@ it("should refresh the access token if the expiration date is absent", async () 
 });
 
 it("should refresh the access token if the expiration date is invalid", async () => {
-  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve("20-10-03"),
-  );
-  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve("refresh_token"),
+  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => "20-10-03");
+  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
+    () => "refresh_token",
   );
 
   renderComponent();
@@ -122,12 +134,8 @@ it("should refresh the access token if the expiration date is invalid", async ()
 });
 
 it("should not fetch if expiration date is absent and refresh token is absent", async () => {
-  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve(null),
-  );
-  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(() =>
-    Promise.resolve(null),
-  );
+  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => null);
+  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(() => null);
 
   renderComponent();
 
