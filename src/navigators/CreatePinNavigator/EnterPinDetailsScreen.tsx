@@ -4,14 +4,18 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./EnterPinDetailsScreen.styles";
 
+import LoadingOverlay from "@/src/components/LoadingOverlay/LoadingOverlay";
+
 type EnterPinDetailsScreenProps = {
   selectedImageURI: string;
   imageAspectRatio: number | null;
   pinTitle: string;
   pinDescription: string;
+  isPosting: boolean;
   handleChangePinTitle: (title: string) => void;
   handleChangePinDescription: (description: string) => void;
   handlePressBack: () => void;
+  handleSubmit: () => void;
 };
 
 const IMAGE_WIDTH = 100;
@@ -21,9 +25,11 @@ const EnterPinDetailsScreen = ({
   imageAspectRatio,
   pinTitle,
   pinDescription,
+  isPosting,
+  handlePressBack,
   handleChangePinTitle,
   handleChangePinDescription,
-  handlePressBack,
+  handleSubmit,
 }: EnterPinDetailsScreenProps) => {
   const { t } = useTranslation();
 
@@ -59,6 +65,7 @@ const EnterPinDetailsScreen = ({
           onChangeText={handleChangePinTitle}
           value={pinTitle}
           style={styles.pinTitleInput}
+          testID="pin-title-input"
         />
       </View>
       <View style={styles.pinDescriptionLabelAndInput}>
@@ -69,15 +76,21 @@ const EnterPinDetailsScreen = ({
           placeholder={t("CreatePin.PLACEHOLDER_PIN_DESCRIPTION")}
           onChangeText={handleChangePinDescription}
           value={pinDescription}
+          testID="pin-description-input"
         />
       </View>
       <View style={styles.submitButtonContainer}>
-        <TouchableOpacity style={styles.submitButton}>
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleSubmit}
+          testID="create-pin-submit-button"
+        >
           <Text style={styles.submitButtonText}>
             {t("CreatePin.SUBMIT_BUTTON_TEXT")}
           </Text>
         </TouchableOpacity>
       </View>
+      {isPosting && <LoadingOverlay />}
     </View>
   );
 };

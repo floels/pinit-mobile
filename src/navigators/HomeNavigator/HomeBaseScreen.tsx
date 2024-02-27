@@ -5,7 +5,10 @@ import styles from "./HomeBaseScreen.styles";
 
 import AccessTokenRefresher from "@/src/components/AccessTokenRefresher/AccessTokenRefresher";
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
-import { API_ENDPOINT_PIN_SUGGESTIONS } from "@/src/lib/constants";
+import {
+  API_BASE_URL,
+  API_ENDPOINT_PIN_SUGGESTIONS,
+} from "@/src/lib/constants";
 import { Pin } from "@/src/lib/types";
 import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
 
@@ -26,11 +29,13 @@ const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
     };
   };
 
+  const pinSuggestionsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
+
   return (
     <View style={styles.container}>
       <AccessTokenRefresher />
       <PinsBoardContainer
-        fetchEndpoint={`${API_ENDPOINT_PIN_SUGGESTIONS}/`}
+        fetchEndpoint={pinSuggestionsEndpoint}
         shouldAuthenticate
         getTapHandlerForPin={getTapHandlerForPin}
       />

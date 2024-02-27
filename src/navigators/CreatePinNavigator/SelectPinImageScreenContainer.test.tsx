@@ -3,7 +3,7 @@ import * as MediaLibrary from "expo-media-library";
 
 import SelectPinImageScreenContainer from "./SelectPinImageScreenContainer";
 
-import messages from "@/translations/en.json";
+import enTranslations from "@/translations/en.json";
 
 jest.mock("@react-navigation/native", () => ({
   ...jest.requireActual("@react-navigation/native"),
@@ -58,7 +58,7 @@ it("displays error message if camera roll access is refused", async () => {
   renderComponent();
 
   await waitFor(() => {
-    screen.getByText(messages.CreatePin.CAMERA_ROLL_ACCESS_REQUIRED);
+    screen.getByText(enTranslations.CreatePin.CAMERA_ROLL_ACCESS_REQUIRED);
   });
 });
 

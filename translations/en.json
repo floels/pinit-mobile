@@ -1,6 +1,8 @@
 {
   "Common": {
     "CONNECTION_ERROR": "We couldn't reach the server. Please check your Internet connection.",
+    "CONNECTION_ERROR_TOAST_TITLE": "We couldn't reach the server",
+    "CONNECTION_ERROR_TOAST_TEXT": "Please check your Internet connection.",
     "UNFORESEEN_ERROR": "An unforeseen error happened. Please try again later.",
     "ERROR_FETCH_MORE_PINS": "An error occurred while attempting to retrieve more pins.",
     "ERROR_REFRESH_PINS": "An error occurred while attempting to refresh pins."
@@ -39,6 +41,8 @@
     "PLACEHOLDER_PIN_TITLE": "Tell us about your Pin",
     "LABEL_PIN_DESCRIPTION": "Description",
     "PLACEHOLDER_PIN_DESCRIPTION": "Add a description to your Pin",
-    "SUBMIT_BUTTON_TEXT": "Create"
+    "SUBMIT_BUTTON_TEXT": "Create",
+    "CREATION_ERROR_TOAST_TITLE": "An error occurred",
+    "CREATION_ERROR_TOAST_TEXT": "We couldn't create your Pin."
   }
 }

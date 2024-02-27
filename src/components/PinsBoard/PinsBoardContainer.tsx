@@ -162,9 +162,9 @@ const PinsBoardContainer = ({
 
     try {
       if (shouldAuthenticate) {
-        newPinsResponse = await fetchWithAuthentication({
-          endpoint: endpointWithPageParameter,
-        });
+        newPinsResponse = await fetchWithAuthentication(
+          endpointWithPageParameter,
+        );
       } else {
         newPinsResponse = await fetch(
           `${API_BASE_URL}/${endpointWithPageParameter}`,

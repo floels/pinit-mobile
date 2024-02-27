@@ -20,6 +20,10 @@ type CreatePinNavigatorProps = {
 const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
   const StackNavigator = createStackNavigator<CreatePinNavigatorParamList>();
 
+  const handleCreateSuccess = () => {
+    props.navigation.navigate("Main");
+  };
+
   return (
     <StackNavigator.Navigator
       screenOptions={{
@@ -34,10 +38,15 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
           />
         )}
       </StackNavigator.Screen>
-      <StackNavigator.Screen
-        name="EnterPinDetails"
-        component={EnterPinDetailsScreenContainer}
-      />
+      <StackNavigator.Screen name="EnterPinDetails">
+        {({ navigation, route }) => (
+          <EnterPinDetailsScreenContainer
+            navigation={navigation}
+            route={route}
+            handleCreateSuccess={handleCreateSuccess}
+          />
+        )}
+      </StackNavigator.Screen>
     </StackNavigator.Navigator>
   );
 };
