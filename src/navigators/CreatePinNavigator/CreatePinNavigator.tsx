@@ -1,13 +1,16 @@
 import { NavigationProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
+import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
 import SelectPinImageScreenContainer from "./SelectPinImageScreenContainer";
 import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/AuthenticatedNavigator";
 
 export type CreatePinNavigatorParamList = {
   SelectImage: undefined;
-  EnterPinDetails: { selectedImageURI: string };
+  EnterPinDetails: {
+    selectedImageURI: string;
+    providedImageAspectRatio: number | null;
+  };
 };
 
 type CreatePinNavigatorProps = {
@@ -33,7 +36,7 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
       </StackNavigator.Screen>
       <StackNavigator.Screen
         name="EnterPinDetails"
-        component={EnterPinDetailsScreen}
+        component={EnterPinDetailsScreenContainer}
       />
     </StackNavigator.Navigator>
   );
