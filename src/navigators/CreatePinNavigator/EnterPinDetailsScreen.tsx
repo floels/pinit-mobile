@@ -4,11 +4,15 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./EnterPinDetailsScreen.styles";
 
+import LoadingOverlay from "@/src/components/LoadingOverlay/LoadingOverlay";
+import Spinner from "@/src/components/Spinner/Spinner";
+
 type EnterPinDetailsScreenProps = {
   selectedImageURI: string;
   imageAspectRatio: number | null;
   pinTitle: string;
   pinDescription: string;
+  isPosting: boolean;
   handleChangePinTitle: (title: string) => void;
   handleChangePinDescription: (description: string) => void;
   handlePressBack: () => void;
@@ -22,6 +26,7 @@ const EnterPinDetailsScreen = ({
   imageAspectRatio,
   pinTitle,
   pinDescription,
+  isPosting,
   handlePressBack,
   handleChangePinTitle,
   handleChangePinDescription,
@@ -80,6 +85,7 @@ const EnterPinDetailsScreen = ({
           </Text>
         </TouchableOpacity>
       </View>
+      {isPosting && <LoadingOverlay />}
     </View>
   );
 };

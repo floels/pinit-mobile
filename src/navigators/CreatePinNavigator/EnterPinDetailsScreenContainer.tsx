@@ -34,6 +34,8 @@ const EnterPinDetailsScreenContainer = ({
   const [pinTitle, setPinTitle] = useState("");
   const [pinDescription, setPinDescription] = useState("");
 
+  const [isPosting, setIsPosting] = useState(false);
+
   // Fetch the image's aspect ratio in case it wasn't provided by the
   // previous screen (can happen if user clicks 'Next' really quickly
   // after selecting the image):
@@ -82,6 +84,8 @@ const EnterPinDetailsScreenContainer = ({
   };
 
   const postFormData = async (formData: FormData) => {
+    setIsPosting(true);
+
     let response;
 
     try {
@@ -95,6 +99,8 @@ const EnterPinDetailsScreenContainer = ({
     } catch {
       showConnectionErrorToast();
       return;
+    } finally {
+      setIsPosting(false);
     }
 
     if (!response.ok) {
@@ -129,6 +135,7 @@ const EnterPinDetailsScreenContainer = ({
       imageAspectRatio={imageAspectRatio}
       pinTitle={pinTitle}
       pinDescription={pinDescription}
+      isPosting={isPosting}
       handlePressBack={navigation.goBack}
       handleChangePinTitle={setPinTitle}
       handleChangePinDescription={setPinDescription}
