@@ -6,6 +6,7 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
 import { useAccountContext } from "@/src/contexts/accountContext";
+import { PinWithAuthorDetails } from "@/src/lib/types";
 import ProfileScreen from "@/src/navigators/AuthenticatedMainNavigator/ProfileScreen";
 import { AuthenticatedNavigatorParamList } from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
 import HomeNavigator from "@/src/navigators/HomeNavigator/HomeNavigator";
@@ -87,7 +88,7 @@ const AuthenticatedMainNavigator = ({
   };
 
   useEffect(() => {
-    if (createdPin) {
+    if (createdPin && createdPinImageAspectRatio) {
       showPinCreationToast();
     }
   }, [createdPin, createdPinImageAspectRatio]);
@@ -101,11 +102,9 @@ const AuthenticatedMainNavigator = ({
     };
 
     const handlePressView = () => {
-      // Here we need to navigate to a screen which is not part of the 'AuthenticatedMainNavigator'.
-      // This is why we need to disable type-checking on the first argument:
-      navigation.navigate("HomeNavigatorPinDetails" as any, {
-        pin: createdPinWithAuthorDetails,
-        pinImageAspectRatio: createdPinImageAspectRatio,
+      navigation.navigate("CreatedPinDetails", {
+        createdPin: createdPinWithAuthorDetails as PinWithAuthorDetails,
+        createdPinImageAspectRatio: createdPinImageAspectRatio as number,
       });
     };
 

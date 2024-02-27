@@ -1,11 +1,15 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { TouchableOpacity, View } from "react-native";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+
+import styles from "./PinDetailsScreen.styles";
 
 import PinDetails from "@/src/components/PinDetails/PinDetails";
 import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
 import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
 
 type PinDetailsScreenProps = {
-  route: RouteProp<HomeNavigatorParamList, "HomeNavigatorPinDetails">;
+  route: RouteProp<HomeNavigatorParamList, "PinDetails">;
   navigation: NavigationProp<HomeNavigatorParamList>;
 };
 
@@ -14,32 +18,31 @@ const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
 
   // Pre-fetch pin author information, so the account details
   // screen renders immediately if the user taps the author's name:
-  const accountDetailsQueryFull = useAccountDetailsQuery({
+  const accountDetailsQuery = useAccountDetailsQuery({
     username: pin.authorUsername,
   });
 
-  // We select only the relevant attribute of the query,
-  // because some attribute of a 'UseQueryResult' are not
-  // serializable, which triggers a warning from React Navigation:
-  const accountDetailsQuery = {
-    data: accountDetailsQueryFull.data,
-    isLoading: accountDetailsQueryFull.isLoading,
-    isError: accountDetailsQueryFull.isError,
-  };
-
   const handlePressAuthor = () => {
-    navigation.navigate("HomeNavigatorAuthorAccountDetails", {
+    navigation.navigate("AuthorAccountDetails", {
       accountDetailsQuery,
     });
   };
 
   return (
-    <PinDetails
-      pin={pin}
-      pinImageAspectRatio={pinImageAspectRatio}
-      handlePressBack={navigation.goBack}
-      handlePressAuthor={handlePressAuthor}
-    />
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
+        <FontAwesome5Icon
+          name="chevron-left"
+          size={20}
+          style={styles.backButtonIcon}
+        />
+      </TouchableOpacity>
+      <PinDetails
+        pin={pin}
+        pinImageAspectRatio={pinImageAspectRatio}
+        handlePressAuthor={handlePressAuthor}
+      />
+    </View>
   );
 };
 

@@ -22,8 +22,18 @@ const fetchAccountDetails = async ({ username }: { username: string }) => {
 };
 
 export const useAccountDetailsQuery = ({ username }: { username: string }) => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ["accountDetails", username],
     queryFn: () => fetchAccountDetails({ username }),
   });
+
+  // We select only the relevant attribute of the query,
+  // because some attribute of a 'UseQueryResult' are not
+  // serializable, which triggers a warning from React Navigation when
+  // we pass the object to 'navigation.navigate()':
+  return {
+    data: query.data,
+    isLoading: query.isLoading,
+    isError: query.isError,
+  };
 };

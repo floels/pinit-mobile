@@ -7,16 +7,6 @@ export const SIDE_PADDING = 6;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    position: "relative",
-  },
-  backButton: {
-    position: "absolute",
-    zIndex: 10,
-    top: 80,
-    left: 26,
-  },
-  backgroundAndContent: {
-    flex: 1,
     paddingTop: 60,
     paddingLeft: SIDE_PADDING,
     paddingRight: SIDE_PADDING,
@@ -31,9 +21,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
     backgroundColor: Colors.backgroundBase,
     paddingBottom: 80,
-  },
-  backButtonIcon: {
-    color: "white",
   },
   pinImage: {
     borderTopLeftRadius: 40,

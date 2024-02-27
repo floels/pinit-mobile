@@ -63,7 +63,7 @@ const SearchResultsBaseScreenContainer = ({
     pinImageAspectRatio: number;
   }) => {
     return () => {
-      navigation.navigate("SearchResultsNavigatorPinDetails", {
+      navigation.navigate("PinDetails", {
         pin,
         pinImageAspectRatio,
       });

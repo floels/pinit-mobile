@@ -15,11 +15,11 @@ type SearchResultsNavigatorProps = {
 
 export type SearchResultsNavigatorParamList = {
   SearchResultsBase: undefined;
-  SearchResultsNavigatorPinDetails: {
+  PinDetails: {
     pin: PinWithAuthorDetails;
     pinImageAspectRatio: number;
   };
-  SearchResultsNavigatorAuthorAccountDetails: {
+  AuthorAccountDetails: {
     accountDetailsQuery: {
       data: AccountPublicDetails | undefined;
       isLoading: boolean;
@@ -52,12 +52,9 @@ const SearchResultsNavigator = ({
           />
         )}
       </StackNavigator.Screen>
+      <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
       <StackNavigator.Screen
-        name="SearchResultsNavigatorPinDetails"
-        component={PinDetailsScreen}
-      />
-      <StackNavigator.Screen
-        name="SearchResultsNavigatorAuthorAccountDetails"
+        name="AuthorAccountDetails"
         component={AccountDetailsScreen}
       />
     </StackNavigator.Navigator>
