@@ -2,7 +2,9 @@ import { NavigationProp, RouteProp } from "@react-navigation/native";
 import * as MediaLibrary from "expo-media-library";
 import mime from "mime";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
+import Toast from "react-native-toast-message";
 
 import { CreatePinNavigatorParamList } from "./CreatePinNavigator";
 import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
@@ -21,6 +23,8 @@ const EnterPinDetailsScreenContainer = ({
   route,
   handleCreateSuccess,
 }: EnterPinDetailsScreenContainerProps) => {
+  const { t } = useTranslation();
+
   const { selectedImageURI, providedImageAspectRatio } = route.params;
 
   const [imageAspectRatio, setImageAspectRatio] = useState(
@@ -42,11 +46,6 @@ const EnterPinDetailsScreenContainer = ({
   }, [providedImageAspectRatio]);
 
   const handleSubmit = async () => {
-    if (!selectedImageURI) {
-      console.warn("No selected image URI!"); // TODO: display error toast
-      return;
-    }
-
     const formData = new FormData();
 
     // The "selectedImageURI" has format: "ph://...-...-...-..."
@@ -94,18 +93,34 @@ const EnterPinDetailsScreenContainer = ({
         },
       );
     } catch {
-      console.warn("You seem to be offline!"); // TODO: replace with toast message
+      showConnectionErrorToast();
       return;
     }
 
     if (!response.ok) {
-      console.warn("Pin creation failed!"); // TODO: replace with toast message
+      showKOResponseErrorToast();
       return;
     }
 
-    console.warn("Pin creation succeeded!");
-
     handleCreateSuccess();
+  };
+
+  const showConnectionErrorToast = () => {
+    Toast.show({
+      type: "error",
+      text1: t("Common.CONNECTION_ERROR_TOAST_TITLE"),
+      text2: t("Common.CONNECTION_ERROR_TOAST_TEXT"),
+      position: "bottom",
+    });
+  };
+
+  const showKOResponseErrorToast = () => {
+    Toast.show({
+      type: "error",
+      text1: t("CreatePin.CREATION_ERROR_TOAST_TITLE"),
+      text2: t("CreatePin.CREATION_ERROR_TOAST_TEXT"),
+      position: "bottom",
+    });
   };
 
   return (
