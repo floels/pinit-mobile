@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     position: "relative",
+    flex: 1,
   },
   backButton: {
     position: "absolute",
@@ -15,6 +16,25 @@ const styles = StyleSheet.create({
   },
   backButtonIconWithBackgroundPicture: {
     color: "white",
+  },
+  loadingOrErrorStateContainer: {
+    flex: 1,
+    paddingTop: 60,
+    paddingLeft: 20,
+    paddingRight: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  spinnerIcon: {
+    color: Colors.fontSecondary,
+  },
+  errorIcon: {
+    color: Colors.fontWarning,
+    marginBottom: 20,
+  },
+  errorText: {
+    color: Colors.fontWarning,
+    textAlign: "center",
   },
   backgroundPictureAndProfilePicture: {
     alignItems: "center",
