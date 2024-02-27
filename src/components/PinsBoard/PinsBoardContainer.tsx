@@ -166,9 +166,7 @@ const PinsBoardContainer = ({
           endpointWithPageParameter,
         );
       } else {
-        newPinsResponse = await fetch(
-          `${API_BASE_URL}/${endpointWithPageParameter}`,
-        );
+        newPinsResponse = await fetch(endpointWithPageParameter);
       }
     } catch {
       throw new NetworkError();

@@ -8,8 +8,11 @@ import HomeBaseScreen from "@/src/navigators/HomeNavigator/HomeBaseScreen";
 
 export type HomeNavigatorParamList = {
   HomeBase: undefined;
-  PinDetails: { pin: PinWithAuthorDetails; pinImageAspectRatio: number };
-  AuthorAccountDetails: {
+  HomeNavigatorPinDetails: {
+    pin: PinWithAuthorDetails;
+    pinImageAspectRatio: number;
+  };
+  HomeNavigatorAuthorAccountDetails: {
     accountDetailsQuery: {
       data: AccountPublicDetails | undefined;
       isLoading: boolean;
@@ -28,9 +31,12 @@ const HomeNavigator = () => {
       }}
     >
       <StackNavigator.Screen name="HomeBase" component={HomeBaseScreen} />
-      <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
       <StackNavigator.Screen
-        name="AuthorAccountDetails"
+        name="HomeNavigatorPinDetails"
+        component={PinDetailsScreen}
+      />
+      <StackNavigator.Screen
+        name="HomeNavigatorAuthorAccountDetails"
         component={AccountDetailsScreen}
       />
     </StackNavigator.Navigator>

@@ -25,7 +25,10 @@ const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
     pinImageAspectRatio: number;
   }) => {
     return () => {
-      navigation.navigate("PinDetails", { pin, pinImageAspectRatio });
+      navigation.navigate("HomeNavigatorPinDetails", {
+        pin,
+        pinImageAspectRatio,
+      });
     };
   };
 

@@ -5,7 +5,7 @@ import Toast from "react-native-toast-message";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
-import { PinBasicDetails } from "@/src/lib/types";
+import { useAccountContext } from "@/src/contexts/accountContext";
 import ProfileScreen from "@/src/navigators/AuthenticatedMainNavigator/ProfileScreen";
 import { AuthenticatedNavigatorParamList } from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
 import HomeNavigator from "@/src/navigators/HomeNavigator/HomeNavigator";
@@ -36,6 +36,10 @@ const AuthenticatedMainNavigator = ({
 }: AuthenticatedMainNavigatorProps) => {
   const { createdPin, createdPinImageAspectRatio } = route.params || {}; // 'route.params' is undefined
   // except when we just created a pin.
+
+  const {
+    state: { account },
+  } = useAccountContext();
 
   const [isCreateSelectModalVisible, setIsCreateSelectModalVisible] =
     useState(false);
@@ -84,19 +88,31 @@ const AuthenticatedMainNavigator = ({
 
   useEffect(() => {
     if (createdPin) {
-      showPinCreationToast({ createdPin });
+      showPinCreationToast();
     }
-  }, [createdPin]);
+  }, [createdPin, createdPinImageAspectRatio]);
 
-  const showPinCreationToast = ({
-    createdPin,
-  }: {
-    createdPin: PinBasicDetails;
-  }) => {
+  const showPinCreationToast = () => {
+    const createdPinWithAuthorDetails = {
+      ...createdPin,
+      authorUsername: account?.username,
+      authorDisplayName: account?.displayName,
+      authorProfilePictureURL: account?.profilePictureURL,
+    };
+
+    const handlePressView = () => {
+      // Here we need to navigate to a screen which is not part of the 'AuthenticatedMainNavigator'.
+      // This is why we need to disable type-checking on the first argument:
+      navigation.navigate("HomeNavigatorPinDetails" as any, {
+        pin: createdPinWithAuthorDetails,
+        pinImageAspectRatio: createdPinImageAspectRatio,
+      });
+    };
+
     Toast.show({
-      type: "success",
-      text1: `You just created the Pin with ID: ${createdPin.id}`,
+      type: "pinCreationSuccess",
       position: "bottom",
+      props: { handlePressView },
     });
   };
 

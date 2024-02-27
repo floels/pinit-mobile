@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-import { Colors } from "@/src/global.styles";
+import { Colors, Fonts } from "@/src/global.styles";
 
 const styles = StyleSheet.create({
   pinCreationErrorContainer: {
@@ -23,6 +23,27 @@ const styles = StyleSheet.create({
   pinCreationErrorIcon: {
     marginRight: 10,
     color: Colors.fontWarning,
+  },
+  pinCreationSuccessContainer: {
+    width: "80%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: Colors.backgroundDark,
+    padding: 30,
+    borderRadius: 60,
+    marginBottom: 50,
+  },
+  pinCreationSuccessText: {
+    color: Colors.fontImportant,
+  },
+  pinCreationSuccessButton: {
+    backgroundColor: Colors.backgroundNormal,
+    padding: 10,
+    borderRadius: 20,
+  },
+  pinCreationSuccessButtonText: {
+    fontWeight: Fonts.fontWeightSemiBold,
   },
 });
 

@@ -40,6 +40,8 @@
     "LABEL_PIN_DESCRIPTION": "Description",
     "PLACEHOLDER_PIN_DESCRIPTION": "Add a description to your Pin",
     "SUBMIT_BUTTON_TEXT": "Create",
-    "CREATION_ERROR_MESSAGE": "An error occurred while attempting to create your Pin. Please try again."
+    "CREATION_ERROR_MESSAGE": "An error occurred while attempting to create your Pin. Please try again.",
+    "CREATION_SUCCESS_MESSAGE": "Your Pin is published!",
+    "CREATION_SUCCESS_TOAST_VIEW": "View"
   }
 }
