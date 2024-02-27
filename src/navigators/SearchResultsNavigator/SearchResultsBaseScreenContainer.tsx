@@ -5,7 +5,7 @@ import { TextInput } from "react-native";
 import SearchResultsBaseScreen from "./SearchResultsBaseScreen";
 
 import { API_BASE_URL, API_ENDPOINT_SEARCH } from "@/src/lib/constants";
-import { Pin } from "@/src/lib/types";
+import { PinWithAuthorDetails } from "@/src/lib/types";
 import { SearchResultsNavigatorParamList } from "@/src/navigators/SearchResultsNavigator/SearchResultsNavigator";
 
 type SearchResultsBaseScreenContainerProps = {
@@ -59,7 +59,7 @@ const SearchResultsBaseScreenContainer = ({
     pin,
     pinImageAspectRatio,
   }: {
-    pin: Pin;
+    pin: PinWithAuthorDetails;
     pinImageAspectRatio: number;
   }) => {
     return () => {

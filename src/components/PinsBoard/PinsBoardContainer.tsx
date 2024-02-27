@@ -11,7 +11,7 @@ import {
   Response401Error,
   ResponseKOError,
 } from "@/src/lib/customErrors";
-import { Pin } from "@/src/lib/types";
+import { PinBasicDetails, PinWithAuthorDetails } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/serializers";
 import { appendQueryParam } from "@/src/lib/utils/strings";
@@ -24,7 +24,7 @@ type PinsBoardContainerProps = {
     pin,
     pinImageAspectRatio,
   }: {
-    pin: Pin;
+    pin: PinWithAuthorDetails;
     pinImageAspectRatio: number;
   }) => () => void;
 };
@@ -52,7 +52,7 @@ const PinsBoardContainer = ({
 
   const { dispatch } = useAuthenticationContext();
 
-  const [pins, setPins] = useState<Pin[]>([]);
+  const [pins, setPins] = useState<PinWithAuthorDetails[]>([]);
   const [pinImageAspectRatios, setPinImageAspectRatios] = useState<
     (number | null)[]
   >([]);
@@ -190,9 +190,9 @@ const PinsBoardContainer = ({
   const fetchImageRatios = async ({
     pins,
   }: {
-    pins: Pin[];
+    pins: PinBasicDetails[];
   }): Promise<(number | null)[]> => {
-    const buildGetSizePromiseForPin = (pin: Pin) => {
+    const buildGetSizePromiseForPin = (pin: PinBasicDetails) => {
       return new Promise((resolve, reject) => {
         const imageURL = pin.imageURL;
 

@@ -3,11 +3,12 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 
+import { PinBasicDetails } from "@/src/lib/types";
 import AuthenticatedMainNavigator from "@/src/navigators/AuthenticatedMainNavigator/AuthenticatedMainNavigator";
 import CreatePinNavigator from "@/src/navigators/CreatePinNavigator/CreatePinNavigator";
 
 export type AuthenticatedNavigatorParamList = {
-  Main: undefined;
+  Main: { createdPin?: PinBasicDetails; createdPinImageAspectRatio: number };
   CreatePin: undefined;
 };
 

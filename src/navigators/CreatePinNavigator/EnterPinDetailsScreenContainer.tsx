@@ -10,12 +10,19 @@ import { CreatePinNavigatorParamList } from "./CreatePinNavigator";
 import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
+import { PinBasicDetails } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 
 type EnterPinDetailsScreenContainerProps = {
   navigation: NavigationProp<CreatePinNavigatorParamList>;
   route: RouteProp<CreatePinNavigatorParamList, "EnterPinDetails">;
-  handleCreateSuccess: () => void;
+  handleCreateSuccess: ({
+    pin,
+    pinImageAspectRatio,
+  }: {
+    pin: PinBasicDetails;
+    pinImageAspectRatio: number;
+  }) => void;
 };
 
 const EnterPinDetailsScreenContainer = ({
@@ -108,24 +115,47 @@ const EnterPinDetailsScreenContainer = ({
       return;
     }
 
-    handleCreateSuccess();
+    let responseData;
+
+    try {
+      responseData = await response.json();
+    } catch {
+      showKOResponseErrorToast();
+      return;
+    }
+
+    const {
+      unique_id: id,
+      image_url: imageURL,
+      title,
+      description,
+    } = responseData;
+
+    handleCreateSuccess({
+      pin: {
+        id,
+        imageURL,
+        title,
+        description,
+      },
+      pinImageAspectRatio: imageAspectRatio || 1, // If the aspect ratio
+      // couldn't be determined, we default to 1 (square image).
+    });
   };
 
   const showConnectionErrorToast = () => {
     Toast.show({
-      type: "error",
-      text1: t("Common.CONNECTION_ERROR_TOAST_TITLE"),
-      text2: t("Common.CONNECTION_ERROR_TOAST_TEXT"),
+      type: "pinCreationError",
       position: "bottom",
+      text1: t("Common.CONNECTION_ERROR"),
     });
   };
 
   const showKOResponseErrorToast = () => {
     Toast.show({
-      type: "error",
-      text1: t("CreatePin.CREATION_ERROR_TOAST_TITLE"),
-      text2: t("CreatePin.CREATION_ERROR_TOAST_TEXT"),
+      type: "pinCreationError",
       position: "bottom",
+      text1: t("CreatePin.CREATION_ERROR_MESSAGE"),
     });
   };
 

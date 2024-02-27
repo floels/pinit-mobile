@@ -9,7 +9,7 @@ import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
-import { Pin } from "@/src/lib/types";
+import { PinWithAuthorDetails } from "@/src/lib/types";
 import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
 
 type HomeScreenProps = {
@@ -21,7 +21,7 @@ const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
     pin,
     pinImageAspectRatio,
   }: {
-    pin: Pin;
+    pin: PinWithAuthorDetails;
     pinImageAspectRatio: number;
   }) => {
     return () => {

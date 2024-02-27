@@ -10,10 +10,10 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles, { SIDE_PADDING } from "./PinDetails.styles";
 
-import { Pin } from "@/src/lib/types";
+import { PinWithAuthorDetails } from "@/src/lib/types";
 
 type PinDetailsProps = {
-  pin: Pin;
+  pin: PinWithAuthorDetails;
   pinImageAspectRatio: number;
   handlePressBack: () => void;
   handlePressAuthor: () => void;

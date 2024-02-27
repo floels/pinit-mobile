@@ -3,12 +3,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AccountDetailsScreen from "./AccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 
-import { AccountPublicDetails, Pin } from "@/src/lib/types";
+import { AccountPublicDetails, PinWithAuthorDetails } from "@/src/lib/types";
 import HomeBaseScreen from "@/src/navigators/HomeNavigator/HomeBaseScreen";
 
 export type HomeNavigatorParamList = {
   HomeBase: undefined;
-  PinDetails: { pin: Pin; pinImageAspectRatio: number };
+  PinDetails: { pin: PinWithAuthorDetails; pinImageAspectRatio: number };
   AuthorAccountDetails: {
     accountDetailsQuery: {
       data: AccountPublicDetails | undefined;

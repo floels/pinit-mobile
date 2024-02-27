@@ -5,7 +5,7 @@ import AccountDetailsScreen from "./AccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 import { SearchNavigatorParamList } from "../SearchNavigator/SearchNavigator";
 
-import { AccountPublicDetails, Pin } from "@/src/lib/types";
+import { AccountPublicDetails, PinWithAuthorDetails } from "@/src/lib/types";
 import SearchResultsBaseScreenContainer from "@/src/navigators/SearchResultsNavigator/SearchResultsBaseScreenContainer";
 
 type SearchResultsNavigatorProps = {
@@ -15,7 +15,7 @@ type SearchResultsNavigatorProps = {
 
 export type SearchResultsNavigatorParamList = {
   SearchResultsBase: undefined;
-  PinDetails: { pin: Pin; pinImageAspectRatio: number };
+  PinDetails: { pin: PinWithAuthorDetails; pinImageAspectRatio: number };
   AuthorAccountDetails: {
     accountDetailsQuery: {
       data: AccountPublicDetails | undefined;
