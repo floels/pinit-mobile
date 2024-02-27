@@ -1,13 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as SecureStore from "expo-secure-store";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View, TouchableOpacity, Text } from "react-native";
 
 import styles from "./ProfileScreen.styles";
 
 import LoadingOverlay from "@/src/components/LoadingOverlay/LoadingOverlay";
-import { AuthenticationContext } from "@/src/contexts/authenticationContext";
+import { useAuthenticationContext } from "@/src/contexts/authenticationContext";
 import {
   ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
@@ -25,7 +25,7 @@ const clearTokensData = async () => {
 const ProfileScreen = () => {
   const { t } = useTranslation();
 
-  const { dispatch } = useContext(AuthenticationContext);
+  const { dispatch } = useAuthenticationContext();
 
   const [isClearingTokensData, setIsClearingTokensData] = useState(false);
 

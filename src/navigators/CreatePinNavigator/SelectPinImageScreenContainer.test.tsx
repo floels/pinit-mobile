@@ -17,7 +17,7 @@ jest.mock("expo-media-library", () => ({
   }),
 }));
 
-const mockedUsePermissions = MediaLibrary.usePermissions as jest.Mock;
+const mockUsePermissions = MediaLibrary.usePermissions as jest.Mock;
 
 const mockNavigation = {
   navigate: jest.fn(),
@@ -37,7 +37,7 @@ it("requests camera roll access if permissions hasn't yet been granted", async (
     .fn()
     .mockResolvedValue({ status: "granted" });
 
-  mockedUsePermissions.mockImplementation(() => [
+  mockUsePermissions.mockImplementation(() => [
     { accessPrivileges: "none" },
     mockRequestCameraRollAccessPermission,
   ]);
@@ -50,7 +50,7 @@ it("requests camera roll access if permissions hasn't yet been granted", async (
 });
 
 it("displays error message if camera roll access is refused", async () => {
-  mockedUsePermissions.mockImplementation(() => [
+  mockUsePermissions.mockImplementation(() => [
     { accessPrivileges: "none" },
     jest.fn().mockResolvedValue({ status: "denied" }),
   ]);
@@ -63,7 +63,7 @@ it("displays error message if camera roll access is refused", async () => {
 });
 
 it("renders CameraRollView if camera roll access is granted", async () => {
-  mockedUsePermissions.mockImplementation(() => [
+  mockUsePermissions.mockImplementation(() => [
     { accessPrivileges: "all" },
     jest.fn().mockResolvedValue({ status: "granted" }),
   ]);

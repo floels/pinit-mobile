@@ -6,6 +6,7 @@ export const API_ENDPOINT_PIN_SUGGESTIONS = "pin-suggestions";
 export const API_ENDPOINT_SEARCH_SUGGESTIONS = "search-suggestions";
 export const API_ENDPOINT_SEARCH = "search";
 export const API_ENDPOINT_ACCOUNT_DETAILS = "accounts";
+export const API_ENDPOINT_MY_ACCOUNT_DETAILS = "accounts/me";
 export const API_ENDPOINT_CREATE_PIN = "create-pin";
 
 // API error codes
@@ -16,3 +17,4 @@ export const ACCESS_TOKEN_STORAGE_KEY = "access_token";
 export const REFRESH_TOKEN_STORAGE_KEY = "refresh_token";
 export const ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY =
   "access_token_expiration_date";
+export const PROFILE_PICTURE_URL_STORAGE_KEY = "profile_picture_url";
