@@ -5,10 +5,7 @@ import { SearchResultsNavigatorParamList } from "./SearchResultsNavigator";
 import AccountDetails from "@/src/components/AccountDetails/AccountDetails";
 
 type AccountDetailsScreenProps = {
-  route: RouteProp<
-    SearchResultsNavigatorParamList,
-    "SearchResultsNavigatorAuthorAccountDetails"
-  >;
+  route: RouteProp<SearchResultsNavigatorParamList, "AuthorAccountDetails">;
   navigation: NavigationProp<SearchResultsNavigatorParamList>;
 };
 

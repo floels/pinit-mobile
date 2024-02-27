@@ -5,7 +5,6 @@ import { NativeScrollEvent, NativeSyntheticEvent, Image } from "react-native";
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 
 import { useAuthenticationContext } from "@/src/contexts/authenticationContext";
-import { API_BASE_URL } from "@/src/lib/constants";
 import {
   NetworkError,
   Response401Error,

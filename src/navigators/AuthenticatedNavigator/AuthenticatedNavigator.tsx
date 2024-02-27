@@ -3,13 +3,21 @@ import {
   TransitionPresets,
 } from "@react-navigation/stack";
 
-import { PinBasicDetails } from "@/src/lib/types";
+import CreatedPinDetailsScreen from "./CreatedPinDetailsScreen";
+
+import { PinBasicDetails, PinWithAuthorDetails } from "@/src/lib/types";
 import AuthenticatedMainNavigator from "@/src/navigators/AuthenticatedMainNavigator/AuthenticatedMainNavigator";
 import CreatePinNavigator from "@/src/navigators/CreatePinNavigator/CreatePinNavigator";
 
 export type AuthenticatedNavigatorParamList = {
-  Main: { createdPin?: PinBasicDetails; createdPinImageAspectRatio: number };
+  Main:
+    | undefined
+    | { createdPin: PinBasicDetails; createdPinImageAspectRatio: number };
   CreatePin: undefined;
+  CreatedPinDetails: {
+    createdPin: PinWithAuthorDetails;
+    createdPinImageAspectRatio: number;
+  };
 };
 
 const AuthenticatedNavigator = () => {
@@ -28,6 +36,10 @@ const AuthenticatedNavigator = () => {
         component={AuthenticatedMainNavigator}
       />
       <StackNavigator.Screen name="CreatePin" component={CreatePinNavigator} />
+      <StackNavigator.Screen
+        name="CreatedPinDetails"
+        component={CreatedPinDetailsScreen}
+      />
     </StackNavigator.Navigator>
   );
 };
