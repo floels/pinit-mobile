@@ -28,6 +28,9 @@
   "ProfileScreen": {
     "LOG_OUT": "Log out"
   },
+  "AccountDetails": {
+    "ERROR_FETCH_ACCOUNT_DETAILS": "An error occurred while retrieving the details of this account."
+  },
   "CreatePin": {
     "CAMERA_ROLL_ACCESS_REQUIRED": "Camera roll access is required to create a pin.",
     "NEXT": "Next",

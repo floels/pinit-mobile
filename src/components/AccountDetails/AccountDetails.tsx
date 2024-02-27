@@ -1,8 +1,10 @@
+import { useTranslation } from "react-i18next";
 import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./AccountDetails.styles";
+import Spinner from "../Spinner/Spinner";
 
 import { Colors } from "@/src/global.styles";
 import { AccountPublicDetails } from "@/src/lib/types";
@@ -29,15 +31,58 @@ const AccountDetails = ({
   isError,
   onPressBack,
 }: AccountDetailsProps) => {
+  const { t } = useTranslation();
+
+  const hasBackgroundPicture = !!accountDetails?.backgroundPictureURL;
+
+  const backButtonIconStyle = hasBackgroundPicture
+    ? styles.backButtonIconWithBackgroundPicture
+    : null;
+
+  const backButton = (
+    <TouchableOpacity onPress={onPressBack} style={styles.backButton}>
+      <FontAwesome5Icon
+        name="chevron-left"
+        size={20}
+        style={backButtonIconStyle}
+      />
+    </TouchableOpacity>
+  );
+
   if (isLoading) {
-    return null; // TODO: display spinner
+    return (
+      <View style={styles.container}>
+        {backButton}
+        <View style={styles.loadingOrErrorStateContainer}>
+          <Spinner>
+            <FontAwesome5Icon
+              name="spinner"
+              size={40}
+              style={styles.spinnerIcon}
+            />
+          </Spinner>
+        </View>
+      </View>
+    );
   }
 
   if (isError || !accountDetails) {
-    return null; // TODO: display error message, log out if 401 error
+    return (
+      <View style={styles.container}>
+        {backButton}
+        <View style={styles.loadingOrErrorStateContainer}>
+          <FontAwesome5Icon
+            name="exclamation-circle"
+            size={40}
+            style={styles.errorIcon}
+          />
+          <Text style={styles.errorText}>
+            {t("AccountDetails.ERROR_FETCH_ACCOUNT_DETAILS")}
+          </Text>
+        </View>
+      </View>
+    );
   }
-
-  const hasBackgroundPicture = !!accountDetails.backgroundPictureURL;
 
   let picturesBlock;
 
@@ -72,19 +117,8 @@ const AccountDetails = ({
     );
   }
 
-  const backButtonIconStyle = hasBackgroundPicture
-    ? styles.backButtonIconWithBackgroundPicture
-    : null;
-
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onPressBack} style={styles.backButton}>
-        <FontAwesome5Icon
-          name="chevron-left"
-          size={20}
-          style={backButtonIconStyle}
-        />
-      </TouchableOpacity>
       {picturesBlock}
       <Text style={styles.displayName}>{accountDetails.displayName}</Text>
       <View style={styles.logoAndUsername}>

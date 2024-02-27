@@ -35,7 +35,7 @@ const SelectPinImageScreen = ({
   if (refusedCameraRollAccess) {
     displayCameraRoll = (
       <View>
-        <FontAwesome5Icon name="exclamation-triangle" size={24} />
+        <FontAwesome5Icon name="exclamation-circle" size={24} />
         <Text>{t("CreatePin.CAMERA_ROLL_ACCESS_REQUIRED")}</Text>
       </View>
     );
