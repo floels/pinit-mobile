@@ -34,19 +34,19 @@ const renderComponent = () => {
 };
 
 const focusSearchInput = () => {
-  const searchInput = screen.getByTestId("search-input");
+  const searchInput = screen.getByTestId("pins-search-input-text-input");
 
   fireEvent(searchInput, "focus");
 };
 
 const typeInSearchInput = async (input: string) => {
-  const searchInput = screen.getByTestId("search-input");
+  const searchInput = screen.getByTestId("pins-search-input-text-input");
 
   await userEvent.type(searchInput, input);
 };
 
 const submitSearchInput = () => {
-  const searchInput = screen.getByTestId("search-input");
+  const searchInput = screen.getByTestId("pins-search-input-text-input");
 
   fireEvent(searchInput, "submitEditing");
 };
@@ -86,7 +86,7 @@ it("clears input and hides clear icon when user presses 'Clear' icon", async () 
 
   await typeInSearchInput("abc");
 
-  const searchInput = screen.getByTestId("search-input");
+  const searchInput = screen.getByTestId("pins-search-input-text-input");
   expect(searchInput.props.value).toEqual("abc");
 
   pressButton({ testID: "pins-search-input-clear-icon" });
@@ -103,7 +103,7 @@ it("clears input and shows search icon again when user presses 'Cancel'", async 
 
   pressButton({ testID: "pins-search-input-cancel-button" });
 
-  const searchInput = screen.getByTestId("search-input");
+  const searchInput = screen.getByTestId("pins-search-input-text-input");
   expect(searchInput.props.value).toEqual("");
 
   screen.getByTestId("pins-search-input-search-icon");

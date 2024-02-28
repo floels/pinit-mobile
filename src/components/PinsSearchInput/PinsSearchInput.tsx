@@ -66,7 +66,7 @@ const PinsSearchInput = forwardRef(
               onChangeText={handleInputChange}
               onSubmitEditing={handleSubmit}
               style={styles.searchInput}
-              testID="search-input"
+              testID="pins-search-input-text-input"
               ref={ref}
             />
             {showClearIcon && (
