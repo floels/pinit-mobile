@@ -32,10 +32,10 @@ const MARGIN_SCROLL_BEFORE_NEW_FETCH = 10000; // the margin we leave ourselves
 // in terms of remaining scroll before reaching the end of the board.
 // This margin will determine when we trigger the fetching of new pins (see below).
 
-const DEBOUNCE_TIME_REFRESH_MS = 1000; // after the user just
-// refreshed pins, we wait for this timeout before displaying the refresh spinner
-// preview again. Otherwise, there's a weird visual effect if the user continues
-// scrolling down further than the refresh threshold.
+export const DEBOUNCE_TIME_REFRESH_MS = 1000; // after the user just
+// refreshed pins, we wait for this timeout before refreshing again and displaying the
+// refresh spinner preview again. Otherwise, there is a weird visual effect if the user
+// continues scrolling down further than the refresh threshold.
 
 export const DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS = 500; // this debounce
 // is introduced to avoid fetching the two next pages instead of just the next
@@ -160,13 +160,9 @@ const PinsBoardContainer = ({
     let newPinsResponse;
 
     try {
-      if (shouldAuthenticate) {
-        newPinsResponse = await fetchWithAuthentication(
-          endpointWithPageParameter,
-        );
-      } else {
-        newPinsResponse = await fetch(endpointWithPageParameter);
-      }
+      newPinsResponse = await fetchWithAuthenticationIfNeeded(
+        endpointWithPageParameter,
+      );
     } catch {
       throw new NetworkError();
     }
@@ -184,6 +180,14 @@ const PinsBoardContainer = ({
     return getPinsWithCamelCaseKeys(responseData.results);
   };
 
+  const fetchWithAuthenticationIfNeeded = async (url: string) => {
+    if (shouldAuthenticate) {
+      return await fetchWithAuthentication(url);
+    }
+
+    return await fetch(url);
+  };
+
   const fetchImageRatios = async ({
     pins,
   }: {
@@ -192,11 +196,6 @@ const PinsBoardContainer = ({
     const buildGetSizePromiseForPin = (pin: PinBasicDetails) => {
       return new Promise((resolve, reject) => {
         const imageURL = pin.imageURL;
-
-        if (!imageURL) {
-          resolve(null);
-          return;
-        }
 
         Image.getSize(
           imageURL,

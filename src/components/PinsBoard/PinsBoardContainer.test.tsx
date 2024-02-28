@@ -6,9 +6,9 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 import { FetchMock } from "jest-fetch-mock";
-import { Image } from "react-native";
 
 import PinsBoardContainer, {
+  DEBOUNCE_TIME_REFRESH_MS,
   DEBOUNCE_TIME_SCROLL_DOWN_TO_FETCH_MORE_PINS_MS,
 } from "./PinsBoardContainer";
 
@@ -42,12 +42,16 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
   );
 });
 
-// Mock Image.getSize()
-Image.getSize = jest.fn((uri, success) => {
+const mockGetSize = jest.fn((_, success, __) => {
   process.nextTick(() => {
     success(100, MOCKED_PIN_THUMBNAIL_HEIGHT);
   });
 });
+
+jest.mock("react-native/Libraries/Image/Image", () => ({
+  ...jest.requireActual("react-native/Libraries/Image/Image"),
+  getSize: mockGetSize,
+}));
 
 const mockPinSuggestionsPage = Array.from(
   { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
@@ -75,7 +79,7 @@ const mockDispatch = jest.fn();
 
 const mockGetTapHandlerForPin = () => () => {};
 
-const renderComponent = () => {
+const renderComponent = (props?: any) => {
   const initialState = {
     isCheckingAccessToken: false,
     isAuthenticated: true,
@@ -89,9 +93,9 @@ const renderComponent = () => {
     >
       <PinsBoardContainer
         fetchEndpoint={pinSuggestionsEndpoint}
-        shouldAuthenticate
         getTapHandlerForPin={mockGetTapHandlerForPin}
         emptyResultsMessageKey="SearchScreen.NO_RESULTS"
+        {...props}
       />
     </AuthenticationContext.Provider>,
   );
@@ -155,12 +159,21 @@ and fetches second page upon scroll`, async () => {
   await waitFor(() => {
     expect(fetch as FetchMock).toHaveBeenLastCalledWith(
       `${endpointWithBaseURL}?page=2`,
-      expect.anything(),
     );
   });
 
   jest.clearAllTimers();
   jest.useRealTimers();
+});
+
+it("fetches first page with authentication if relevant", async () => {
+  renderComponent({ shouldAuthenticate: true });
+
+  await waitFor(() => {
+    expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?page=1`, {
+      headers: { Authorization: "Bearer access_token" },
+    });
+  });
 });
 
 it("displays relevant message if search results are empty", async () => {
@@ -221,7 +234,31 @@ it("displays error message upon 400 response when fetching initial pins", async 
   });
 });
 
-it("refreshes pins when pulling to refresh", async () => {
+it("displays error message upon error in 'Image.getSize()' when fetching initial pins", async () => {
+  fetchMock.mockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockPinSuggestionsPage,
+    }),
+  );
+
+  mockGetSize.mockImplementationOnce((_, __, error) => {
+    process.nextTick(() => {
+      error(new Error());
+    });
+  });
+
+  renderComponent();
+
+  await waitFor(() => {
+    screen.getByText(enTranslations.Common.ERROR_FETCH_MORE_PINS);
+  });
+});
+
+it(`refreshes pins when pulling to refresh, and does not refresh
+again if user pulls again within debounce time`, async () => {
+  jest.useFakeTimers();
+
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
@@ -245,6 +282,73 @@ it("refreshes pins when pulling to refresh", async () => {
       `mocked-pin-thumbnail-${NUMBER_PIN_SUGGESTIONS_PER_PAGE}`,
     );
   });
+
+  (fetch as FetchMock).mockReset();
+
+  jest.advanceTimersByTime(DEBOUNCE_TIME_REFRESH_MS / 2);
+
+  pullToRefresh();
+
+  jest.clearAllTimers();
+  jest.useRealTimers();
+
+  await new Promise((resolve) => setTimeout(resolve, 1)); // Without this wait,
+  // the following assertion would be inoperative, meaning it would
+  // pass even if there was a bug that led the component to fetch again.
+
+  expect(fetch).not.toHaveBeenCalled();
+});
+
+it(`refreshes pins when pulling to refresh, and refreshes
+again if user pulls again after debounce time`, async () => {
+  jest.useFakeTimers();
+
+  fetchMock.mockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockPinSuggestionsPage,
+    }),
+  );
+
+  renderComponent();
+
+  fetchMock.mockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockRefreshedPinSuggestionsPage,
+    }),
+  );
+
+  pullToRefresh();
+
+  await waitFor(() => {
+    screen.getByTestId(
+      `mocked-pin-thumbnail-${NUMBER_PIN_SUGGESTIONS_PER_PAGE}`,
+    );
+  });
+
+  (fetch as FetchMock).mockReset();
+  expect(fetch).not.toHaveBeenCalled();
+
+  fetchMock.mockOnceIf(
+    `${endpointWithBaseURL}?page=1`,
+    JSON.stringify({
+      results: mockRefreshedPinSuggestionsPage,
+    }),
+  );
+
+  act(() => {
+    jest.advanceTimersByTime(DEBOUNCE_TIME_REFRESH_MS * 2);
+  });
+
+  pullToRefresh();
+
+  await waitFor(() => {
+    expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?page=1`);
+  });
+
+  jest.clearAllTimers();
+  jest.useRealTimers();
 });
 
 it("displays error message upon fetch error on refresh", async () => {
