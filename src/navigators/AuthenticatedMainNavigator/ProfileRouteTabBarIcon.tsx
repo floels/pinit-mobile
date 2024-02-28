@@ -21,9 +21,15 @@ const ProfileRouteTabBarIcon = ({
   );
 
   const fetchProfilePictureURL = async () => {
-    const fetchedProfilePictureURL = await AsyncStorage.getItem(
-      PROFILE_PICTURE_URL_STORAGE_KEY,
-    );
+    let fetchedProfilePictureURL;
+
+    try {
+      fetchedProfilePictureURL = await AsyncStorage.getItem(
+        PROFILE_PICTURE_URL_STORAGE_KEY,
+      );
+    } catch (error) {
+      // Fail silently
+    }
 
     if (fetchedProfilePictureURL) {
       setProfilePictureURL(fetchedProfilePictureURL);
