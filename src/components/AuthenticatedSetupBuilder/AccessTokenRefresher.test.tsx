@@ -39,7 +39,7 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it(`does not not refresh the access token if the expiration date 
+it(`does not refresh the access token if the expiration date 
 is after the cutoff, and calls 'hasFinishedFetching'`, async () => {
   const nowTime = new Date().getTime();
 
@@ -61,20 +61,13 @@ is after the cutoff, and calls 'hasFinishedFetching'`, async () => {
 
   expect(fetch).not.toHaveBeenCalled();
 
-  expect(mockSetHasFinishedFetching).toHaveBeenCalled();
+  expect(mockSetHasFinishedFetching).toHaveBeenCalledTimes(1);
 });
 
-it(`refreshes the access token if the expiration date 
-is before the cutoff, and calls 'hasFinishedFetching'`, async () => {
-  const nowTime = new Date().getTime();
-
-  const accessTokenExpirationDate = new Date(
-    nowTime + TOKEN_REFRESH_BUFFER_BEFORE_EXPIRATION_MS / 2,
-  );
-
-  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
-    accessTokenExpirationDate.toISOString(),
-  );
+it(`fetches a refreshed access token if the expiration date 
+is absent, persists the relevant data and calls 'hasFinishedFetching'
+upon successful response`, async () => {
+  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => null);
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "refresh_token",
   );
@@ -102,13 +95,39 @@ is before the cutoff, and calls 'hasFinishedFetching'`, async () => {
       ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
       refreshedTokenExpirationDate,
     );
-  });
 
-  expect(mockSetHasFinishedFetching).toHaveBeenCalled();
+    expect(mockSetHasFinishedFetching).toHaveBeenCalledTimes(1);
+  });
 });
 
-it("refreshes the access token if the expiration date is absent", async () => {
+it(`fetches a refreshed access token and calls 'hasFinishedFetching'
+upon KO response`, async () => {
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => null);
+  (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
+    () => "refresh_token",
+  );
+
+  fetchMock.mockOnceIf(refreshEndpoint, JSON.stringify({}), { status: 400 });
+
+  mockSetHasFinishedFetching.mockReset();
+
+  renderComponent();
+
+  await waitFor(() => {
+    expect(mockSetHasFinishedFetching).toHaveBeenCalledTimes(1);
+  });
+});
+
+it("fetches a refreshed access token if the expiration date is before the cutoff", async () => {
+  const nowTime = new Date().getTime();
+
+  const accessTokenExpirationDate = new Date(
+    nowTime + TOKEN_REFRESH_BUFFER_BEFORE_EXPIRATION_MS / 2,
+  );
+
+  (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
+    accessTokenExpirationDate.toISOString(),
+  );
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "refresh_token",
   );
