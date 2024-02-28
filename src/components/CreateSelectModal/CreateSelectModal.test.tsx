@@ -20,7 +20,7 @@ const renderComponent = () => {
 it("calls 'handlePressCreatePin' upon click on 'Create Pin' button", async () => {
   renderComponent();
 
-  await pressButton({ testID: "create-pin-button" });
+  pressButton({ testID: "create-pin-button" });
 
   expect(mockHandlePressCreatePin).toHaveBeenCalledTimes(1);
 });
@@ -28,7 +28,7 @@ it("calls 'handlePressCreatePin' upon click on 'Create Pin' button", async () =>
 it("calls 'handleClose' upon click on close button", async () => {
   renderComponent();
 
-  await pressButton({ testID: "create-select-modal-close-button" });
+  pressButton({ testID: "create-select-modal-close-button" });
 
   expect(mockHandleClose).toHaveBeenCalledTimes(1);
 });

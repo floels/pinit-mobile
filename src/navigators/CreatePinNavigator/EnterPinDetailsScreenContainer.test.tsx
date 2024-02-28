@@ -1,4 +1,9 @@
-import { render, screen, userEvent } from "@testing-library/react-native";
+import {
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from "@testing-library/react-native";
 import { Image } from "react-native";
 import Toast from "react-native-toast-message";
 
@@ -80,15 +85,17 @@ it("calls 'handleCreateSuccess' with proper arguments upon successful pin creati
     status: 201,
   });
 
-  await pressButton({ testID: "create-pin-submit-button" });
+  pressButton({ testID: "create-pin-submit-button" });
 
-  expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
-    createdPin: {
-      imageURL: createdPinData.image_url,
-      title: createdPinData.title,
-      description: createdPinData.description,
-    },
-    createdPinImageAspectRatio: 1.5,
+  await waitFor(() => {
+    expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
+      createdPin: {
+        imageURL: createdPinData.image_url,
+        title: createdPinData.title,
+        description: createdPinData.description,
+      },
+      createdPinImageAspectRatio: 1.5,
+    });
   });
 });
 
@@ -97,14 +104,16 @@ it("displays error connection toast upon fetch error", async () => {
 
   fetchMock.mockReject(new Error());
 
-  await pressButton({ testID: "create-pin-submit-button" });
+  pressButton({ testID: "create-pin-submit-button" });
 
-  expect(Toast.show).toHaveBeenLastCalledWith(
-    expect.objectContaining({
-      type: "pinCreationError",
-      text1: enTranslations.Common.CONNECTION_ERROR,
-    }),
-  );
+  await waitFor(() => {
+    expect(Toast.show).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        type: "pinCreationError",
+        text1: enTranslations.Common.CONNECTION_ERROR,
+      }),
+    );
+  });
 });
 
 it("displays error response toast upon KO response", async () => {
@@ -112,14 +121,16 @@ it("displays error response toast upon KO response", async () => {
 
   fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify({}), { status: 400 });
 
-  await pressButton({ testID: "create-pin-submit-button" });
+  pressButton({ testID: "create-pin-submit-button" });
 
-  expect(Toast.show).toHaveBeenLastCalledWith(
-    expect.objectContaining({
-      type: "pinCreationError",
-      text1: enTranslations.CreatePin.CREATION_ERROR_MESSAGE,
-    }),
-  );
+  await waitFor(() => {
+    expect(Toast.show).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        type: "pinCreationError",
+        text1: enTranslations.CreatePin.CREATION_ERROR_MESSAGE,
+      }),
+    );
+  });
 });
 
 it("fetches image size itself if aspect ratio wasn't provided", async () => {
@@ -139,11 +150,13 @@ it("fetches image size itself if aspect ratio wasn't provided", async () => {
     status: 201,
   });
 
-  await pressButton({ testID: "create-pin-submit-button" });
+  pressButton({ testID: "create-pin-submit-button" });
 
-  expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
-    createdPin: expect.anything(), // already tested above
-    createdPinImageAspectRatio: fetchedAspectRatio,
+  await waitFor(() => {
+    expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
+      createdPin: expect.anything(), // already tested above
+      createdPinImageAspectRatio: fetchedAspectRatio,
+    });
   });
 });
 
@@ -164,14 +177,16 @@ upon malformed OK response`, async () => {
 
   fetchMock.mockOnceIf(createPinEndpoint, "");
 
-  await pressButton({ testID: "create-pin-submit-button" });
+  pressButton({ testID: "create-pin-submit-button" });
 
-  expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
-    createdPin: {
-      imageURL: "",
-      title: "My title",
-      description: "My description",
-    },
-    createdPinImageAspectRatio: 1.5,
+  await waitFor(() => {
+    expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
+      createdPin: {
+        imageURL: "",
+        title: "My title",
+        description: "My description",
+      },
+      createdPinImageAspectRatio: 1.5,
+    });
   });
 });

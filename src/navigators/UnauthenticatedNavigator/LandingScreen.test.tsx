@@ -15,7 +15,7 @@ const renderComponent = () => {
 it("navigates to login screen when pressing 'Log in' button", async () => {
   renderComponent();
 
-  await pressButton({ testID: "log-in-button" });
+  pressButton({ testID: "log-in-button" });
 
   expect(mockNavigation.navigate).toHaveBeenCalledWith("LoginScreen");
 });

@@ -46,7 +46,7 @@ it("renders pin details", () => {
 it("calls 'handlePressAuthor' upon press on author details", async () => {
   renderComponent();
 
-  await pressButton({ testID: "pin-details-author-data" });
+  pressButton({ testID: "pin-details-author-data" });
 
   expect(mockHandlePressAuthor).toHaveBeenCalledTimes(1);
 });
