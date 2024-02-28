@@ -1,18 +1,16 @@
 import { NavigationProp, useFocusEffect } from "@react-navigation/native";
-import { Asset } from "expo-media-library";
-import * as MediaLibrary from "expo-media-library";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { Image } from "react-native";
 
 import { CreatePinNavigatorParamList } from "./CreatePinNavigator";
 import SelectPinImageScreen from "./SelectPinImageScreen";
 
+import { useCameraRollPhotos } from "@/src/hooks/useCameraRollPhotos";
+
 type SelectPinImageScreenContainerProps = {
   handlePressClose: () => void;
   navigation: NavigationProp<CreatePinNavigatorParamList>;
 };
-
-const NUMBER_CAMERA_ROLL_PHOTOS_DISPLAYED = 500;
 
 const SelectPinImageScreenContainer = ({
   handlePressClose,
@@ -34,44 +32,11 @@ const SelectPinImageScreenContainer = ({
     number | null
   >(null);
 
-  const [cameraRollPhotos, setCameraRollPhotos] = useState<Asset[]>([]);
-
-  const [
-    cameraRollAccessPermissionResponse,
-    requestCameraRollAccessPermission,
-  ] = MediaLibrary.usePermissions();
-
-  const [refusedCameraRollAccess, setRefusedCameraRollAccess] = useState(false);
-
-  const getCameraRollPhotos = async () => {
-    if (cameraRollAccessPermissionResponse?.accessPrivileges !== "all") {
-      const { status } = await requestCameraRollAccessPermission();
-
-      if (status !== "granted") {
-        setRefusedCameraRollAccess(true);
-        return;
-      }
-    }
-
-    const { assets } = await MediaLibrary.getAssetsAsync({
-      mediaType: "photo",
-      first: NUMBER_CAMERA_ROLL_PHOTOS_DISPLAYED,
-    });
-
-    setCameraRollPhotos(assets);
-  };
-
-  useEffect(() => {
-    getCameraRollPhotos();
-  }, []);
+  const { cameraRollPhotos, refusedCameraRollAccess } = useCameraRollPhotos();
 
   const handlePressNext = () => {
-    if (selectedImageIndex === null) {
-      return;
-    }
-
     navigation.navigate("EnterPinDetails", {
-      selectedImageURI: cameraRollPhotos[selectedImageIndex].uri,
+      selectedImageURI: cameraRollPhotos[selectedImageIndex as number].uri,
       providedImageAspectRatio: selectedImageAspectRatio,
     });
   };

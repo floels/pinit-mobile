@@ -43,9 +43,7 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
 });
 
 const mockGetSize = jest.fn((_, success, __) => {
-  process.nextTick(() => {
-    success(100, MOCKED_PIN_THUMBNAIL_HEIGHT);
-  });
+  success(100, MOCKED_PIN_THUMBNAIL_HEIGHT);
 });
 
 jest.mock("react-native/Libraries/Image/Image", () => ({
@@ -243,9 +241,7 @@ it("displays error message upon error in 'Image.getSize()' when fetching initial
   );
 
   mockGetSize.mockImplementationOnce((_, __, error) => {
-    process.nextTick(() => {
-      error(new Error());
-    });
+    error(new Error());
   });
 
   renderComponent();

@@ -33,6 +33,7 @@
           "isAccessMediaLocationEnabled": true
         }
       ]
-    ]
+    ],
+    "jsEngine": "hermes"
   }
 }

@@ -1,9 +1,8 @@
-import { render, screen, userEvent } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 
 import LandingScreen from "./LandingScreen";
 
 import { pressButton } from "@/src/lib/utils/testing";
-import enTranslations from "@/translations/en.json";
 
 const mockNavigation = {
   navigate: jest.fn(),
