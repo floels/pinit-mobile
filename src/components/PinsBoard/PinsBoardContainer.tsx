@@ -182,10 +182,10 @@ const PinsBoardContainer = ({
 
   const fetchWithAuthenticationIfNeeded = async (url: string) => {
     if (shouldAuthenticate) {
-      return await fetchWithAuthentication(url);
+      return fetchWithAuthentication(url);
     }
 
-    return await fetch(url);
+    return fetch(url);
   };
 
   const fetchImageRatios = async ({
