@@ -10,7 +10,7 @@ export type PinWithAuthorDetails = PinBasicDetails & {
   authorProfilePictureURL: string;
 };
 
-enum TypesOfAccount {
+export enum TypesOfAccount {
   PERSONAL = "personal",
   BUSINESS = "business",
 }

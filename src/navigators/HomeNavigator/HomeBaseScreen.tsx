@@ -17,20 +17,20 @@ type HomeScreenProps = {
 };
 
 const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
-  const getTapHandlerForPin = ({
-    pin,
-    pinImageAspectRatio,
-  }: {
-    pin: PinWithAuthorDetails;
-    pinImageAspectRatio: number;
-  }) => {
-    return () => {
+  const getTapHandlerForPin =
+    ({
+      pin,
+      pinImageAspectRatio,
+    }: {
+      pin: PinWithAuthorDetails;
+      pinImageAspectRatio: number;
+    }) =>
+    () => {
       navigation.navigate("PinDetails", {
         pin,
         pinImageAspectRatio,
       });
     };
-  };
 
   const pinSuggestionsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 

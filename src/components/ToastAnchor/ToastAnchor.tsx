@@ -34,6 +34,7 @@ const ToastAnchor = () => {
           <TouchableOpacity
             onPress={handlePressViewPin}
             style={styles.pinCreationSuccessButton}
+            testID="pin-creation-success-toast-view-button"
           >
             <Text style={styles.pinCreationSuccessButtonText}>
               {t("CreatePin.CREATION_SUCCESS_TOAST_VIEW")}

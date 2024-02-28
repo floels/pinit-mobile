@@ -6,6 +6,7 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 import { FetchMock } from "jest-fetch-mock";
+import { Image } from "react-native";
 
 import PinsBoardContainer, {
   DEBOUNCE_TIME_REFRESH_MS,
@@ -17,7 +18,6 @@ import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
-import { PinWithAuthorDetails } from "@/src/lib/types";
 import enTranslations from "@/translations/en.json";
 
 const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
@@ -42,14 +42,11 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
   );
 });
 
-const mockGetSize = jest.fn((_, success, __) => {
+Image.getSize = jest.fn();
+
+(Image.getSize as jest.Mock).mockImplementation((_, success) => {
   success(100, MOCKED_PIN_THUMBNAIL_HEIGHT);
 });
-
-jest.mock("react-native/Libraries/Image/Image", () => ({
-  ...jest.requireActual("react-native/Libraries/Image/Image"),
-  getSize: mockGetSize,
-}));
 
 const mockPinSuggestionsPage = Array.from(
   { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
@@ -240,7 +237,7 @@ it("displays error message upon error in 'Image.getSize()' when fetching initial
     }),
   );
 
-  mockGetSize.mockImplementationOnce((_, __, error) => {
+  (Image.getSize as jest.Mock).mockImplementationOnce((_, __, error) => {
     error(new Error());
   });
 

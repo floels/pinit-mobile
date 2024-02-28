@@ -27,7 +27,7 @@ const ProfileRouteTabBarIcon = ({
       fetchedProfilePictureURL = await AsyncStorage.getItem(
         PROFILE_PICTURE_URL_STORAGE_KEY,
       );
-    } catch (error) {
+    } catch {
       // Fail silently
     }
 
