@@ -25,7 +25,11 @@ const CreateSelectModal = ({
       >
         <View style={styles.modal}>
           <View style={styles.closeButtonAndTitle}>
-            <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
+            <TouchableOpacity
+              onPress={handleClose}
+              style={styles.closeButton}
+              testID="create-select-modal-close-button"
+            >
               <FontAwesome5Icon name="times" size={24} />
             </TouchableOpacity>
             <Text style={styles.title}>
@@ -35,6 +39,7 @@ const CreateSelectModal = ({
           <TouchableOpacity
             onPress={handlePressCreatePin}
             style={styles.createPinButton}
+            testID="create-pin-button"
           >
             <View style={styles.createPinIconContainer}>
               <FontAwesome5Icon name="thumbtack" size={20} />

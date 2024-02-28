@@ -45,7 +45,7 @@ const renderComponent = () => {
 const refreshEndpoint = `${API_BASE_URL}/${API_ENDPOINT_REFRESH_TOKEN}/`;
 const accountDetailsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}/`;
 
-it("should call '/accounts/me/' endpoint with the refreshed access token", async () => {
+it("calls '/accounts/me/' endpoint with the refreshed access token", async () => {
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
     Promise.resolve(null),
   ); // to ensure we will refresh the acess token

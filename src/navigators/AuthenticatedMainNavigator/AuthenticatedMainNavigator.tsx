@@ -101,7 +101,7 @@ const AuthenticatedMainNavigator = ({
       authorProfilePictureURL: account?.profilePictureURL,
     };
 
-    const handlePressView = () => {
+    const handlePressViewPin = () => {
       navigation.navigate("CreatedPinDetails", {
         createdPin: createdPinWithAuthorDetails as PinWithAuthorDetails,
         createdPinImageAspectRatio: createdPinImageAspectRatio as number,
@@ -111,7 +111,7 @@ const AuthenticatedMainNavigator = ({
     Toast.show({
       type: "pinCreationSuccess",
       position: "bottom",
-      props: { handlePressView },
+      props: { handlePressViewPin },
     });
   };
 

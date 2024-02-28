@@ -35,11 +35,17 @@ const PinDetails = ({
             styles.pinImage,
             { width: imageWidth, height: pinImageHeight },
           ]}
+          testID="pin-details-pin-image"
         />
-        <TouchableOpacity onPress={handlePressAuthor} style={styles.authorData}>
+        <TouchableOpacity
+          onPress={handlePressAuthor}
+          style={styles.authorData}
+          testID="pin-details-author-data"
+        >
           <Image
             source={{ uri: pin.authorProfilePictureURL }}
             style={styles.authorProfilePictureImage}
+            testID="pin-details-author-profile-picture"
           />
           <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
         </TouchableOpacity>

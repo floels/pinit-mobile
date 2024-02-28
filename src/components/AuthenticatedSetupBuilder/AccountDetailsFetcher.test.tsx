@@ -64,7 +64,7 @@ const accountDetails = {
 
 const accountDetailsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}/`;
 
-it("should dispatch relevant action and persist profile picture URL upon successful fetch", async () => {
+it("dispatches relevant action and persist profile picture URL upon successful fetch", async () => {
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "access_token",
   );
@@ -86,7 +86,7 @@ it("should dispatch relevant action and persist profile picture URL upon success
   });
 });
 
-it("should dispatch relevant action upon 401 response", async () => {
+it("dispatches relevant action upon 401 response", async () => {
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "access_token",
   );
@@ -104,7 +104,7 @@ it("should dispatch relevant action upon 401 response", async () => {
   });
 });
 
-it("should fail silently upon KO response", async () => {
+it("fails silently upon KO response", async () => {
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "access_token",
   );

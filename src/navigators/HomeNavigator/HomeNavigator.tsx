@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AccountDetailsScreen from "./AccountDetailsScreen";
+import AuthorAccountDetailsScreen from "./AuthorAccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 
 import { AccountPublicDetails, PinWithAuthorDetails } from "@/src/lib/types";
@@ -34,7 +34,7 @@ const HomeNavigator = () => {
       <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
       <StackNavigator.Screen
         name="AuthorAccountDetails"
-        component={AccountDetailsScreen}
+        component={AuthorAccountDetailsScreen}
       />
     </StackNavigator.Navigator>
   );

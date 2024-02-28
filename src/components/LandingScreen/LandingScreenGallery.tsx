@@ -54,7 +54,8 @@ const IMAGE_ASSETS: { [imageKey: string]: number } = {
   "image-2-14": require("@/assets/images/landingScreen/image-2-14.jpg"),
   "image-2-15": require("@/assets/images/landingScreen/image-2-15.jpg"),
 };
-const NUMBER_IMAGES_PER_COLUMN = 16;
+
+export const NUMBER_IMAGES_PER_COLUMN = 16;
 const MAX_SCROLL = 3000;
 const SCROLL_DURATION_MS = 2 * 60 * 1000;
 
@@ -75,7 +76,10 @@ const LandingScreenGallery = () => {
   );
 
   const renderImageColumn = ({ columnIndex }: { columnIndex: number }) => (
-    <View style={styles.imageColumn}>
+    <View
+      style={styles.imageColumn}
+      testID={`landing-screen-gallery-column-${columnIndex}`}
+    >
       {imageIndexes.map((_, imageIndex) => {
         const imageKey = `image-${columnIndex}-${imageIndex}`;
 

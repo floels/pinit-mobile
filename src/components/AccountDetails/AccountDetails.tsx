@@ -40,7 +40,11 @@ const AccountDetails = ({
     : null;
 
   const backButton = (
-    <TouchableOpacity onPress={onPressBack} style={styles.backButton}>
+    <TouchableOpacity
+      onPress={onPressBack}
+      style={styles.backButton}
+      testID="account-details-back-button"
+    >
       <FontAwesome5Icon
         name="chevron-left"
         size={20}
@@ -59,6 +63,7 @@ const AccountDetails = ({
               name="spinner"
               size={40}
               style={styles.spinnerIcon}
+              testID="account-details-loading-spinner"
             />
           </Spinner>
         </View>
@@ -95,6 +100,7 @@ const AccountDetails = ({
           source={{ uri: accountDetails.backgroundPictureURL }}
           width={screenWidth}
           style={styles.backgroundPictureImage}
+          testID="account-background-picture"
         />
         <Image
           source={{ uri: accountDetails.profilePictureURL }}
@@ -102,6 +108,7 @@ const AccountDetails = ({
             styles.profilePictureImage,
             styles.profilePictureImageWithBackgroundPicture,
           ]}
+          testID="account-profile-picture"
         />
       </View>
     );
@@ -113,6 +120,7 @@ const AccountDetails = ({
           styles.profilePictureImage,
           styles.profilePictureImageWithoutBackgroundPicture,
         ]}
+        testID="account-profile-picture"
       />
     );
   }

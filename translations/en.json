@@ -6,9 +6,8 @@
     "ERROR_REFRESH_PINS": "An error occurred while attempting to refresh pins."
   },
   "LandingScreen": {
-    "WELCOME": "Welcome to PinIt!",
+    "WELCOME_TEXT": "Welcome to PinIt!",
     "LOG_IN": "Log in",
-    "SIGN_UP": "Sign up",
     "LABEL_EMAIL": "Email",
     "PLACEHOLDER_EMAIL": "Enter your email address",
     "LABEL_PASSWORD": "Password",

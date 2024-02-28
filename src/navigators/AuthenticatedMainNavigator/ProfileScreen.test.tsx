@@ -1,10 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  render,
-  screen,
-  userEvent,
-  waitFor,
-} from "@testing-library/react-native";
+import { render, screen, waitFor } from "@testing-library/react-native";
 import * as SecureStore from "expo-secure-store";
 
 import ProfileScreen from "./ProfileScreen";
@@ -15,6 +10,7 @@ import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/src/lib/constants";
+import { pressButton } from "@/src/lib/utils/testing";
 
 jest.mock("@/src/components/LoadingOverlay/LoadingOverlay", () => {
   const View = jest.requireActual(
@@ -49,13 +45,7 @@ const renderComponent = () => {
   );
 };
 
-const pressLogOutButton = async () => {
-  const logOutButton = screen.getByTestId("log-out-button");
-
-  await userEvent.press(logOutButton);
-};
-
-it(`should clear tokens data and dispatch logout action
+it(`clears tokens data and dispatch logout action
 upon click on 'Log out' button`, async () => {
   jest.useFakeTimers();
 
@@ -68,7 +58,7 @@ upon click on 'Log out' button`, async () => {
     Promise.resolve(),
   );
 
-  await pressLogOutButton();
+  await pressButton({ testID: "log-out-button" });
 
   expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
     ACCESS_TOKEN_STORAGE_KEY,
@@ -85,7 +75,7 @@ upon click on 'Log out' button`, async () => {
   jest.useRealTimers();
 });
 
-it(`should display loading overlay while clearing tokens data,
+it(`displays loading overlay while clearing tokens data,
 and hide loading overlay when clearing tokens data failed`, async () => {
   jest.useFakeTimers();
 
@@ -104,7 +94,7 @@ and hide loading overlay when clearing tokens data failed`, async () => {
     Promise.resolve(),
   );
 
-  await pressLogOutButton();
+  await pressButton({ testID: "log-out-button" });
 
   screen.getByTestId("mocked-loading-overlay");
 

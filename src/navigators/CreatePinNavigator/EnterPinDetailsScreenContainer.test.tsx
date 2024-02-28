@@ -4,6 +4,7 @@ import Toast from "react-native-toast-message";
 import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
+import { pressButton } from "@/src/lib/utils/testing";
 import enTranslations from "@/translations/en.json";
 
 jest.mock("expo-media-library", () => ({
@@ -65,17 +66,7 @@ const typeInDescriptionInput = async (input: string) => {
   await userEvent.type(descriptionInput, input);
 };
 
-const pressSubmit = async () => {
-  jest.useFakeTimers();
-
-  const submitButton = screen.getByTestId("create-pin-submit-button");
-
-  await userEvent.press(submitButton);
-
-  jest.useRealTimers();
-};
-
-it("should call 'handleCreateSuccess' upon successful pin creation", async () => {
+it("calls 'handleCreateSuccess' upon successful pin creation", async () => {
   renderComponent();
 
   await typeInTitleInput("My title");
@@ -94,17 +85,17 @@ it("should call 'handleCreateSuccess' upon successful pin creation", async () =>
 
   expect(mockHandleCreateSuccess).not.toHaveBeenCalled();
 
-  await pressSubmit();
+  await pressButton({ testID: "create-pin-submit-button" });
 
   expect(mockHandleCreateSuccess).toHaveBeenCalledTimes(1);
 });
 
-it("should display error connection toast upon fetch error", async () => {
+it("displays error connection toast upon fetch error", async () => {
   renderComponent();
 
   fetchMock.mockReject(new Error());
 
-  await pressSubmit();
+  await pressButton({ testID: "create-pin-submit-button" });
 
   expect(Toast.show).toHaveBeenLastCalledWith(
     expect.objectContaining({
@@ -114,12 +105,12 @@ it("should display error connection toast upon fetch error", async () => {
   );
 });
 
-it("should display error response toast upon KO response", async () => {
+it("displays error response toast upon KO response", async () => {
   renderComponent();
 
   fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify({}), { status: 400 });
 
-  await pressSubmit();
+  await pressButton({ testID: "create-pin-submit-button" });
 
   expect(Toast.show).toHaveBeenLastCalledWith(
     expect.objectContaining({
@@ -129,7 +120,7 @@ it("should display error response toast upon KO response", async () => {
   );
 });
 
-it("should fetch image size if aspect ratio wasn't provided", async () => {
+it("fetches image size if aspect ratio wasn't provided", async () => {
   renderComponent({
     route: {
       params: { selectedImageURI: "ph://AAAA", providedImageAspectRatio: null },
@@ -139,7 +130,7 @@ it("should fetch image size if aspect ratio wasn't provided", async () => {
   expect(mockGetSize).toHaveBeenCalledWith("ph://AAAA", expect.any(Function));
 });
 
-it("should not fetch image size if aspect ratio was provided", async () => {
+it("does not fetch image size if aspect ratio was provided", async () => {
   mockGetSize.mockReset();
 
   renderComponent();

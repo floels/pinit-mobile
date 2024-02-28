@@ -1,14 +1,14 @@
 import { ellipsizeText } from "./strings";
 
 describe("ellipsizeText", () => {
-  it("should return the same text if under the maxLength", () => {
+  it("returns the same text if under the maxLength", () => {
     const text = "Hello";
     const maxLength = 10;
     const result = ellipsizeText({ text, maxLength });
     expect(result).toBe(text);
   });
 
-  it("should return ellipsized text if over the maxLength", () => {
+  it("returns ellipsized text if over the maxLength", () => {
     const text = "Hello, world!";
     const maxLength = 5;
     const expected = "Hello...";
@@ -16,21 +16,21 @@ describe("ellipsizeText", () => {
     expect(result).toBe(expected);
   });
 
-  it("should return the text unaltered if exactly the maxLength", () => {
+  it("returns the text unaltered if exactly the maxLength", () => {
     const text = "Hello";
     const maxLength = 5;
     const result = ellipsizeText({ text, maxLength });
     expect(result).toBe(text);
   });
 
-  it("should handle empty string input correctly", () => {
+  it("handles empty string input correctly", () => {
     const text = "";
     const maxLength = 5;
     const result = ellipsizeText({ text, maxLength });
     expect(result).toBe(text);
   });
 
-  it("should throw an error for negative maxLength", () => {
+  it("throws an error for negative maxLength", () => {
     const text = "Hello, world!";
     const maxLength = -5;
 
