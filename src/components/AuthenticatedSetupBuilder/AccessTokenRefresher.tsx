@@ -14,17 +14,17 @@ import { persistTokensData } from "@/src/lib/utils/authentication";
 export const TOKEN_REFRESH_BUFFER_BEFORE_EXPIRATION_MS = 60 * 60 * 1000; // i.e. 1 hour
 
 type AccessTokenRefresherProps = {
-  setHasFinishedFetching: (hasFinishedFetching: boolean) => void;
+  handleFinishedFetching: () => void;
 };
 
 const AccessTokenRefresher = ({
-  setHasFinishedFetching,
+  handleFinishedFetching,
 }: AccessTokenRefresherProps) => {
   const fetchRefreshedAccessTokenAndPersistIfRelevant = async () => {
     const shouldRefreshAccessToken = await checkShouldRefreshAccessToken();
 
     if (!shouldRefreshAccessToken) {
-      setHasFinishedFetching(true);
+      handleFinishedFetching();
       return;
     }
 
@@ -33,7 +33,7 @@ const AccessTokenRefresher = ({
     );
 
     if (!refreshToken) {
-      setHasFinishedFetching(true);
+      handleFinishedFetching();
       return;
     }
 
@@ -79,13 +79,13 @@ const AccessTokenRefresher = ({
         refreshToken,
       });
     } catch {
-      setHasFinishedFetching(true);
+      handleFinishedFetching();
       return;
     }
 
     await persistTokensData(refreshedAccessTokenData);
 
-    setHasFinishedFetching(true);
+    handleFinishedFetching();
   };
 
   const fetchRefreshedAccessToken = async ({

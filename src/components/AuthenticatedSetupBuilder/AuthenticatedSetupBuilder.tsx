@@ -4,15 +4,17 @@ import AccessTokenRefresher from "./AccessTokenRefresher";
 import AccountDetailsFetcher from "./AccountDetailsFetcher";
 
 const AuthenticatedSetupBuilder = () => {
-  const [
-    hasFinishedFetchingRefreshedToken,
-    setHasFinishedFetchingRefreshedToken,
-  ] = useState(false);
+  const [isFetchingRefreshedToken, setIsFetchingRefreshedToken] =
+    useState(true);
 
-  if (!hasFinishedFetchingRefreshedToken) {
+  const handleFinishedFetchingRefreshToken = () => {
+    setIsFetchingRefreshedToken(false);
+  };
+
+  if (isFetchingRefreshedToken) {
     return (
       <AccessTokenRefresher
-        setHasFinishedFetching={setHasFinishedFetchingRefreshedToken}
+        handleFinishedFetching={handleFinishedFetchingRefreshToken}
       />
     );
   }

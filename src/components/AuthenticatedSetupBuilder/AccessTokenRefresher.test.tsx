@@ -25,12 +25,12 @@ jest.mock("expo-secure-store", () => ({
 
 const refreshEndpoint = `${API_BASE_URL}/${API_ENDPOINT_REFRESH_TOKEN}/`;
 
-const mockSetHasFinishedFetching = jest.fn();
+const mockHandledFinishedFetching = jest.fn();
 
 const renderComponent = () => {
   render(
     <AccessTokenRefresher
-      setHasFinishedFetching={mockSetHasFinishedFetching}
+      handleFinishedFetching={mockHandledFinishedFetching}
     />,
   );
 };
@@ -51,7 +51,7 @@ is after the cutoff, and calls 'hasFinishedFetching'`, async () => {
     accessTokenExpirationDate.toISOString(),
   );
 
-  expect(mockSetHasFinishedFetching).not.toHaveBeenCalled();
+  expect(mockHandledFinishedFetching).not.toHaveBeenCalled();
 
   renderComponent();
 
@@ -61,7 +61,7 @@ is after the cutoff, and calls 'hasFinishedFetching'`, async () => {
 
   expect(fetch).not.toHaveBeenCalled();
 
-  expect(mockSetHasFinishedFetching).toHaveBeenCalledTimes(1);
+  expect(mockHandledFinishedFetching).toHaveBeenCalledTimes(1);
 });
 
 it(`fetches a refreshed access token if the expiration date 
@@ -82,7 +82,7 @@ upon successful response`, async () => {
     }),
   );
 
-  mockSetHasFinishedFetching.mockReset();
+  mockHandledFinishedFetching.mockReset();
 
   renderComponent();
 
@@ -96,7 +96,7 @@ upon successful response`, async () => {
       refreshedTokenExpirationDate,
     );
 
-    expect(mockSetHasFinishedFetching).toHaveBeenCalledTimes(1);
+    expect(mockHandledFinishedFetching).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -109,12 +109,12 @@ upon KO response`, async () => {
 
   fetchMock.mockOnceIf(refreshEndpoint, JSON.stringify({}), { status: 400 });
 
-  mockSetHasFinishedFetching.mockReset();
+  mockHandledFinishedFetching.mockReset();
 
   renderComponent();
 
   await waitFor(() => {
-    expect(mockSetHasFinishedFetching).toHaveBeenCalledTimes(1);
+    expect(mockHandledFinishedFetching).toHaveBeenCalledTimes(1);
   });
 });
 
