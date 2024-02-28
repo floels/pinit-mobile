@@ -1,7 +1,7 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AccountDetailsScreen from "./AccountDetailsScreen";
+import AuthorAccountDetailsScreen from "./AuhtorAccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 import { SearchNavigatorParamList } from "../SearchNavigator/SearchNavigator";
 
@@ -10,7 +10,6 @@ import SearchResultsBaseScreenContainer from "@/src/navigators/SearchResultsNavi
 
 type SearchResultsNavigatorProps = {
   route: RouteProp<SearchNavigatorParamList, "SearchResults">;
-  navigation: NavigationProp<SearchResultsNavigatorParamList>;
 };
 
 export type SearchResultsNavigatorParamList = {
@@ -28,10 +27,7 @@ export type SearchResultsNavigatorParamList = {
   };
 };
 
-const SearchResultsNavigator = ({
-  route,
-  navigation,
-}: SearchResultsNavigatorProps) => {
+const SearchResultsNavigator = ({ route }: SearchResultsNavigatorProps) => {
   const { searchTerm } = route.params;
 
   const StackNavigator =
@@ -55,7 +51,7 @@ const SearchResultsNavigator = ({
       <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
       <StackNavigator.Screen
         name="AuthorAccountDetails"
-        component={AccountDetailsScreen}
+        component={AuthorAccountDetailsScreen}
       />
     </StackNavigator.Navigator>
   );

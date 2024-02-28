@@ -20,21 +20,28 @@ const ToastAnchor = () => {
         <Text>{text1}</Text>
       </View>
     ),
-    pinCreationSuccess: ({ props }: { props: any }) => (
-      <View style={styles.pinCreationSuccessContainer}>
-        <Text style={styles.pinCreationSuccessText}>
-          {t("CreatePin.CREATION_SUCCESS_MESSAGE")}
-        </Text>
-        <TouchableOpacity
-          onPress={props.handlePressView}
-          style={styles.pinCreationSuccessButton}
-        >
-          <Text style={styles.pinCreationSuccessButtonText}>
-            {t("CreatePin.CREATION_SUCCESS_TOAST_VIEW")}
+    pinCreationSuccess: ({ props }: { props: any }) => {
+      const handlePressViewPin = () => {
+        props.handlePressViewPin();
+        Toast.hide();
+      };
+
+      return (
+        <View style={styles.pinCreationSuccessContainer}>
+          <Text style={styles.pinCreationSuccessText}>
+            {t("CreatePin.CREATION_SUCCESS_MESSAGE")}
           </Text>
-        </TouchableOpacity>
-      </View>
-    ),
+          <TouchableOpacity
+            onPress={handlePressViewPin}
+            style={styles.pinCreationSuccessButton}
+          >
+            <Text style={styles.pinCreationSuccessButtonText}>
+              {t("CreatePin.CREATION_SUCCESS_TOAST_VIEW")}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    },
   };
 
   return <Toast config={toastConfig} />;
