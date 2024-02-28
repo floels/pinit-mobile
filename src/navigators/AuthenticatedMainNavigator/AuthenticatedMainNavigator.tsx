@@ -1,14 +1,13 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { useEffect, useState } from "react";
-import { Image } from "react-native";
 import Toast from "react-native-toast-message";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
+import ProfileRouteTabBarIcon from "./ProfileRouteTabBarIcon";
+
 import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
 import { useAccountContext } from "@/src/contexts/accountContext";
-import { PROFILE_PICTURE_URL_STORAGE_KEY } from "@/src/lib/constants";
 import { PinWithAuthorDetails } from "@/src/lib/types";
 import ProfileScreen from "@/src/navigators/AuthenticatedMainNavigator/ProfileScreen";
 import { AuthenticatedNavigatorParamList } from "@/src/navigators/AuthenticatedNavigator/AuthenticatedNavigator";
@@ -31,7 +30,6 @@ const TAB_BAR_ICON_NAMES: Record<string, string> = {
   Home: "home",
   Search: "search",
   Create: "plus",
-  Profile: "user",
 };
 
 const AuthenticatedMainNavigator = ({
@@ -44,10 +42,6 @@ const AuthenticatedMainNavigator = ({
   const {
     state: { account },
   } = useAccountContext();
-
-  const [profilePictureURL, setProfilePictureURL] = useState<string | null>(
-    null,
-  );
 
   const [isCreateSelectModalVisible, setIsCreateSelectModalVisible] =
     useState(false);
@@ -63,7 +57,13 @@ const AuthenticatedMainNavigator = ({
     let tabBarIcon;
 
     if (route.name === "Profile") {
-      tabBarIcon = getTabBarIconForProfileRoute();
+      tabBarIcon = ({
+        focused,
+        color,
+      }: {
+        focused: boolean;
+        color: string;
+      }) => <ProfileRouteTabBarIcon focused={focused} color={color} />;
     } else {
       tabBarIcon = ({ color }: { color: string }) => (
         <FontAwesome5Icon
@@ -83,22 +83,6 @@ const AuthenticatedMainNavigator = ({
     };
   };
 
-  const getTabBarIconForProfileRoute = () => {
-    if (profilePictureURL) {
-      return () => (
-        <Image source={{ uri: profilePictureURL }} width={10} height={10} />
-      );
-    }
-
-    return ({ color }: { color: string }) => (
-      <FontAwesome5Icon
-        name={TAB_BAR_ICON_NAMES.Profile}
-        size={24}
-        color={color}
-      />
-    );
-  };
-
   const createTabPressListener = (event: any) => {
     event.preventDefault(); // prevent regular navigation to "Create" screen (which renders nothing)
 
@@ -115,20 +99,6 @@ const AuthenticatedMainNavigator = ({
   const handleCloseCreateSelectModal = () => {
     setIsCreateSelectModalVisible(false);
   };
-
-  const fetchProfilePictureURL = async () => {
-    const fetchedProfilePictureURL = await AsyncStorage.getItem(
-      PROFILE_PICTURE_URL_STORAGE_KEY,
-    );
-
-    if (fetchedProfilePictureURL) {
-      setProfilePictureURL(fetchedProfilePictureURL);
-    }
-  };
-
-  useEffect(() => {
-    fetchProfilePictureURL();
-  }, []);
 
   useEffect(() => {
     if (createdPin && createdPinImageAspectRatio) {
