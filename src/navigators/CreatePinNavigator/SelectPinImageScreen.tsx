@@ -54,11 +54,19 @@ const SelectPinImageScreen = ({
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={handlePressClose} style={styles.closeButton}>
+        <TouchableOpacity
+          onPress={handlePressClose}
+          style={styles.closeButton}
+          testID="select-pin-image-screen-close-button"
+        >
           <FontAwesome5Icon name="times" size={24} />
         </TouchableOpacity>
         {shouldShowNextButton && (
-          <TouchableOpacity onPress={handlePressNext} style={styles.nextButton}>
+          <TouchableOpacity
+            onPress={handlePressNext}
+            style={styles.nextButton}
+            testID="select-pin-image-screen-next-button"
+          >
             <Text style={styles.nextButtonText}>{t("CreatePin.NEXT")}</Text>
           </TouchableOpacity>
         )}
