@@ -55,7 +55,7 @@ const pressLogOutButton = async () => {
   await userEvent.press(logOutButton);
 };
 
-it(`should clear tokens data and dispatch logout action
+it(`clears tokens data and dispatch logout action
 upon click on 'Log out' button`, async () => {
   jest.useFakeTimers();
 
@@ -85,7 +85,7 @@ upon click on 'Log out' button`, async () => {
   jest.useRealTimers();
 });
 
-it(`should display loading overlay while clearing tokens data,
+it(`displays loading overlay while clearing tokens data,
 and hide loading overlay when clearing tokens data failed`, async () => {
   jest.useFakeTimers();
 

@@ -60,7 +60,7 @@ const pressSubmit = async () => {
   await userEvent.press(submitButton);
 };
 
-it("should call 'navigation.goBack()' when pressing Close icon", async () => {
+it("calls 'navigation.goBack()' when pressing Close icon", async () => {
   jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
 
   renderComponent();
@@ -75,7 +75,7 @@ it("should call 'navigation.goBack()' when pressing Close icon", async () => {
   jest.useRealTimers();
 });
 
-it("should toggle password visibility upon press of corresponding icon", async () => {
+it("toggles password visibility upon press of corresponding icon", async () => {
   jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
 
   renderComponent();
@@ -100,7 +100,7 @@ it("should toggle password visibility upon press of corresponding icon", async (
   jest.useRealTimers();
 });
 
-it("should not enable submit button before inputs are valid", async () => {
+it("does not enable submit button before inputs are valid", async () => {
   renderComponent();
 
   const submitButton = screen.getByTestId("login-screen-submit-button");
@@ -127,7 +127,7 @@ it("should not enable submit button before inputs are valid", async () => {
   expect(submitButton).toBeEnabled();
 });
 
-it("should persist tokens data and dispatch 'LOGGED_IN' action upon successful login", async () => {
+it("persists tokens data and dispatch 'LOGGED_IN' action upon successful login", async () => {
   jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
 
   renderComponent();
@@ -168,7 +168,7 @@ it("should persist tokens data and dispatch 'LOGGED_IN' action upon successful l
   jest.useRealTimers();
 });
 
-it("should display right error message upon fetch fail", async () => {
+it("displays right error message upon fetch fail", async () => {
   jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
 
   renderComponent();
@@ -185,7 +185,7 @@ it("should display right error message upon fetch fail", async () => {
   jest.useRealTimers();
 });
 
-it("should display right error message upon KO response", async () => {
+it("displays right error message upon KO response", async () => {
   jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
 
   renderComponent();

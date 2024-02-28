@@ -75,7 +75,7 @@ const pressSubmit = async () => {
   jest.useRealTimers();
 };
 
-it("should call 'handleCreateSuccess' upon successful pin creation", async () => {
+it("calls 'handleCreateSuccess' upon successful pin creation", async () => {
   renderComponent();
 
   await typeInTitleInput("My title");
@@ -99,7 +99,7 @@ it("should call 'handleCreateSuccess' upon successful pin creation", async () =>
   expect(mockHandleCreateSuccess).toHaveBeenCalledTimes(1);
 });
 
-it("should display error connection toast upon fetch error", async () => {
+it("displays error connection toast upon fetch error", async () => {
   renderComponent();
 
   fetchMock.mockReject(new Error());
@@ -114,7 +114,7 @@ it("should display error connection toast upon fetch error", async () => {
   );
 });
 
-it("should display error response toast upon KO response", async () => {
+it("displays error response toast upon KO response", async () => {
   renderComponent();
 
   fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify({}), { status: 400 });
@@ -129,7 +129,7 @@ it("should display error response toast upon KO response", async () => {
   );
 });
 
-it("should fetch image size if aspect ratio wasn't provided", async () => {
+it("fetches image size if aspect ratio wasn't provided", async () => {
   renderComponent({
     route: {
       params: { selectedImageURI: "ph://AAAA", providedImageAspectRatio: null },
@@ -139,7 +139,7 @@ it("should fetch image size if aspect ratio wasn't provided", async () => {
   expect(mockGetSize).toHaveBeenCalledWith("ph://AAAA", expect.any(Function));
 });
 
-it("should not fetch image size if aspect ratio was provided", async () => {
+it("does not fetch image size if aspect ratio was provided", async () => {
   mockGetSize.mockReset();
 
   renderComponent();

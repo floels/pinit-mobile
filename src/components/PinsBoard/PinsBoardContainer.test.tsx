@@ -116,8 +116,8 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it(`should fetch and render first page of pin suggestions upon initial render,
-and fetch second page upon scroll`, async () => {
+it(`fetches and renders first page of pin suggestions upon initial render,
+and fetches second page upon scroll`, async () => {
   jest.useFakeTimers();
 
   fetchMock.mockOnceIf(
@@ -163,7 +163,7 @@ and fetch second page upon scroll`, async () => {
   jest.useRealTimers();
 });
 
-it("should display relevant message if search results are empty", async () => {
+it("displays relevant message if search results are empty", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
@@ -178,7 +178,7 @@ it("should display relevant message if search results are empty", async () => {
   });
 });
 
-it("should display spinner while fetching initial pins", async () => {
+it("displays spinner while fetching initial pins", async () => {
   const eternalPromise = new Promise<Response>(() => {});
   fetchMock.mockImplementationOnce(() => eternalPromise);
 
@@ -187,7 +187,7 @@ it("should display spinner while fetching initial pins", async () => {
   screen.getByTestId("pins-board-fetch-more-pins-spinner");
 });
 
-it("should display error message upon fetch error when fetching initial pins", async () => {
+it("displays error message upon fetch error when fetching initial pins", async () => {
   fetchMock.mockRejectOnce(new Error());
 
   renderComponent();
@@ -197,7 +197,7 @@ it("should display error message upon fetch error when fetching initial pins", a
   });
 });
 
-it("should dispatch relevant action upon 401 response when fetching initial pins", async () => {
+it("dispatches relevant action upon 401 response when fetching initial pins", async () => {
   fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 401,
   });
@@ -209,7 +209,7 @@ it("should dispatch relevant action upon 401 response when fetching initial pins
   });
 });
 
-it("should display error message upon 400 response when fetching initial pins", async () => {
+it("displays error message upon 400 response when fetching initial pins", async () => {
   fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
     status: 400,
   });
@@ -221,7 +221,7 @@ it("should display error message upon 400 response when fetching initial pins", 
   });
 });
 
-it("should refresh pins when pulling to refresh", async () => {
+it("refreshes pins when pulling to refresh", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
@@ -247,7 +247,7 @@ it("should refresh pins when pulling to refresh", async () => {
   });
 });
 
-it("should display error message upon fetch error on refresh", async () => {
+it("displays error message upon fetch error on refresh", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
@@ -270,7 +270,7 @@ it("should display error message upon fetch error on refresh", async () => {
   });
 });
 
-it("should dispatch relevant action upon 401 response on refresh", async () => {
+it("dispatches relevant action upon 401 response on refresh", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
@@ -295,7 +295,7 @@ it("should dispatch relevant action upon 401 response on refresh", async () => {
   });
 });
 
-it("should display error message upon 400 response on refresh", async () => {
+it("displays error message upon 400 response on refresh", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({

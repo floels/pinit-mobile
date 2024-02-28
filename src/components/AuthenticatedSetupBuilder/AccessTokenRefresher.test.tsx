@@ -39,8 +39,8 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it(`should not refresh the access token if the expiration date 
-is after the cutoff, and should call 'hasFinishedFetching'`, async () => {
+it(`does not not refresh the access token if the expiration date 
+is after the cutoff, and calls 'hasFinishedFetching'`, async () => {
   const nowTime = new Date().getTime();
 
   const accessTokenExpirationDate = new Date(
@@ -64,8 +64,8 @@ is after the cutoff, and should call 'hasFinishedFetching'`, async () => {
   expect(mockSetHasFinishedFetching).toHaveBeenCalled();
 });
 
-it(`should refresh the access token if the expiration date 
-is before the cutoff, and should call 'hasFinishedFetching'`, async () => {
+it(`refreshes the access token if the expiration date 
+is before the cutoff, and calls 'hasFinishedFetching'`, async () => {
   const nowTime = new Date().getTime();
 
   const accessTokenExpirationDate = new Date(
@@ -107,7 +107,7 @@ is before the cutoff, and should call 'hasFinishedFetching'`, async () => {
   expect(mockSetHasFinishedFetching).toHaveBeenCalled();
 });
 
-it("should refresh the access token if the expiration date is absent", async () => {
+it("refreshes the access token if the expiration date is absent", async () => {
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => null);
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "refresh_token",
@@ -120,7 +120,7 @@ it("should refresh the access token if the expiration date is absent", async () 
   });
 });
 
-it("should refresh the access token if the expiration date is invalid", async () => {
+it("refreshes the access token if the expiration date is invalid", async () => {
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => "20-10-03");
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "refresh_token",
@@ -133,7 +133,7 @@ it("should refresh the access token if the expiration date is invalid", async ()
   });
 });
 
-it("should not fetch if expiration date is absent and refresh token is absent", async () => {
+it("does not fetch if expiration date is absent and refresh token is absent", async () => {
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() => null);
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(() => null);
 

@@ -74,13 +74,13 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it("should display search input with search icon initially", () => {
+it("displays search input with search icon initially", () => {
   renderComponent();
 
   screen.getByTestId("pins-search-input-search-icon");
 });
 
-it("should hide search input upon input focus", () => {
+it("hides search input upon input focus", () => {
   renderComponent();
 
   focusSearchInput();
@@ -88,7 +88,7 @@ it("should hide search input upon input focus", () => {
   expect(screen.queryByTestId("pins-search-input-search-icon")).toBeNull();
 });
 
-it("should show 'Clear' icon only when user starts typing in search input", async () => {
+it("shows 'Clear' icon only when user starts typing in search input", async () => {
   renderComponent();
 
   focusSearchInput();
@@ -100,7 +100,7 @@ it("should show 'Clear' icon only when user starts typing in search input", asyn
   screen.getByTestId("pins-search-input-clear-icon");
 });
 
-it("should clear input and hide clear icon when user presses 'Clear' icon", async () => {
+it("clears input and hide clear icon when user presses 'Clear' icon", async () => {
   renderComponent();
 
   await typeInSearchInput("abc");
@@ -115,7 +115,7 @@ it("should clear input and hide clear icon when user presses 'Clear' icon", asyn
   expect(screen.queryByTestId("pins-search-input-clear-icon")).toBeNull();
 });
 
-it("should clear input and show search icon again when user presses 'Cancel'", async () => {
+it("clears input and show search icon again when user presses 'Cancel'", async () => {
   renderComponent();
 
   await typeInSearchInput("abc");
@@ -128,7 +128,7 @@ it("should clear input and show search icon again when user presses 'Cancel'", a
   screen.getByTestId("pins-search-input-search-icon");
 });
 
-it(`should display search suggestions as user types, with search input as first suggestion,
+it(`displays search suggestions as user types, with search input as first suggestion,
 and clear suggestions when user clears input`, async () => {
   renderComponent();
 
@@ -151,7 +151,7 @@ and clear suggestions when user clears input`, async () => {
   });
 });
 
-it("should not repeat search input as first suggestion if it is already included in suggestions", async () => {
+it("does not repeat search input as first suggestion if it is already included in suggestions", async () => {
   fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
@@ -175,7 +175,7 @@ it("should not repeat search input as first suggestion if it is already included
   });
 });
 
-it("should not display any suggestion upon malformed OK response", async () => {
+it("does not display any suggestion upon malformed OK response", async () => {
   fetchMock.mockOnceIf(`${endpoint}?search=foo`, "");
 
   renderComponent();
@@ -185,7 +185,7 @@ it("should not display any suggestion upon malformed OK response", async () => {
   expect(screen.queryByTestId("search-suggestion-item")).toBeNull();
 });
 
-it("should not display any suggestion upon KO response", async () => {
+it("does not display any suggestion upon KO response", async () => {
   renderComponent();
 
   fetchMock.mockOnceIf(
@@ -214,7 +214,7 @@ it("should not display any suggestion upon KO response", async () => {
   });
 });
 
-it("should not display any suggestions upon fetch error", async () => {
+it("does not display any suggestions upon fetch error", async () => {
   renderComponent();
 
   fetchMock.mockOnceIf(
@@ -241,7 +241,7 @@ it("should not display any suggestions upon fetch error", async () => {
   });
 });
 
-it("should fetch only once if user types second character within debounce time", async () => {
+it("fetches only once if user types second character within debounce time", async () => {
   jest.useFakeTimers();
 
   renderComponent();
@@ -261,7 +261,7 @@ it("should fetch only once if user types second character within debounce time",
   jest.useRealTimers();
 });
 
-it("should fetch twice if user types second character after debounce time", async () => {
+it("fetches twice if user types second character after debounce time", async () => {
   jest.useFakeTimers();
 
   renderComponent();
@@ -284,7 +284,7 @@ it("should fetch twice if user types second character after debounce time", asyn
   jest.useRealTimers();
 });
 
-it("should navigate to search results screen upon submitting search input", async () => {
+it("navigates to search results screen upon submitting search input", async () => {
   renderComponent();
 
   await typeInSearchInput("foo");
@@ -296,7 +296,7 @@ it("should navigate to search results screen upon submitting search input", asyn
   });
 });
 
-it("should navigate to search results screen upon pressing search suggestion item", async () => {
+it("navigates to search results screen upon pressing search suggestion item", async () => {
   jest.useFakeTimers();
 
   fetchMock.mockOnceIf(

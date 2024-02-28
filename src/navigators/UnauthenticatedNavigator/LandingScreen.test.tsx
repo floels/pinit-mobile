@@ -12,7 +12,7 @@ const renderComponent = () => {
   render(<LandingScreen navigation={mockNavigation} />);
 };
 
-it("should navigate to login screen when pressing 'Log in' button", async () => {
+it("navigates to login screen when pressing 'Log in' button", async () => {
   jest.useFakeTimers();
 
   renderComponent();
