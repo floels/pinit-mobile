@@ -34,10 +34,10 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
     "react-native/Libraries/Components/View/View",
   );
 
-  return ({ pin }: { pin: PinWithAuthorDetails }) => (
+  return (props: any) => (
     <View
       style={{ height: MOCKED_PIN_THUMBNAIL_HEIGHT }}
-      testID={`mocked-pin-thumbnail-${pin.id}`}
+      testID={`mocked-pin-thumbnail-${props.pin.id}`}
     />
   );
 });
