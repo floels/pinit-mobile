@@ -23,15 +23,15 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
   const StackNavigator = createStackNavigator<CreatePinNavigatorParamList>();
 
   const handleCreateSuccess = ({
-    pin,
-    pinImageAspectRatio,
+    createdPin,
+    createdPinImageAspectRatio,
   }: {
-    pin: PinBasicDetails;
-    pinImageAspectRatio: number;
+    createdPin: PinBasicDetails;
+    createdPinImageAspectRatio: number;
   }) => {
     props.navigation.navigate("Main", {
-      createdPin: pin,
-      createdPinImageAspectRatio: pinImageAspectRatio,
+      createdPin,
+      createdPinImageAspectRatio,
     });
   };
 

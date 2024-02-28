@@ -1,5 +1,4 @@
 export type PinBasicDetails = {
-  id: string;
   title: string;
   imageURL: string;
   description?: string;

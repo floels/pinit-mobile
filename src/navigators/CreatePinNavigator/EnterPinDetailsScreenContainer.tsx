@@ -17,11 +17,11 @@ type EnterPinDetailsScreenContainerProps = {
   navigation: NavigationProp<CreatePinNavigatorParamList>;
   route: RouteProp<CreatePinNavigatorParamList, "EnterPinDetails">;
   handleCreateSuccess: ({
-    pin,
-    pinImageAspectRatio,
+    createdPin,
+    createdPinImageAspectRatio,
   }: {
-    pin: PinBasicDetails;
-    pinImageAspectRatio: number;
+    createdPin: PinBasicDetails;
+    createdPinImageAspectRatio: number;
   }) => void;
 };
 
@@ -59,7 +59,7 @@ const EnterPinDetailsScreenContainer = ({
 
     // The "selectedImageURI" has format: "ph://...-...-...-..."
     // For some reason, passing this URI to 'formData.append(...)'
-    // triggers an error: "No suitable URL request handler found for ph-upload."
+    // triggers an error: "No suitable URL request handler found for ph-upload".
     // We circumvent it by passing the URI returned by 'MediaLibrary.getAssetInfoAsync'
     // instead, as suggested in the following GitHub issue message:
     // https://github.com/react-native-cameraroll/react-native-cameraroll/issues/52#issuecomment-564641652
@@ -115,30 +115,30 @@ const EnterPinDetailsScreenContainer = ({
       return;
     }
 
-    let responseData;
+    let createdPin;
 
     try {
-      responseData = await response.json();
+      const responseData = await response.json();
+
+      createdPin = {
+        imageURL: responseData.image_url,
+        title: responseData.title,
+        description: responseData.description,
+      };
     } catch {
-      showKOResponseErrorToast();
-      return;
+      // This case should never occur, but in case the OK response didn't have the
+      // expected JSON format, we fall back to the title and description
+      // inputted by the user, and to an empty-string image URL:
+      createdPin = {
+        imageURL: "",
+        title: pinTitle,
+        description: pinDescription,
+      };
     }
 
-    const {
-      unique_id: id,
-      image_url: imageURL,
-      title,
-      description,
-    } = responseData;
-
     handleCreateSuccess({
-      pin: {
-        id,
-        imageURL,
-        title,
-        description,
-      },
-      pinImageAspectRatio: imageAspectRatio || 1, // If the aspect ratio
+      createdPin,
+      createdPinImageAspectRatio: imageAspectRatio || 1, // If the aspect ratio
       // couldn't be determined, we default to 1 (square image).
     });
   };
