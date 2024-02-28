@@ -81,7 +81,7 @@ it("shows 'Clear' icon only when user starts typing in search input", async () =
   screen.getByTestId("pins-search-input-clear-icon");
 });
 
-it("clears input and hide clear icon when user presses 'Clear' icon", async () => {
+it("clears input and hides clear icon when user presses 'Clear' icon", async () => {
   renderComponent();
 
   await typeInSearchInput("abc");
@@ -89,19 +89,19 @@ it("clears input and hide clear icon when user presses 'Clear' icon", async () =
   const searchInput = screen.getByTestId("search-input");
   expect(searchInput.props.value).toEqual("abc");
 
-  await pressButton({ testID: "pins-search-input-clear-icon" });
+  pressButton({ testID: "pins-search-input-clear-icon" });
 
   expect(searchInput.props.value).toEqual("");
 
   expect(screen.queryByTestId("pins-search-input-clear-icon")).toBeNull();
 });
 
-it("clears input and show search icon again when user presses 'Cancel'", async () => {
+it("clears input and shows search icon again when user presses 'Cancel'", async () => {
   renderComponent();
 
   await typeInSearchInput("abc");
 
-  await pressButton({ testID: "pins-search-input-cancel-button" });
+  pressButton({ testID: "pins-search-input-cancel-button" });
 
   const searchInput = screen.getByTestId("search-input");
   expect(searchInput.props.value).toEqual("");
@@ -278,8 +278,6 @@ it("navigates to search results screen upon submitting search input", async () =
 });
 
 it("navigates to search results screen upon pressing search suggestion item", async () => {
-  jest.useFakeTimers();
-
   fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
     JSON.stringify({
@@ -299,11 +297,9 @@ it("navigates to search results screen upon pressing search suggestion item", as
 
   const firstSuggestionItem = screen.getByText("foo suggestion 1");
 
-  await userEvent.press(firstSuggestionItem);
+  fireEvent.press(firstSuggestionItem);
 
   expect(mockNavigation.navigate).toHaveBeenLastCalledWith("SearchResults", {
     searchTerm: "foo suggestion 1",
   });
-
-  jest.useRealTimers();
 });

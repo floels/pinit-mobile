@@ -21,9 +21,15 @@ const ProfileRouteTabBarIcon = ({
   );
 
   const fetchProfilePictureURL = async () => {
-    const fetchedProfilePictureURL = await AsyncStorage.getItem(
-      PROFILE_PICTURE_URL_STORAGE_KEY,
-    );
+    let fetchedProfilePictureURL;
+
+    try {
+      fetchedProfilePictureURL = await AsyncStorage.getItem(
+        PROFILE_PICTURE_URL_STORAGE_KEY,
+      );
+    } catch {
+      // Fail silently
+    }
 
     if (fetchedProfilePictureURL) {
       setProfilePictureURL(fetchedProfilePictureURL);
@@ -39,17 +45,32 @@ const ProfileRouteTabBarIcon = ({
       <Image
         source={{ uri: profilePictureURL }}
         style={styles.profilePicture}
+        testID="tab-bar-icon-profile-picture"
       />
     );
 
     if (focused) {
-      return <View style={styles.focusedProfilePictureContainer}>{image}</View>;
+      return (
+        <View
+          style={styles.focusedProfilePictureContainer}
+          testID="tab-bar-icon-focused-profile-picture-container"
+        >
+          {image}
+        </View>
+      );
     }
 
     return image;
   }
 
-  return <FontAwesome5Icon name="user" size={24} color={color} />;
+  return (
+    <FontAwesome5Icon
+      name="user"
+      size={24}
+      color={color}
+      testID="tab-bar-icon-user-icon"
+    />
+  );
 };
 
 export default ProfileRouteTabBarIcon;

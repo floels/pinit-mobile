@@ -1,7 +1,7 @@
 import { RouteProp } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AuthorAccountDetailsScreen from "./AuhtorAccountDetailsScreen";
+import AuthorAccountDetailsScreen from "./AuthorAccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 import { SearchNavigatorParamList } from "../SearchNavigator/SearchNavigator";
 

@@ -12,7 +12,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: Fonts.fontSize100,
-    fontWeight: "500",
+    fontWeight: Fonts.fontWeightSemiBold,
+    marginBottom: 4,
+  },
+  authorData: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  authorProfilePicture: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    marginRight: 6,
+  },
+  authorName: {
+    fontSize: Fonts.fontSize100,
   },
 });
 

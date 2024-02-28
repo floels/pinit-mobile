@@ -1,5 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { render, screen, userEvent } from "@testing-library/react-native";
+import {
+  render,
+  screen,
+  userEvent,
+  fireEvent,
+  waitFor,
+} from "@testing-library/react-native";
 import * as SecureStore from "expo-secure-store";
 
 import LoginScreenContainer from "./LoginScreenContainer";
@@ -55,28 +61,19 @@ const fillInputsWithValidCredentials = async () => {
   await userEvent.type(passwordInput, "Pa$$w0rd");
 };
 
-const pressSubmit = async () => {
-  await pressButton({ testID: "login-screen-submit-button" });
+const pressSubmit = () => {
+  pressButton({ testID: "login-screen-submit-button" });
 };
 
 it("calls 'navigation.goBack()' when pressing Close icon", async () => {
-  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
-
   renderComponent();
 
-  const closeIcon = screen.getByTestId("login-screen-close-icon");
-
-  await userEvent.press(closeIcon);
+  pressButton({ testID: "login-screen-close-icon" });
 
   expect(mockNavigation.goBack).toHaveBeenCalledTimes(1);
-
-  jest.clearAllTimers();
-  jest.useRealTimers();
 });
 
 it("toggles password visibility upon press of corresponding icon", async () => {
-  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
-
   renderComponent();
 
   const passwordInput = screen.getByPlaceholderText(
@@ -89,10 +86,10 @@ it("toggles password visibility upon press of corresponding icon", async () => {
     "login-screen-toggle-password-visibility-icon",
   );
 
-  await userEvent.press(togglePasswordVisibilityIcon);
+  fireEvent.press(togglePasswordVisibilityIcon);
   expect(passwordInput.props.secureTextEntry).toBe(false);
 
-  await userEvent.press(togglePasswordVisibilityIcon);
+  fireEvent.press(togglePasswordVisibilityIcon);
   expect(passwordInput.props.secureTextEntry).toBe(true);
 
   jest.clearAllTimers();
@@ -127,8 +124,6 @@ it("does not enable submit button before inputs are valid", async () => {
 });
 
 it("persists tokens data and dispatch 'LOGGED_IN' action upon successful login", async () => {
-  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
-
   renderComponent();
 
   await fillInputsWithValidCredentials();
@@ -146,47 +141,41 @@ it("persists tokens data and dispatch 'LOGGED_IN' action upon successful login",
     }),
   );
 
-  await pressSubmit();
+  pressSubmit();
 
-  expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-    ACCESS_TOKEN_STORAGE_KEY,
-    "access_token",
-  );
-  expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
-    REFRESH_TOKEN_STORAGE_KEY,
-    "refresh_token",
-  );
-  expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-    ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
-    accessTokenExpirationDate,
-  );
+  await waitFor(() => {
+    expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
+      ACCESS_TOKEN_STORAGE_KEY,
+      "access_token",
+    );
+    expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
+      REFRESH_TOKEN_STORAGE_KEY,
+      "refresh_token",
+    );
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith(
+      ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
+      accessTokenExpirationDate,
+    );
 
-  expect(mockDispatch).toHaveBeenCalledWith({ type: "LOGGED_IN" });
-
-  jest.clearAllTimers();
-  jest.useRealTimers();
+    expect(mockDispatch).toHaveBeenCalledWith({ type: "LOGGED_IN" });
+  });
 });
 
 it("displays right error message upon fetch fail", async () => {
-  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
-
   renderComponent();
 
   await fillInputsWithValidCredentials();
 
   fetchMock.mockRejectOnce(new Error());
 
-  await pressSubmit();
+  pressSubmit();
 
-  screen.getByText(enTranslations.Common.CONNECTION_ERROR);
-
-  jest.clearAllTimers();
-  jest.useRealTimers();
+  await waitFor(() => {
+    screen.getByText(enTranslations.Common.CONNECTION_ERROR);
+  });
 });
 
 it("displays right error message upon KO response", async () => {
-  jest.useFakeTimers(); // otherwise we get a warning on 'userEvent.press()'
-
   renderComponent();
 
   await fillInputsWithValidCredentials();
@@ -198,21 +187,29 @@ it("displays right error message upon KO response", async () => {
       status: 401,
     },
   );
-  await pressSubmit();
-  screen.getByText(enTranslations.LandingScreen.INVALID_EMAIL_LOGIN);
+
+  pressSubmit();
+
+  await waitFor(() => {
+    screen.getByText(enTranslations.LandingScreen.INVALID_EMAIL_LOGIN);
+  });
 
   fetchMock.mockOnceIf(endpoint, JSON.stringify({}), {
     status: 401,
   });
-  await pressSubmit();
-  screen.getByText(enTranslations.LandingScreen.INVALID_PASSWORD_LOGIN);
+
+  pressSubmit();
+  await waitFor(() => {
+    screen.getByText(enTranslations.LandingScreen.INVALID_PASSWORD_LOGIN);
+  });
 
   fetchMock.mockOnceIf(endpoint, JSON.stringify({}), {
     status: 400,
   });
-  await pressSubmit();
-  screen.getByText(enTranslations.Common.UNFORESEEN_ERROR);
 
-  jest.clearAllTimers();
-  jest.useRealTimers();
+  pressSubmit();
+
+  await waitFor(() => {
+    screen.getByText(enTranslations.Common.UNFORESEEN_ERROR);
+  });
 });

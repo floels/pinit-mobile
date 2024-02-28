@@ -46,7 +46,10 @@ const PinThumbnailsGrid = ({
   return (
     <View style={styles.container}>
       {Array.from({ length: NUMBER_COLUMNS }).map((_, columnIndex) => (
-        <View key={`thumbnails-column-${columnIndex + 1}`}>
+        <View
+          key={`thumbnails-column-${columnIndex}`}
+          testID={`thumbnails-column-${columnIndex}`}
+        >
           {pins.map((pin, pinIndex) => {
             const pinBelongsInThisColumn =
               pinIndex % NUMBER_COLUMNS === columnIndex;

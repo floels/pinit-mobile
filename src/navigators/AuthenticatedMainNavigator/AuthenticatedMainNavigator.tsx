@@ -70,6 +70,7 @@ const AuthenticatedMainNavigator = ({
           name={TAB_BAR_ICON_NAMES[route.name]}
           size={24}
           color={color}
+          testID={`tab-bar-icon-${route.name.toLowerCase()}`}
         />
       );
     }

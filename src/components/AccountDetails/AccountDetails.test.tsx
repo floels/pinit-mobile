@@ -74,10 +74,10 @@ it("renders error state if 'isError' is true and 'accountDetails' is undefined",
   screen.getByText(enTranslations.AccountDetails.ERROR_FETCH_ACCOUNT_DETAILS);
 });
 
-it("calls onPressBack when back button is pressed", async () => {
+it("calls onPressBack when back button is pressed", () => {
   renderComponent();
 
-  await pressButton({ testID: "account-details-back-button" });
+  pressButton({ testID: "account-details-back-button" });
 
   expect(mockOnPressBack).toHaveBeenCalledTimes(1);
 });

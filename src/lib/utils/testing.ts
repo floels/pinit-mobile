@@ -1,11 +1,7 @@
-import { screen, userEvent } from "@testing-library/react-native";
+import { screen, fireEvent } from "@testing-library/react-native";
 
-export const pressButton = async ({ testID }: { testID: string }) => {
-  jest.useFakeTimers();
-
+export const pressButton = ({ testID }: { testID: string }) => {
   const button = screen.getByTestId(testID);
 
-  await userEvent.press(button);
-
-  jest.useRealTimers();
+  fireEvent.press(button);
 };

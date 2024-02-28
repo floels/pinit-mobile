@@ -45,10 +45,8 @@ const renderComponent = () => {
   );
 };
 
-it(`clears tokens data and dispatch logout action
+it(`clears tokens data and dispatches logout action
 upon click on 'Log out' button`, async () => {
-  jest.useFakeTimers();
-
   renderComponent();
 
   (SecureStore.deleteItemAsync as jest.Mock).mockImplementationOnce(() =>
@@ -58,25 +56,25 @@ upon click on 'Log out' button`, async () => {
     Promise.resolve(),
   );
 
-  await pressButton({ testID: "log-out-button" });
+  pressButton({ testID: "log-out-button" });
 
-  expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
-    ACCESS_TOKEN_STORAGE_KEY,
-  );
-  expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
-    REFRESH_TOKEN_STORAGE_KEY,
-  );
-  expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
-    ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
-  );
+  await waitFor(() => {
+    expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
+      ACCESS_TOKEN_STORAGE_KEY,
+    );
+    expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
+      REFRESH_TOKEN_STORAGE_KEY,
+    );
+    expect(AsyncStorage.removeItem).toHaveBeenCalledWith(
+      ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
+    );
 
-  expect(mockDispatch).toHaveBeenCalledWith({ type: "LOGGED_OUT" });
-
-  jest.useRealTimers();
+    expect(mockDispatch).toHaveBeenCalledWith({ type: "LOGGED_OUT" });
+  });
 });
 
 it(`displays loading overlay while clearing tokens data,
-and hide loading overlay when clearing tokens data failed`, async () => {
+and hides loading overlay when clearing tokens data failed`, async () => {
   jest.useFakeTimers();
 
   renderComponent();
@@ -94,7 +92,7 @@ and hide loading overlay when clearing tokens data failed`, async () => {
     Promise.resolve(),
   );
 
-  await pressButton({ testID: "log-out-button" });
+  pressButton({ testID: "log-out-button" });
 
   screen.getByTestId("mocked-loading-overlay");
 

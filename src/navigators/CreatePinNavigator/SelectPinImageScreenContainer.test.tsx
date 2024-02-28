@@ -53,7 +53,7 @@ const renderComponent = () => {
 it("calls 'handlePressClose' when user presses the close button", async () => {
   renderComponent();
 
-  await pressButton({ testID: "select-pin-image-screen-close-button" });
+  pressButton({ testID: "select-pin-image-screen-close-button" });
 
   expect(mockHandlePressClose).toHaveBeenCalledTimes(1);
 });
@@ -88,11 +88,11 @@ it("only displays 'Next' button when an image is selected", async () => {
     screen.queryByTestId("select-pin-image-screen-next-button"),
   ).toBeNull();
 
-  await pressButton({ testID: "camera-roll-image-0" });
+  pressButton({ testID: "camera-roll-image-0" });
 
   screen.getByTestId("select-pin-image-screen-next-button");
 
-  await pressButton({ testID: "camera-roll-image-0" });
+  pressButton({ testID: "camera-roll-image-0" });
 
   expect(
     screen.queryByTestId("select-pin-image-screen-next-button"),
@@ -107,11 +107,11 @@ after selecting an image`, async () => {
 
   renderComponent();
 
-  await pressButton({ testID: "camera-roll-image-0" });
+  pressButton({ testID: "camera-roll-image-0" });
 
-  await pressButton({ testID: "camera-roll-image-1" });
+  pressButton({ testID: "camera-roll-image-1" });
 
-  await pressButton({ testID: "select-pin-image-screen-next-button" });
+  pressButton({ testID: "select-pin-image-screen-next-button" });
 
   expect(mockNavigation.navigate).toHaveBeenCalledWith("EnterPinDetails", {
     selectedImageURI: cameraRollPhotos[1].uri,
