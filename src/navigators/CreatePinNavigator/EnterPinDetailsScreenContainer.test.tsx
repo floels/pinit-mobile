@@ -1,4 +1,5 @@
 import { render, screen, userEvent } from "@testing-library/react-native";
+import { Image } from "react-native";
 import Toast from "react-native-toast-message";
 
 import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
@@ -23,12 +24,7 @@ jest.mock("react-native-toast-message", () => ({
   show: jest.fn(),
 }));
 
-const mockGetSize = jest.fn();
-
-jest.mock("react-native/Libraries/Image/Image", () => ({
-  ...jest.requireActual("react-native/Libraries/Image/Image"),
-  getSize: mockGetSize,
-}));
+Image.getSize = jest.fn();
 
 const mockNavigation = {
   goBack: jest.fn(),
@@ -39,7 +35,7 @@ const mockHandleCreateSuccess = jest.fn();
 const renderComponent = (
   { route }: any = {
     route: {
-      params: { selectedImageURI: "ph://AAAA", providedImageAspectRatio: 1 },
+      params: { selectedImageURI: "ph://AAAA", providedImageAspectRatio: 1.5 },
     },
   },
 ) => {
@@ -54,6 +50,13 @@ const renderComponent = (
 
 const createPinEndpoint = `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}/`;
 
+const createdPinData = {
+  unique_id: "0000",
+  image_url: "https://some.url",
+  title: "Pin title",
+  description: "Pin description",
+};
+
 const typeInTitleInput = async (input: string) => {
   const titleInput = screen.getByTestId("pin-title-input");
 
@@ -66,28 +69,27 @@ const typeInDescriptionInput = async (input: string) => {
   await userEvent.type(descriptionInput, input);
 };
 
-it("calls 'handleCreateSuccess' upon successful pin creation", async () => {
+beforeEach(() => {
+  fetchMock.resetMocks();
+});
+
+it("calls 'handleCreateSuccess' with proper arguments upon successful pin creation", async () => {
   renderComponent();
 
-  await typeInTitleInput("My title");
-  await typeInDescriptionInput("My description");
-
-  fetchMock.mockOnceIf(
-    createPinEndpoint,
-    JSON.stringify({
-      unique_id: "0000",
-      image_url: "https://some.url",
-      title: "My title",
-      description: "My description",
-    }),
-    { status: 201 },
-  );
-
-  expect(mockHandleCreateSuccess).not.toHaveBeenCalled();
+  fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify(createdPinData), {
+    status: 201,
+  });
 
   await pressButton({ testID: "create-pin-submit-button" });
 
-  expect(mockHandleCreateSuccess).toHaveBeenCalledTimes(1);
+  expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
+    createdPin: {
+      imageURL: createdPinData.image_url,
+      title: createdPinData.title,
+      description: createdPinData.description,
+    },
+    createdPinImageAspectRatio: 1.5,
+  });
 });
 
 it("displays error connection toast upon fetch error", async () => {
@@ -120,20 +122,56 @@ it("displays error response toast upon KO response", async () => {
   );
 });
 
-it("fetches image size if aspect ratio wasn't provided", async () => {
+it("fetches image size itself if aspect ratio wasn't provided", async () => {
+  const fetchedAspectRatio = 1.2;
+
+  (Image.getSize as jest.Mock).mockImplementationOnce((_, success) => {
+    success(100, 100 / fetchedAspectRatio);
+  });
+
   renderComponent({
     route: {
       params: { selectedImageURI: "ph://AAAA", providedImageAspectRatio: null },
     },
   });
 
-  expect(mockGetSize).toHaveBeenCalledWith("ph://AAAA", expect.any(Function));
+  fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify(createdPinData), {
+    status: 201,
+  });
+
+  await pressButton({ testID: "create-pin-submit-button" });
+
+  expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
+    createdPin: expect.anything(), // already tested above
+    createdPinImageAspectRatio: fetchedAspectRatio,
+  });
 });
 
 it("does not fetch image size if aspect ratio was provided", async () => {
-  mockGetSize.mockReset();
+  (Image.getSize as jest.Mock).mockReset();
 
   renderComponent();
 
-  expect(mockGetSize).not.toHaveBeenCalled();
+  expect(Image.getSize).not.toHaveBeenCalled();
+});
+
+it(`calls 'handleCreateSuccess' with fallback arguments 
+upon malformed OK response`, async () => {
+  renderComponent();
+
+  await typeInTitleInput("My title");
+  await typeInDescriptionInput("My description");
+
+  fetchMock.mockOnceIf(createPinEndpoint, "");
+
+  await pressButton({ testID: "create-pin-submit-button" });
+
+  expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
+    createdPin: {
+      imageURL: "",
+      title: "My title",
+      description: "My description",
+    },
+    createdPinImageAspectRatio: 1.5,
+  });
 });
