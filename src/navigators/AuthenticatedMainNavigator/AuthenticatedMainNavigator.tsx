@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
+import ProfileRouteTabBarIcon from "./ProfileRouteTabBarIcon";
+
 import CreateSelectModal from "@/src/components/CreateSelectModal/CreateSelectModal";
 import { useAccountContext } from "@/src/contexts/accountContext";
 import { PinWithAuthorDetails } from "@/src/lib/types";
@@ -28,7 +30,6 @@ const TAB_BAR_ICON_NAMES: Record<string, string> = {
   Home: "home",
   Search: "search",
   Create: "plus",
-  Profile: "user",
 };
 
 const AuthenticatedMainNavigator = ({
@@ -53,13 +54,25 @@ const AuthenticatedMainNavigator = ({
   }: {
     route: RouteProp<AuthenticatedMainNavigatorParamList>;
   }) => {
-    const tabBarIcon = ({ color }: { color: string }) => (
-      <FontAwesome5Icon
-        name={TAB_BAR_ICON_NAMES[route.name]}
-        size={24}
-        color={color}
-      />
-    );
+    let tabBarIcon;
+
+    if (route.name === "Profile") {
+      tabBarIcon = ({
+        focused,
+        color,
+      }: {
+        focused: boolean;
+        color: string;
+      }) => <ProfileRouteTabBarIcon focused={focused} color={color} />;
+    } else {
+      tabBarIcon = ({ color }: { color: string }) => (
+        <FontAwesome5Icon
+          name={TAB_BAR_ICON_NAMES[route.name]}
+          size={24}
+          color={color}
+        />
+      );
+    }
 
     return {
       tabBarIcon,
