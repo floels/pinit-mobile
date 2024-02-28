@@ -81,7 +81,7 @@ it("shows 'Clear' icon only when user starts typing in search input", async () =
   screen.getByTestId("pins-search-input-clear-icon");
 });
 
-it("clears input and hide clear icon when user presses 'Clear' icon", async () => {
+it("clears input and hides clear icon when user presses 'Clear' icon", async () => {
   renderComponent();
 
   await typeInSearchInput("abc");
@@ -96,7 +96,7 @@ it("clears input and hide clear icon when user presses 'Clear' icon", async () =
   expect(screen.queryByTestId("pins-search-input-clear-icon")).toBeNull();
 });
 
-it("clears input and show search icon again when user presses 'Cancel'", async () => {
+it("clears input and shows search icon again when user presses 'Cancel'", async () => {
   renderComponent();
 
   await typeInSearchInput("abc");

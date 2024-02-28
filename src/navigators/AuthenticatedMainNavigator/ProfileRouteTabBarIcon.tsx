@@ -39,17 +39,32 @@ const ProfileRouteTabBarIcon = ({
       <Image
         source={{ uri: profilePictureURL }}
         style={styles.profilePicture}
+        testID="tab-bar-icon-profile-picture"
       />
     );
 
     if (focused) {
-      return <View style={styles.focusedProfilePictureContainer}>{image}</View>;
+      return (
+        <View
+          style={styles.focusedProfilePictureContainer}
+          testID="tab-bar-icon-focused-profile-picture-container"
+        >
+          {image}
+        </View>
+      );
     }
 
     return image;
   }
 
-  return <FontAwesome5Icon name="user" size={24} color={color} />;
+  return (
+    <FontAwesome5Icon
+      name="user"
+      size={24}
+      color={color}
+      testID="tab-bar-icon-user-icon"
+    />
+  );
 };
 
 export default ProfileRouteTabBarIcon;

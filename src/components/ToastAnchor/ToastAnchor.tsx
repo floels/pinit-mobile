@@ -8,7 +8,7 @@ import styles from "./ToastAnchor.styles";
 const ToastAnchor = () => {
   const { t } = useTranslation();
 
-  // https://github.com/calintamas/react-native-toast-message/blob/main/docs/custom-layouts.md
+  // See https://github.com/calintamas/react-native-toast-message/blob/main/docs/custom-layouts.md
   const toastConfig = {
     pinCreationError: ({ text1 }: { text1?: string }) => (
       <View style={styles.pinCreationErrorContainer}>
