@@ -30,15 +30,6 @@ const styles = StyleSheet.create({
     fontWeight: Fonts.fontWeightSemiBold,
     marginBottom: 24,
   },
-  signUpButton: {
-    backgroundColor: Colors.backgroundImportant,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    height: buttonsHeight,
-    borderRadius: buttonsBorderRadius,
-    marginBottom: 12,
-  },
   signUpButtonText: {
     fontSize: buttonTextsFontSize,
     color: Colors.fontImportant,
