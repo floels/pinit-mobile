@@ -15,25 +15,25 @@ export const useCameraRollPhotos = () => {
     requestCameraRollAccessPermission,
   ] = MediaLibrary.usePermissions();
 
-  useEffect(() => {
-    const getCameraRollPhotos = async () => {
-      if (cameraRollAccessPermissionResponse?.accessPrivileges !== "all") {
-        const { status } = await requestCameraRollAccessPermission();
+  const getCameraRollPhotos = async () => {
+    if (cameraRollAccessPermissionResponse?.accessPrivileges !== "all") {
+      const { status } = await requestCameraRollAccessPermission();
 
-        if (status !== "granted") {
-          setRefusedCameraRollAccess(true);
-          return;
-        }
+      if (status !== "granted") {
+        setRefusedCameraRollAccess(true);
+        return;
       }
+    }
 
-      const { assets } = await MediaLibrary.getAssetsAsync({
-        mediaType: "photo",
-        first: NUMBER_CAMERA_ROLL_PHOTOS_FETCHED,
-      });
+    const { assets } = await MediaLibrary.getAssetsAsync({
+      mediaType: "photo",
+      first: NUMBER_CAMERA_ROLL_PHOTOS_FETCHED,
+    });
 
-      setCameraRollPhotos(assets);
-    };
+    setCameraRollPhotos(assets);
+  };
 
+  useEffect(() => {
     getCameraRollPhotos();
   }, []);
 
