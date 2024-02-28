@@ -37,6 +37,7 @@ const renderComponent = () => {
 
 beforeEach(() => {
   fetchMock.resetMocks();
+  mockHandledFinishedFetching.mockReset();
 });
 
 it(`does not refresh the access token if the expiration date 
@@ -50,8 +51,6 @@ is after the cutoff, and calls 'hasFinishedFetching'`, async () => {
   (AsyncStorage.getItem as jest.Mock).mockImplementationOnce(() =>
     accessTokenExpirationDate.toISOString(),
   );
-
-  expect(mockHandledFinishedFetching).not.toHaveBeenCalled();
 
   renderComponent();
 
@@ -82,8 +81,6 @@ upon successful response`, async () => {
     }),
   );
 
-  mockHandledFinishedFetching.mockReset();
-
   renderComponent();
 
   await waitFor(() => {
@@ -108,8 +105,6 @@ upon KO response`, async () => {
   );
 
   fetchMock.mockOnceIf(refreshEndpoint, JSON.stringify({}), { status: 400 });
-
-  mockHandledFinishedFetching.mockReset();
 
   renderComponent();
 
