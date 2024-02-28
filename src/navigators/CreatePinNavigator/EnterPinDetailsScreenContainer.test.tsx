@@ -4,6 +4,7 @@ import Toast from "react-native-toast-message";
 import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
+import { pressButton } from "@/src/lib/utils/testing";
 import enTranslations from "@/translations/en.json";
 
 jest.mock("expo-media-library", () => ({
@@ -65,16 +66,6 @@ const typeInDescriptionInput = async (input: string) => {
   await userEvent.type(descriptionInput, input);
 };
 
-const pressSubmit = async () => {
-  jest.useFakeTimers();
-
-  const submitButton = screen.getByTestId("create-pin-submit-button");
-
-  await userEvent.press(submitButton);
-
-  jest.useRealTimers();
-};
-
 it("calls 'handleCreateSuccess' upon successful pin creation", async () => {
   renderComponent();
 
@@ -94,7 +85,7 @@ it("calls 'handleCreateSuccess' upon successful pin creation", async () => {
 
   expect(mockHandleCreateSuccess).not.toHaveBeenCalled();
 
-  await pressSubmit();
+  await pressButton({ testID: "create-pin-submit-button" });
 
   expect(mockHandleCreateSuccess).toHaveBeenCalledTimes(1);
 });
@@ -104,7 +95,7 @@ it("displays error connection toast upon fetch error", async () => {
 
   fetchMock.mockReject(new Error());
 
-  await pressSubmit();
+  await pressButton({ testID: "create-pin-submit-button" });
 
   expect(Toast.show).toHaveBeenLastCalledWith(
     expect.objectContaining({
@@ -119,7 +110,7 @@ it("displays error response toast upon KO response", async () => {
 
   fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify({}), { status: 400 });
 
-  await pressSubmit();
+  await pressButton({ testID: "create-pin-submit-button" });
 
   expect(Toast.show).toHaveBeenLastCalledWith(
     expect.objectContaining({

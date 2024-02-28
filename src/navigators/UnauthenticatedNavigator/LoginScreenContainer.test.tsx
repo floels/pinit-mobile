@@ -13,6 +13,7 @@ import {
   ERROR_CODE_INVALID_EMAIL,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/src/lib/constants";
+import { pressButton } from "@/src/lib/utils/testing";
 import enTranslations from "@/translations/en.json";
 
 jest.mock("expo-secure-store", () => ({
@@ -55,9 +56,7 @@ const fillInputsWithValidCredentials = async () => {
 };
 
 const pressSubmit = async () => {
-  const submitButton = screen.getByTestId("login-screen-submit-button");
-
-  await userEvent.press(submitButton);
+  await pressButton({ testID: "login-screen-submit-button" });
 };
 
 it("calls 'navigation.goBack()' when pressing Close icon", async () => {

@@ -14,6 +14,7 @@ import {
   API_BASE_URL,
   API_ENDPOINT_SEARCH_SUGGESTIONS,
 } from "@/src/lib/constants";
+import { pressButton } from "@/src/lib/utils/testing";
 
 const mockNavigation = {
   navigate: jest.fn(),
@@ -42,26 +43,6 @@ const typeInSearchInput = async (input: string) => {
   const searchInput = screen.getByTestId("search-input");
 
   await userEvent.type(searchInput, input);
-};
-
-const pressSearchInputClearIcon = async () => {
-  jest.useFakeTimers();
-
-  const clearIcon = screen.getByTestId("pins-search-input-clear-icon");
-
-  await userEvent.press(clearIcon);
-
-  jest.useRealTimers();
-};
-
-const pressCancelButton = async () => {
-  jest.useFakeTimers();
-
-  const cancelButton = screen.getByTestId("pins-search-input-cancel-button");
-
-  await userEvent.press(cancelButton);
-
-  jest.useRealTimers();
 };
 
 const submitSearchInput = () => {
@@ -108,7 +89,7 @@ it("clears input and hide clear icon when user presses 'Clear' icon", async () =
   const searchInput = screen.getByTestId("search-input");
   expect(searchInput.props.value).toEqual("abc");
 
-  await pressSearchInputClearIcon();
+  await pressButton({ testID: "pins-search-input-clear-icon" });
 
   expect(searchInput.props.value).toEqual("");
 
@@ -120,7 +101,7 @@ it("clears input and show search icon again when user presses 'Cancel'", async (
 
   await typeInSearchInput("abc");
 
-  await pressCancelButton();
+  await pressButton({ testID: "pins-search-input-cancel-button" });
 
   const searchInput = screen.getByTestId("search-input");
   expect(searchInput.props.value).toEqual("");
