@@ -17,8 +17,12 @@ const LandingScreenContent = ({
   return (
     <View style={styles.container}>
       <Image source={logo} style={styles.logo} />
-      <Text style={styles.header}>{t("LandingScreen.WELCOME")}</Text>
-      <TouchableOpacity onPress={handlePressLogIn} style={styles.logInButton}>
+      <Text style={styles.header}>{t("LandingScreen.WELCOME_TEXT")}</Text>
+      <TouchableOpacity
+        onPress={handlePressLogIn}
+        style={styles.logInButton}
+        testID="log-in-button"
+      >
         <Text style={styles.logInButtonText}>{t("LandingScreen.LOG_IN")}</Text>
       </TouchableOpacity>
     </View>

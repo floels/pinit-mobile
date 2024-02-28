@@ -2,6 +2,7 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 
 import LandingScreen from "./LandingScreen";
 
+import { pressButton } from "@/src/lib/utils/testing";
 import enTranslations from "@/translations/en.json";
 
 const mockNavigation = {
@@ -13,15 +14,9 @@ const renderComponent = () => {
 };
 
 it("navigates to login screen when pressing 'Log in' button", async () => {
-  jest.useFakeTimers();
-
   renderComponent();
 
-  const logInButton = screen.getByText(enTranslations.LandingScreen.LOG_IN);
-  await userEvent.press(logInButton);
+  await pressButton({ testID: "log-in-button" });
 
   expect(mockNavigation.navigate).toHaveBeenCalledWith("LoginScreen");
-
-  jest.clearAllTimers();
-  jest.useRealTimers();
 });
