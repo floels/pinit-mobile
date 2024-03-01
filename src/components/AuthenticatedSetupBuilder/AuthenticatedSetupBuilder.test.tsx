@@ -12,6 +12,10 @@ import {
   API_ENDPOINT_REFRESH_TOKEN,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/src/lib/constants";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_JSON,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 
 jest.mock("@react-native-async-storage/async-storage", () => ({
   setItem: jest.fn(),
@@ -50,14 +54,9 @@ it("calls '/accounts/me/' endpoint with the refreshed access token", async () =>
     Promise.resolve(null),
   ); // to ensure we will refresh the acess token
 
-  const refreshedTokenExpirationDate = "2024-02-09T07:09:45+00:00";
-
   fetchMock.mockOnceIf(
     refreshEndpoint,
-    JSON.stringify({
-      access_token: "new_access_token",
-      access_token_expiration_utc: refreshedTokenExpirationDate,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_REFRESH_TOKEN],
   );
 
   renderComponent();
@@ -74,7 +73,7 @@ it("calls '/accounts/me/' endpoint with the refreshed access token", async () =>
 
     expect(accountDetailsFetchCallSecondArgument).toEqual({
       headers: {
-        Authorization: "Bearer new_access_token",
+        Authorization: `Bearer ${MOCK_API_RESPONSES_JSON[API_ENDPOINT_REFRESH_TOKEN].access_token}`,
       },
     });
   });

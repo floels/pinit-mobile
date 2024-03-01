@@ -12,8 +12,8 @@ import AuthenticatedMainNavigator from "./AuthenticatedMainNavigator";
 
 import ToastAnchor from "@/src/components/ToastAnchor/ToastAnchor";
 import { AccountContext } from "@/src/contexts/accountContext";
+import { pressButton } from "@/src/lib/testing-utils/misc";
 import { TypesOfAccount } from "@/src/lib/types";
-import { pressButton } from "@/src/lib/utils/testing";
 import enTranslations from "@/translations/en.json";
 
 jest.mock("@react-native-async-storage/async-storage", () => ({

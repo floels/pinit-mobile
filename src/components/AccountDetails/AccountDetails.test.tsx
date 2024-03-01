@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react-native";
 
 import AccountDetails from "./AccountDetails";
 
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
 import enTranslations from "@/translations/en.json";
 
 const mockOnPressBack = jest.fn();

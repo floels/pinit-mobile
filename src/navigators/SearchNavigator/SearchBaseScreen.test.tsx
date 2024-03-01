@@ -12,22 +12,20 @@ import SearchBaseScreen from "./SearchBaseScreen";
 import { AUTOCOMPLETE_DEBOUNCE_TIME_MS } from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
 import {
   API_BASE_URL,
+  API_ENDPOINT_SEARCH_PINS,
   API_ENDPOINT_SEARCH_SUGGESTIONS,
 } from "@/src/lib/constants";
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_JSON,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 
 const mockNavigation = {
   navigate: jest.fn(),
 } as any;
 
-const endpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_SUGGESTIONS}/`;
-
-const NUMBER_MOCK_SUGGESTIONS = 12;
-
-const mockSuggestions = Array.from(
-  { length: NUMBER_MOCK_SUGGESTIONS },
-  (_, index) => `foo suggestion ${index + 1}`,
-); // i.e. ["foo suggestion 1", "foo suggestion 2", ..., "foo suggestion 12"]
+const endpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}/`;
 
 const renderComponent = () => {
   render(<SearchBaseScreen navigation={mockNavigation} />);
@@ -115,9 +113,7 @@ and clear suggestions when user clears input`, async () => {
 
   fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
-    JSON.stringify({
-      results: mockSuggestions,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_SEARCH_SUGGESTIONS],
   );
 
   await typeInSearchInput("foo");
@@ -125,7 +121,10 @@ and clear suggestions when user clears input`, async () => {
   await waitFor(() => {
     const searchSuggestions = screen.queryAllByTestId("search-suggestion-item");
 
-    expect(searchSuggestions.length).toEqual(NUMBER_MOCK_SUGGESTIONS);
+    expect(searchSuggestions.length).toEqual(
+      MOCK_API_RESPONSES_JSON[API_ENDPOINT_SEARCH_SUGGESTIONS].results.length +
+        1,
+    );
 
     within(searchSuggestions[0]).getByText("foo"); // search term should appear as first suggestion
     within(searchSuggestions[1]).getByText("foo suggestion 1");
@@ -138,7 +137,7 @@ it("does not repeat search input as first suggestion if it is already included i
     JSON.stringify({
       results: [
         "foo",
-        ...mockSuggestions.slice(0, NUMBER_MOCK_SUGGESTIONS - 1),
+        ...MOCK_API_RESPONSES_JSON[API_ENDPOINT_SEARCH_SUGGESTIONS].results,
       ],
     }),
   );
@@ -150,7 +149,10 @@ it("does not repeat search input as first suggestion if it is already included i
   await waitFor(() => {
     const searchSuggestions = screen.queryAllByTestId("search-suggestion-item");
 
-    expect(searchSuggestions.length).toEqual(NUMBER_MOCK_SUGGESTIONS);
+    expect(searchSuggestions.length).toEqual(
+      MOCK_API_RESPONSES_JSON[API_ENDPOINT_SEARCH_SUGGESTIONS].results.length +
+        1,
+    );
     within(searchSuggestions[0]).getByText("foo"); // search term should appear as first suggestion
     within(searchSuggestions[1]).getByText("foo suggestion 1");
   });
@@ -171,9 +173,7 @@ it("does not display any suggestion upon KO response", async () => {
 
   fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
-    JSON.stringify({
-      results: mockSuggestions,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_SEARCH_SUGGESTIONS],
   );
 
   await typeInSearchInput("foo");
@@ -184,7 +184,7 @@ it("does not display any suggestion upon KO response", async () => {
     ).toBeGreaterThan(0);
   });
 
-  fetchMock.mockOnceIf(`${endpoint}?search=foobar`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpoint}?search=foobar`, "{}", {
     status: 400,
   });
 
@@ -200,9 +200,7 @@ it("does not display any suggestions upon fetch error", async () => {
 
   fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
-    JSON.stringify({
-      results: mockSuggestions,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_SEARCH_SUGGESTIONS],
   );
 
   await typeInSearchInput("foo");
@@ -213,7 +211,7 @@ it("does not display any suggestions upon fetch error", async () => {
     ).toBeGreaterThan(0);
   });
 
-  fetchMock.mockRejectOnce(new Error());
+  fetchMock.mockRejectOnce();
 
   await typeInSearchInput("bar");
 
@@ -280,9 +278,7 @@ it("navigates to search results screen upon submitting search input", async () =
 it("navigates to search results screen upon pressing search suggestion item", async () => {
   fetchMock.mockOnceIf(
     `${endpoint}?search=foo`,
-    JSON.stringify({
-      results: mockSuggestions,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_SEARCH_SUGGESTIONS],
   );
 
   renderComponent();

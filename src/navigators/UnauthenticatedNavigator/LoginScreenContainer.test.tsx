@@ -19,7 +19,11 @@ import {
   ERROR_CODE_INVALID_EMAIL,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/src/lib/constants";
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_JSON,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 import enTranslations from "@/translations/en.json";
 
 jest.mock("expo-secure-store", () => ({
@@ -128,33 +132,23 @@ it("persists tokens data and dispatch 'LOGGED_IN' action upon successful login",
 
   await fillInputsWithValidCredentials();
 
-  const accessTokenExpirationDate = new Date(
-    new Date().getTime() + 24 * 60 * 60 * 1000,
-  ).toISOString();
-
-  fetchMock.mockOnceIf(
-    endpoint,
-    JSON.stringify({
-      access_token: "access_token",
-      refresh_token: "refresh_token",
-      access_token_expiration_utc: accessTokenExpirationDate,
-    }),
-  );
+  fetchMock.mockOnceIf(endpoint, MOCK_API_RESPONSES[API_ENDPOINT_OBTAIN_TOKEN]);
 
   pressSubmit();
 
   await waitFor(() => {
     expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
       ACCESS_TOKEN_STORAGE_KEY,
-      "access_token",
+      MOCK_API_RESPONSES_JSON[API_ENDPOINT_OBTAIN_TOKEN].access_token,
     );
     expect(SecureStore.setItemAsync).toHaveBeenCalledWith(
       REFRESH_TOKEN_STORAGE_KEY,
-      "refresh_token",
+      MOCK_API_RESPONSES_JSON[API_ENDPOINT_OBTAIN_TOKEN].refresh_token,
     );
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       ACCESS_TOKEN_EXPIRATION_DATE_STORAGE_KEY,
-      accessTokenExpirationDate,
+      MOCK_API_RESPONSES_JSON[API_ENDPOINT_OBTAIN_TOKEN]
+        .access_token_expiration_utc,
     );
 
     expect(mockDispatch).toHaveBeenCalledWith({ type: "LOGGED_IN" });
@@ -166,7 +160,7 @@ it("displays right error message upon fetch fail", async () => {
 
   await fillInputsWithValidCredentials();
 
-  fetchMock.mockRejectOnce(new Error());
+  fetchMock.mockRejectOnce();
 
   pressSubmit();
 
@@ -194,7 +188,7 @@ it("displays right error message upon KO response", async () => {
     screen.getByText(enTranslations.LandingScreen.INVALID_EMAIL_LOGIN);
   });
 
-  fetchMock.mockOnceIf(endpoint, JSON.stringify({}), {
+  fetchMock.mockOnceIf(endpoint, "{}", {
     status: 401,
   });
 
@@ -203,7 +197,7 @@ it("displays right error message upon KO response", async () => {
     screen.getByText(enTranslations.LandingScreen.INVALID_PASSWORD_LOGIN);
   });
 
-  fetchMock.mockOnceIf(endpoint, JSON.stringify({}), {
+  fetchMock.mockOnceIf(endpoint, "{}", {
     status: 400,
   });
 
