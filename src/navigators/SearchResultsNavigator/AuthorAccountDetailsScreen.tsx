@@ -2,7 +2,7 @@ import { NavigationProp, RouteProp } from "@react-navigation/native";
 
 import { SearchResultsNavigatorParamList } from "./SearchResultsNavigator";
 
-import AccountDetails from "@/src/components/AccountDetails/AccountDetails";
+import AccountDetailsView from "@/src/components/AccountDetailsView/AccountDetailsView";
 
 type AccountDetailsScreenProps = {
   route: RouteProp<SearchResultsNavigatorParamList, "AuthorAccountDetails">;
@@ -18,7 +18,7 @@ const AccountDetailsScreen = ({
   const { data: accountDetails, isError, isLoading } = accountDetailsQuery;
 
   return (
-    <AccountDetails
+    <AccountDetailsView
       accountDetails={accountDetails}
       isError={isError}
       isLoading={isLoading}

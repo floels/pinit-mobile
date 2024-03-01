@@ -53,16 +53,24 @@ const renderComponent = () => {
   );
 };
 
-const fillInputsWithValidCredentials = async () => {
+const typeInEmailInput = async (text: string) => {
   const emailInput = screen.getByPlaceholderText(
     enTranslations.LandingScreen.PLACEHOLDER_EMAIL,
   );
-  await userEvent.type(emailInput, "john.doe@example.com");
+  await userEvent.type(emailInput, text);
+};
 
+const typeInPasswordInput = async (text: string) => {
   const passwordInput = screen.getByPlaceholderText(
     enTranslations.LandingScreen.PLACEHOLDER_PASSWORD,
   );
-  await userEvent.type(passwordInput, "Pa$$w0rd");
+  await userEvent.type(passwordInput, text);
+};
+
+const fillInputsWithValidCredentials = async () => {
+  await typeInEmailInput("john.doe@example.com");
+
+  await typeInPasswordInput("Pa$$w0rd");
 };
 
 const pressSubmit = () => {
@@ -95,9 +103,6 @@ it("toggles password visibility upon press of corresponding icon", async () => {
 
   fireEvent.press(togglePasswordVisibilityIcon);
   expect(passwordInput.props.secureTextEntry).toBe(true);
-
-  jest.clearAllTimers();
-  jest.useRealTimers();
 });
 
 it("does not enable submit button before inputs are valid", async () => {
@@ -107,22 +112,15 @@ it("does not enable submit button before inputs are valid", async () => {
 
   expect(submitButton).toBeDisabled();
 
-  const emailInput = screen.getByPlaceholderText(
-    enTranslations.LandingScreen.PLACEHOLDER_EMAIL,
-  );
-  await userEvent.type(emailInput, "john.doe@example.com");
+  await typeInEmailInput("john.doe@example.com");
 
   expect(submitButton).toBeDisabled();
 
-  const passwordInput = screen.getByPlaceholderText(
-    enTranslations.LandingScreen.PLACEHOLDER_PASSWORD,
-  );
-  await userEvent.type(passwordInput, "$h0rt");
+  await typeInPasswordInput("$h0rt");
 
   expect(submitButton).toBeDisabled();
 
-  await userEvent.clear(passwordInput);
-  await userEvent.type(passwordInput, "L0ng€nough");
+  await typeInPasswordInput("I$N0WL0ng€nough");
 
   expect(submitButton).toBeEnabled();
 });

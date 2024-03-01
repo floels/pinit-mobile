@@ -1,10 +1,11 @@
-export type PinBasicDetails = {
+export type PinWithBasicDetails = {
+  id: string;
   title: string;
   imageURL: string;
   description?: string;
 };
 
-export type PinWithAuthorDetails = PinBasicDetails & {
+export type PinWithAuthorDetails = PinWithBasicDetails & {
   authorUsername: string;
   authorDisplayName: string;
   authorProfilePictureURL: string;

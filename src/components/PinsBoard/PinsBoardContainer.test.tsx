@@ -44,6 +44,14 @@ jest.mock("@/src/components/PinsBoard/PinThumbnail", () => {
   );
 });
 
+jest.mock("@/src/components/Spinner/Spinner", () => {
+  const View = jest.requireActual(
+    "react-native/Libraries/Components/View/View",
+  );
+
+  return (props: any) => <View testID="mocked-spinner" />;
+});
+
 Image.getSize = jest.fn();
 
 (Image.getSize as jest.Mock).mockImplementation((_, success) => {
@@ -106,6 +114,11 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
+afterEach(() => {
+  jest.clearAllTimers();
+  jest.useRealTimers();
+});
+
 it(`fetches and renders first page of pin suggestions upon initial render,
 and fetches second page upon scroll`, async () => {
   jest.useFakeTimers();
@@ -145,9 +158,6 @@ and fetches second page upon scroll`, async () => {
       `${endpointWithBaseURL}?page=2`,
     );
   });
-
-  jest.clearAllTimers();
-  jest.useRealTimers();
 });
 
 it("fetches first page with authentication if relevant", async () => {
@@ -181,7 +191,7 @@ it("displays spinner while fetching initial pins", async () => {
 
   renderComponent();
 
-  screen.getByTestId("pins-board-fetch-more-pins-spinner");
+  screen.getByTestId("mocked-spinner");
 });
 
 it("displays error message upon fetch error when fetching initial pins", async () => {
@@ -265,7 +275,6 @@ again if user pulls again within debounce time`, async () => {
 
   pullToRefresh();
 
-  jest.clearAllTimers();
   jest.useRealTimers();
 
   await new Promise((resolve) => setTimeout(resolve, 1)); // Without this wait,
@@ -318,12 +327,11 @@ again if user pulls again after debounce time`, async () => {
   await waitFor(() => {
     expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?page=1`);
   });
-
-  jest.clearAllTimers();
-  jest.useRealTimers();
 });
 
 it("displays error message upon fetch error on refresh", async () => {
+  jest.useFakeTimers();
+
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
@@ -345,6 +353,8 @@ it("displays error message upon fetch error on refresh", async () => {
 });
 
 it("dispatches relevant action upon 401 response on refresh", async () => {
+  jest.useFakeTimers();
+
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
@@ -368,6 +378,8 @@ it("dispatches relevant action upon 401 response on refresh", async () => {
 });
 
 it("displays error message upon 400 response on refresh", async () => {
+  jest.useFakeTimers();
+
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],

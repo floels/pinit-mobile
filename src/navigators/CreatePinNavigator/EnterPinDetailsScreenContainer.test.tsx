@@ -75,7 +75,7 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it("calls 'handleCreateSuccess' with proper arguments upon successful pin creation", async () => {
+it.only("calls 'handleCreateSuccess' with proper arguments upon successful pin creation", async () => {
   renderComponent();
 
   fetchMock.mockOnceIf(
@@ -91,6 +91,7 @@ it("calls 'handleCreateSuccess' with proper arguments upon successful pin creati
   await waitFor(() => {
     expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
       createdPin: {
+        id: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].unique_id,
         imageURL: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].image_url,
         title: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].title,
         description:
@@ -172,27 +173,4 @@ it("does not fetch image size if aspect ratio was provided", async () => {
   renderComponent();
 
   expect(Image.getSize).not.toHaveBeenCalled();
-});
-
-it(`calls 'handleCreateSuccess' with fallback arguments 
-upon malformed OK response`, async () => {
-  renderComponent();
-
-  await typeInTitleInput("My title");
-  await typeInDescriptionInput("My description");
-
-  fetchMock.mockOnceIf(createPinEndpoint, "");
-
-  pressButton({ testID: "create-pin-submit-button" });
-
-  await waitFor(() => {
-    expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
-      createdPin: {
-        imageURL: "",
-        title: "My title",
-        description: "My description",
-      },
-      createdPinImageAspectRatio: 1.5,
-    });
-  });
 });

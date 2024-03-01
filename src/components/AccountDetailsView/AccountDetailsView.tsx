@@ -3,13 +3,13 @@ import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-import styles from "./AccountDetails.styles";
+import styles from "./AccountDetailsView.styles";
 import Spinner from "../Spinner/Spinner";
 
 import { Colors } from "@/src/global.styles";
 import { AccountPublicDetails } from "@/src/lib/types";
 
-type AccountDetailsProps = {
+type AccountDetailsViewProps = {
   accountDetails: AccountPublicDetails | undefined;
   isError: boolean;
   isLoading: boolean;
@@ -25,12 +25,12 @@ const Logo = (props: any) => (
   </Svg>
 );
 
-const AccountDetails = ({
+const AccountDetailsView = ({
   accountDetails,
   isLoading,
   isError,
   onPressBack,
-}: AccountDetailsProps) => {
+}: AccountDetailsViewProps) => {
   const { t } = useTranslation();
 
   const hasBackgroundPicture = !!accountDetails?.backgroundPictureURL;
@@ -91,7 +91,10 @@ const AccountDetails = ({
 
   let picturesBlock;
 
-  if (hasBackgroundPicture) {
+  if (
+    accountDetails?.profilePictureURL &&
+    accountDetails?.backgroundPictureURL
+  ) {
     const screenWidth = Dimensions.get("window").width;
 
     picturesBlock = (
@@ -112,7 +115,7 @@ const AccountDetails = ({
         />
       </View>
     );
-  } else {
+  } else if (accountDetails?.profilePictureURL) {
     picturesBlock = (
       <Image
         source={{ uri: accountDetails.profilePictureURL }}
@@ -138,4 +141,4 @@ const AccountDetails = ({
   );
 };
 
-export default AccountDetails;
+export default AccountDetailsView;

@@ -10,7 +10,7 @@ import {
   Response401Error,
   ResponseKOError,
 } from "@/src/lib/customErrors";
-import { PinBasicDetails, PinWithAuthorDetails } from "@/src/lib/types";
+import { PinWithAuthorDetails } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { serializePinsWithAuthorData } from "@/src/lib/utils/serializers";
 import { appendQueryParam } from "@/src/lib/utils/strings";
@@ -191,9 +191,9 @@ const PinsBoardContainer = ({
   const fetchImageRatios = async ({
     pins,
   }: {
-    pins: PinBasicDetails[];
+    pins: PinWithAuthorDetails[];
   }): Promise<(number | null)[]> => {
-    const buildGetSizePromiseForPin = (pin: PinBasicDetails) => {
+    const buildGetSizePromiseForPin = (pin: PinWithAuthorDetails) => {
       return new Promise((resolve, reject) => {
         const imageURL = pin.imageURL;
 

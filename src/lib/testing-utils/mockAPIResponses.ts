@@ -44,13 +44,13 @@ export const MOCK_API_RESPONSES_JSON = {
     description: null,
     boards: [
       {
-        unique_id: "0000000000000000001",
+        unique_id: "000000000000000001",
         title: "Board 1 title",
         cover_picture_url:
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       },
       {
-        unique_id: "0000000000000000002",
+        unique_id: "000000000000000002",
         title: "Board 2 title",
         cover_picture_url:
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
@@ -70,7 +70,7 @@ export const MOCK_API_RESPONSES_JSON = {
     ],
   },
   [API_ENDPOINT_CREATE_PIN]: {
-    unique_id: "0000000000000000001",
+    unique_id: "000000000000000001",
     image_url:
       "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
     title: "Pin title",
@@ -100,13 +100,13 @@ export const MOCK_API_RESPONSES_JSON = {
     description: "Description for account of John Doe.",
     boards: [
       {
-        unique_id: "0000000000000000001",
+        unique_id: "000000000000000001",
         title: "Board 1 title",
         cover_picture_url:
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       },
       {
-        unique_id: "0000000000000000002",
+        unique_id: "000000000000000002",
         title: "Board 2 title",
         cover_picture_url:
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
@@ -128,13 +128,13 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
     description: null,
     boards: [
       {
-        id: "0000000000000000001",
+        id: "000000000000000001",
         title: "Board 1 title",
         coverPictureURL:
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       },
       {
-        id: "0000000000000000002",
+        id: "000000000000000002",
         title: "Board 2 title",
         coverPictureURL:
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
