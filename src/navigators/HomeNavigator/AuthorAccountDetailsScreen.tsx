@@ -1,6 +1,6 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 
-import AccountDetails from "@/src/components/AccountDetails/AccountDetails";
+import AccountDetailsView from "@/src/components/AccountDetailsView/AccountDetailsView";
 import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
 
 type AccountDetailsScreenProps = {
@@ -17,7 +17,7 @@ const AccountDetailsScreen = ({
   const { data: accountDetails, isError, isLoading } = accountDetailsQuery;
 
   return (
-    <AccountDetails
+    <AccountDetailsView
       accountDetails={accountDetails}
       isError={isError}
       isLoading={isLoading}

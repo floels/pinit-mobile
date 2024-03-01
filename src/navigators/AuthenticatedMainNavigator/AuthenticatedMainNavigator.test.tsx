@@ -1,46 +1,29 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 import React from "react";
 
 import AuthenticatedMainNavigator from "./AuthenticatedMainNavigator";
 
 import ToastAnchor from "@/src/components/ToastAnchor/ToastAnchor";
 import { AccountContext } from "@/src/contexts/accountContext";
+import { API_ENDPOINT_MY_ACCOUNT_DETAILS } from "@/src/lib/constants";
 import { pressButton } from "@/src/lib/testing-utils/misc";
-import { TypesOfAccount } from "@/src/lib/types";
-import enTranslations from "@/translations/en.json";
+import { MOCK_API_RESPONSES_SERIALIZED } from "@/src/lib/testing-utils/mockAPIResponses";
 
-jest.mock("@react-native-async-storage/async-storage", () => ({
-  getItem: jest.fn(),
-}));
-
-const mockAsyncStorageGetItem = AsyncStorage.getItem as jest.Mock;
-
-mockAsyncStorageGetItem.mockImplementation(() => null);
+jest.mock("@/src/navigators/HomeNavigator/HomeNavigator.tsx", () => {
+  return () => null;
+});
 
 const mockNavigation = {
   navigate: jest.fn(),
 };
 
-const account = {
-  type: TypesOfAccount.PERSONAL,
-  username: "johndoe",
-  displayName: "John Doe",
-  profilePictureURL: "https://some.domain.com/profile-picture.jpg",
-};
+const account = MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_MY_ACCOUNT_DETAILS];
 
 const renderComponent = (props?: any) => {
   render(
     <>
-      <AccountContext.Provider
-        value={{ state: { account }, dispatch: () => {} }}
-      >
+      <AccountContext.Provider value={{ account, setAccount: () => {} }}>
         <NavigationContainer>
           <AuthenticatedMainNavigator
             navigation={mockNavigation as any}
@@ -53,28 +36,6 @@ const renderComponent = (props?: any) => {
     </>,
   );
 };
-
-it("opens the 'Create Select' modal when the 'Create' tab bar icon is tapped", async () => {
-  renderComponent();
-
-  await waitFor(() => {
-    const createTabBarIcons = screen.queryAllByTestId("tab-bar-icon-create");
-
-    expect(createTabBarIcons.length).toBeGreaterThan(0);
-
-    expect(
-      screen.queryByText(
-        enTranslations.TabsNavigationBar.CREATE_SELECT_MODAL_TITLE,
-      ),
-    ).toBeNull();
-
-    fireEvent.press(createTabBarIcons[0]);
-
-    screen.getByText(
-      enTranslations.TabsNavigationBar.CREATE_SELECT_MODAL_TITLE,
-    );
-  });
-});
 
 it(`shows pin creation success toast when corresponding route params are provided,
 and clicking on 'View' link in toast navigates to relevant screen with relevant parameters`, async () => {

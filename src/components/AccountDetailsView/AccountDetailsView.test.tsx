@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react-native";
+import { render, screen, waitFor } from "@testing-library/react-native";
 
-import AccountDetails from "./AccountDetails";
+import AccountDetailsView from "./AccountDetailsView";
 
 import { pressButton } from "@/src/lib/testing-utils/misc";
 import enTranslations from "@/translations/en.json";
@@ -22,7 +22,7 @@ const accountDetailsWithBackgroundPicture = {
 
 const renderComponent = (props?: any) => {
   render(
-    <AccountDetails
+    <AccountDetailsView
       accountDetails={accountDetailsWithoutBackgroundPicture}
       isLoading={false}
       isError={false}
@@ -56,13 +56,15 @@ it("renders background picture if one was provided", () => {
   });
 });
 
-it("renders spinner when loading", () => {
+it("renders spinner when loading", async () => {
   renderComponent({
     isLoading: true,
     accountDetails: undefined,
   });
 
-  screen.getByTestId("account-details-loading-spinner");
+  await waitFor(() => {
+    screen.getByTestId("account-details-loading-spinner");
+  });
 });
 
 it("renders error state if 'isError' is true and 'accountDetails' is undefined", () => {

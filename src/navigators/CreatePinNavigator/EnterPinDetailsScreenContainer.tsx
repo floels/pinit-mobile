@@ -10,8 +10,10 @@ import { CreatePinNavigatorParamList } from "./CreatePinNavigator";
 import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
-import { PinBasicDetails } from "@/src/lib/types";
+import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
+import { PinWithBasicDetails } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
+import { serializePinWithBasicDetails } from "@/src/lib/utils/serializers";
 
 type EnterPinDetailsScreenContainerProps = {
   navigation: NavigationProp<CreatePinNavigatorParamList>;
@@ -20,7 +22,7 @@ type EnterPinDetailsScreenContainerProps = {
     createdPin,
     createdPinImageAspectRatio,
   }: {
-    createdPin: PinBasicDetails;
+    createdPin: PinWithBasicDetails;
     createdPinImageAspectRatio: number;
   }) => void;
 };
@@ -55,6 +57,12 @@ const EnterPinDetailsScreenContainer = ({
   }, [providedImageAspectRatio]);
 
   const handleSubmit = async () => {
+    const formData = await buildFormData();
+
+    postFormDataAndUpdateUI(formData);
+  };
+
+  const buildFormData = async () => {
     const formData = new FormData();
 
     // The "selectedImageURI" has format: "ph://...-...-...-..."
@@ -77,7 +85,7 @@ const EnterPinDetailsScreenContainer = ({
     formData.append("title", pinTitle);
     formData.append("description", pinDescription);
 
-    postFormData(formData);
+    return formData;
   };
 
   const getImageMediaLibraryURI = async () => {
@@ -90,9 +98,28 @@ const EnterPinDetailsScreenContainer = ({
     return mediaLibraryAssetInfo.localUri;
   };
 
-  const postFormData = async (formData: FormData) => {
+  const postFormDataAndUpdateUI = async (formData: FormData) => {
     setIsPosting(true);
 
+    let createdPin;
+
+    try {
+      createdPin = await postFormData(formData);
+    } catch (error) {
+      handlePostError(error);
+      return;
+    } finally {
+      setIsPosting(false);
+    }
+
+    handleCreateSuccess({
+      createdPin,
+      createdPinImageAspectRatio: imageAspectRatio || 1, // If the aspect ratio
+      // couldn't be determined, we default to 1 (square image).
+    });
+  };
+
+  const postFormData = async (formData: FormData) => {
     let response;
 
     try {
@@ -104,43 +131,25 @@ const EnterPinDetailsScreenContainer = ({
         },
       );
     } catch {
-      showConnectionErrorToast();
-      return;
-    } finally {
-      setIsPosting(false);
+      throw new NetworkError();
     }
 
     if (!response.ok) {
-      showKOResponseErrorToast();
+      throw new ResponseKOError();
+    }
+
+    const responseData = await response.json();
+
+    return serializePinWithBasicDetails(responseData);
+  };
+
+  const handlePostError = (error: unknown) => {
+    if (error instanceof NetworkError) {
+      showConnectionErrorToast();
       return;
     }
 
-    let createdPin;
-
-    try {
-      const responseData = await response.json();
-
-      createdPin = {
-        imageURL: responseData.image_url,
-        title: responseData.title,
-        description: responseData.description,
-      };
-    } catch {
-      // This case should never occur, but in case the OK response didn't have the
-      // expected JSON format, we fall back to the title and description
-      // inputted by the user, and to an empty-string image URL:
-      createdPin = {
-        imageURL: "",
-        title: pinTitle,
-        description: pinDescription,
-      };
-    }
-
-    handleCreateSuccess({
-      createdPin,
-      createdPinImageAspectRatio: imageAspectRatio || 1, // If the aspect ratio
-      // couldn't be determined, we default to 1 (square image).
-    });
+    showGenericErrorToast();
   };
 
   const showConnectionErrorToast = () => {
@@ -151,7 +160,7 @@ const EnterPinDetailsScreenContainer = ({
     });
   };
 
-  const showKOResponseErrorToast = () => {
+  const showGenericErrorToast = () => {
     Toast.show({
       type: "pinCreationError",
       position: "bottom",

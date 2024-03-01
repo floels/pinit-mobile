@@ -2,7 +2,7 @@ import { NavigationProp, RouteProp } from "@react-navigation/native";
 
 import { CreatedPinDetailsNavigatorParamList } from "./CreatedPinDetailsNavigator";
 
-import AccountDetails from "@/src/components/AccountDetails/AccountDetails";
+import AccountDetailsView from "@/src/components/AccountDetailsView/AccountDetailsView";
 
 type AuthorAccountDetailsScreenProps = {
   route: RouteProp<CreatedPinDetailsNavigatorParamList, "AuthorAccountDetails">;
@@ -18,7 +18,7 @@ const AuthorAccountDetailsScreen = ({
   const { data: accountDetails, isError, isLoading } = accountDetailsQuery;
 
   return (
-    <AccountDetails
+    <AccountDetailsView
       accountDetails={accountDetails}
       isError={isError}
       isLoading={isLoading}

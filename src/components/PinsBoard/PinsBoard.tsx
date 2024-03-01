@@ -69,7 +69,6 @@ const PinsBoard = ({
         name="spinner"
         size={40}
         style={styles.fetchMorePinsSpinnerIcon}
-        testID="pins-board-fetch-more-pins-spinner"
       />
     </Spinner>
   );

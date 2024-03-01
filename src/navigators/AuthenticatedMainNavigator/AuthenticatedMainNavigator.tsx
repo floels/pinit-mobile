@@ -39,9 +39,7 @@ const AuthenticatedMainNavigator = ({
   const { createdPin, createdPinImageAspectRatio } = route.params || {}; // 'route.params' is undefined
   // except when we just created a pin.
 
-  const {
-    state: { account },
-  } = useAccountContext();
+  const { account } = useAccountContext();
 
   const [isCreateSelectModalVisible, setIsCreateSelectModalVisible] =
     useState(false);
@@ -70,7 +68,7 @@ const AuthenticatedMainNavigator = ({
           name={TAB_BAR_ICON_NAMES[route.name]}
           size={24}
           color={color}
-          testID={`tab-bar-icon-${route.name.toLowerCase()}`}
+          testID={route.name === "Create" ? "tab-bar-icon-create" : ""}
         />
       );
     }

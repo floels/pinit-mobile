@@ -45,8 +45,10 @@ it(`should set search input value based on initial search term provided,
 and search pins accordingly`, async () => {
   renderComponent();
 
-  const searchInput = screen.getByTestId("pins-search-input-text-input");
-  expect(searchInput.props.value).toEqual("search");
+  await waitFor(() => {
+    const searchInput = screen.getByTestId("pins-search-input-text-input");
+    expect(searchInput.props.value).toEqual("search");
+  });
 
   expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?q=search&page=1`);
 });
