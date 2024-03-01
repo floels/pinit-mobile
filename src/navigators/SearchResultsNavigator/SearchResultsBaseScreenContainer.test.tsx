@@ -8,8 +8,11 @@ import { Image } from "react-native";
 
 import SearchResultsBaseScreenContainer from "./SearchResultsBaseScreenContainer";
 
-import { API_BASE_URL, API_ENDPOINT_SEARCH } from "@/src/lib/constants";
-import { serializePinWithAuthorData } from "@/src/lib/utils/serializers";
+import { API_BASE_URL, API_ENDPOINT_SEARCH_PINS } from "@/src/lib/constants";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_SERIALIZED,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 
 Image.getSize = jest.fn();
 
@@ -19,18 +22,6 @@ const pinImagesAspectRatio = 1.5;
 (Image.getSize as jest.Mock).mockImplementation((_, success) => {
   success(pinImagesWidth, pinImagesWidth / pinImagesAspectRatio);
 });
-
-const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
-
-const mockPinSuggestionsPage = Array.from(
-  { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
-  (_, index) => ({
-    unique_id: index,
-    title: `Pin #${index + 1}`,
-    image_url: "https://some.url.com",
-    author: { username: "johndoe", display_name: "John Doe" },
-  }),
-);
 
 const mockNavigation = {
   navigate: jest.fn(),
@@ -48,7 +39,7 @@ const renderComponent = () => {
   );
 };
 
-const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_SEARCH}/`;
+const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}/`;
 
 it(`should set search input value based on initial search term provided,
 and search pins accordingly`, async () => {
@@ -60,23 +51,21 @@ and search pins accordingly`, async () => {
   expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?q=search&page=1`);
 });
 
-it(`should navigate to proper screen with proper params when user taps on a pin`, async () => {
+it("should navigate to screen with proper params when user taps on a pin", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?q=search&page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_SEARCH_PINS],
   );
 
   renderComponent();
 
   await waitFor(() => {
-    const firstPin = screen.getByText("Pin #1");
+    const firstPin = screen.getByText("Pin 1 title");
 
     fireEvent.press(firstPin);
 
     expect(mockNavigation.navigate).toHaveBeenCalledWith("PinDetails", {
-      pin: serializePinWithAuthorData(mockPinSuggestionsPage[0]),
+      pin: MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_SEARCH_PINS].results[0],
       pinImageAspectRatio: pinImagesAspectRatio,
     });
   });

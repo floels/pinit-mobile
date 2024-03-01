@@ -12,7 +12,10 @@ import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
-import { serializePinWithAuthorData } from "@/src/lib/utils/serializers";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_SERIALIZED,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 
 jest.mock("expo-secure-store", () => ({
   getItemAsync: () => "access_token",
@@ -27,18 +30,6 @@ const pinImagesAspectRatio = 1.5;
   success(pinImagesWidth, pinImagesWidth / pinImagesAspectRatio);
 });
 
-const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
-
-const mockPinSuggestionsPage = Array.from(
-  { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
-  (_, index) => ({
-    unique_id: index,
-    title: `Pin #${index + 1}`,
-    image_url: "https://some.url.com",
-    author: { username: "johndoe", display_name: "John Doe" },
-  }),
-);
-
 const mockNavigation = {
   navigate: jest.fn(),
 };
@@ -49,24 +40,24 @@ const renderComponent = () => {
 
 const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 
-it(`should navigate to proper screen with proper params when user taps on a pin`, async () => {
+it("should navigate to screen with proper params when user taps on a pin", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
 
   await waitFor(() => {
-    const firstPin = screen.getByText("Pin #1");
+    screen.getByText("Pin 1 title");
+  });
 
-    fireEvent.press(firstPin);
+  const firstPin = screen.getByText("Pin 1 title");
 
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("PinDetails", {
-      pin: serializePinWithAuthorData(mockPinSuggestionsPage[0]),
-      pinImageAspectRatio: pinImagesAspectRatio,
-    });
+  fireEvent.press(firstPin);
+
+  expect(mockNavigation.navigate).toHaveBeenCalledWith("PinDetails", {
+    pin: MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_PIN_SUGGESTIONS].results[0],
+    pinImageAspectRatio: pinImagesAspectRatio,
   });
 });

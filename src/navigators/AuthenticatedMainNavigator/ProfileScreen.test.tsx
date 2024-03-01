@@ -10,7 +10,7 @@ import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/src/lib/constants";
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
 
 jest.mock("@/src/components/LoadingOverlay/LoadingOverlay", () => {
   const View = jest.requireActual(

@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react-native";
 
 import PinDetails from "./PinDetails";
 
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
 
 const mockHandlePressAuthor = jest.fn();
 

@@ -4,7 +4,7 @@ import { TextInput } from "react-native";
 
 import SearchResultsBaseScreen from "./SearchResultsBaseScreen";
 
-import { API_BASE_URL, API_ENDPOINT_SEARCH } from "@/src/lib/constants";
+import { API_BASE_URL, API_ENDPOINT_SEARCH_PINS } from "@/src/lib/constants";
 import { PinWithAuthorDetails } from "@/src/lib/types";
 import { SearchResultsNavigatorParamList } from "@/src/navigators/SearchResultsNavigator/SearchResultsNavigator";
 
@@ -70,7 +70,7 @@ const SearchResultsBaseScreenContainer = ({
     };
   };
 
-  const searchEndpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH}/?q=${lastSubmittedSearchTerm.toLowerCase()}`;
+  const searchEndpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}/?q=${lastSubmittedSearchTerm.toLowerCase()}`;
 
   const showBackButton = !isSearchInputFocused;
 

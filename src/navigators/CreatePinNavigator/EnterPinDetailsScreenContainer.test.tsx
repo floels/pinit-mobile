@@ -10,7 +10,11 @@ import Toast from "react-native-toast-message";
 import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_JSON,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 import enTranslations from "@/translations/en.json";
 
 jest.mock("expo-media-library", () => ({
@@ -55,13 +59,6 @@ const renderComponent = (
 
 const createPinEndpoint = `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}/`;
 
-const createdPinData = {
-  unique_id: "0000",
-  image_url: "https://some.url",
-  title: "Pin title",
-  description: "Pin description",
-};
-
 const typeInTitleInput = async (input: string) => {
   const titleInput = screen.getByTestId("pin-title-input");
 
@@ -81,18 +78,23 @@ beforeEach(() => {
 it("calls 'handleCreateSuccess' with proper arguments upon successful pin creation", async () => {
   renderComponent();
 
-  fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify(createdPinData), {
-    status: 201,
-  });
+  fetchMock.mockOnceIf(
+    createPinEndpoint,
+    MOCK_API_RESPONSES[API_ENDPOINT_CREATE_PIN],
+    {
+      status: 201,
+    },
+  );
 
   pressButton({ testID: "create-pin-submit-button" });
 
   await waitFor(() => {
     expect(mockHandleCreateSuccess).toHaveBeenCalledWith({
       createdPin: {
-        imageURL: createdPinData.image_url,
-        title: createdPinData.title,
-        description: createdPinData.description,
+        imageURL: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].image_url,
+        title: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].title,
+        description:
+          MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].description,
       },
       createdPinImageAspectRatio: 1.5,
     });
@@ -119,7 +121,7 @@ it("displays error connection toast upon fetch error", async () => {
 it("displays error response toast upon KO response", async () => {
   renderComponent();
 
-  fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify({}), { status: 400 });
+  fetchMock.mockOnceIf(createPinEndpoint, "{}", { status: 400 });
 
   pressButton({ testID: "create-pin-submit-button" });
 
@@ -146,9 +148,13 @@ it("fetches image size itself if aspect ratio wasn't provided", async () => {
     },
   });
 
-  fetchMock.mockOnceIf(createPinEndpoint, JSON.stringify(createdPinData), {
-    status: 201,
-  });
+  fetchMock.mockOnceIf(
+    createPinEndpoint,
+    JSON.stringify(MOCK_API_RESPONSES[API_ENDPOINT_CREATE_PIN]),
+    {
+      status: 201,
+    },
+  );
 
   pressButton({ testID: "create-pin-submit-button" });
 

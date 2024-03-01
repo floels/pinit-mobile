@@ -2,7 +2,7 @@ import { render } from "@testing-library/react-native";
 
 import CreateSelectModal from "./CreateSelectModal";
 
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
 
 const mockHandlePressCreatePin = jest.fn();
 

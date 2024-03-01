@@ -18,12 +18,14 @@ import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_JSON,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 import enTranslations from "@/translations/en.json";
 
 const MOCKED_PIN_THUMBNAIL_HEIGHT = 500;
-const NUMBER_PIN_SUGGESTIONS_PER_PAGE = 12;
-const SCROLL_VIEW_HEIGHT =
-  MOCKED_PIN_THUMBNAIL_HEIGHT * NUMBER_PIN_SUGGESTIONS_PER_PAGE;
+const SCROLL_VIEW_HEIGHT = (MOCKED_PIN_THUMBNAIL_HEIGHT * 50) / 2;
 
 jest.mock("expo-secure-store", () => ({
   getItemAsync: () => "access_token",
@@ -48,25 +50,14 @@ Image.getSize = jest.fn();
   success(100, MOCKED_PIN_THUMBNAIL_HEIGHT);
 });
 
-const mockPinSuggestionsPage = Array.from(
-  { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
-  (_, index) => ({
-    unique_id: index,
-    title: "Pin title",
-    image_url: "https://some.url.com",
-    author: { username: "johndoe", display_name: "John Doe" },
-  }),
-);
+// To simulate the response upon refresh, simply shift the 'unique_id' of each pin:
+const mockPinSuggestions =
+  MOCK_API_RESPONSES_JSON[API_ENDPOINT_PIN_SUGGESTIONS].results;
 
-const mockRefreshedPinSuggestionsPage = Array.from(
-  { length: NUMBER_PIN_SUGGESTIONS_PER_PAGE },
-  (_, index) => ({
-    unique_id: index + NUMBER_PIN_SUGGESTIONS_PER_PAGE,
-    title: "Pin title",
-    image_url: "https://some.url.com",
-    author: { username: "johndoe", display_name: "John Doe" },
-  }),
-);
+const mockRefreshedPinSuggestions = mockPinSuggestions.map((result, index) => ({
+  ...result,
+  unique_id: String(mockPinSuggestions.length + index).padStart(18, "0"),
+}));
 
 const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 
@@ -121,16 +112,14 @@ and fetches second page upon scroll`, async () => {
 
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
 
   await waitFor(() => {
     const pinThumbnails = screen.queryAllByTestId(/^mocked-pin-thumbnail-/);
-    expect(pinThumbnails.length).toEqual(NUMBER_PIN_SUGGESTIONS_PER_PAGE);
+    expect(pinThumbnails.length).toEqual(mockPinSuggestions.length);
   });
 
   act(() => {
@@ -143,7 +132,7 @@ and fetches second page upon scroll`, async () => {
   fireEvent.scroll(scrollView, {
     nativeEvent: {
       contentOffset: {
-        y: 2000,
+        y: SCROLL_VIEW_HEIGHT,
       },
       contentSize: {
         height: SCROLL_VIEW_HEIGHT,
@@ -196,7 +185,7 @@ it("displays spinner while fetching initial pins", async () => {
 });
 
 it("displays error message upon fetch error when fetching initial pins", async () => {
-  fetchMock.mockRejectOnce(new Error());
+  fetchMock.mockRejectOnce();
 
   renderComponent();
 
@@ -206,7 +195,7 @@ it("displays error message upon fetch error when fetching initial pins", async (
 });
 
 it("dispatches relevant action upon 401 response when fetching initial pins", async () => {
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
     status: 401,
   });
 
@@ -218,7 +207,7 @@ it("dispatches relevant action upon 401 response when fetching initial pins", as
 });
 
 it("displays error message upon 400 response when fetching initial pins", async () => {
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
     status: 400,
   });
 
@@ -232,9 +221,7 @@ it("displays error message upon 400 response when fetching initial pins", async 
 it("displays error message upon error in 'Image.getSize()' when fetching initial pins", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   (Image.getSize as jest.Mock).mockImplementationOnce((_, __, error) => {
@@ -254,9 +241,7 @@ again if user pulls again within debounce time`, async () => {
 
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
@@ -264,16 +249,14 @@ again if user pulls again within debounce time`, async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
-      results: mockRefreshedPinSuggestionsPage,
+      results: mockRefreshedPinSuggestions,
     }),
   );
 
   pullToRefresh();
 
   await waitFor(() => {
-    screen.getByTestId(
-      `mocked-pin-thumbnail-${NUMBER_PIN_SUGGESTIONS_PER_PAGE}`,
-    );
+    screen.getByTestId("mocked-pin-thumbnail-000000000000000050");
   });
 
   (fetch as FetchMock).mockReset();
@@ -298,9 +281,7 @@ again if user pulls again after debounce time`, async () => {
 
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
@@ -308,16 +289,14 @@ again if user pulls again after debounce time`, async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
-      results: mockRefreshedPinSuggestionsPage,
+      results: mockRefreshedPinSuggestions,
     }),
   );
 
   pullToRefresh();
 
   await waitFor(() => {
-    screen.getByTestId(
-      `mocked-pin-thumbnail-${NUMBER_PIN_SUGGESTIONS_PER_PAGE}`,
-    );
+    screen.getByTestId("mocked-pin-thumbnail-000000000000000050");
   });
 
   (fetch as FetchMock).mockReset();
@@ -326,7 +305,7 @@ again if user pulls again after debounce time`, async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
     JSON.stringify({
-      results: mockRefreshedPinSuggestionsPage,
+      results: mockRefreshedPinSuggestions,
     }),
   );
 
@@ -347,18 +326,16 @@ again if user pulls again after debounce time`, async () => {
 it("displays error message upon fetch error on refresh", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
 
   await waitFor(() => {
-    screen.getByTestId("mocked-pin-thumbnail-0");
+    screen.getByTestId("mocked-pin-thumbnail-000000000000000000");
   });
 
-  fetchMock.mockRejectOnce(new Error());
+  fetchMock.mockRejectOnce();
 
   pullToRefresh();
 
@@ -370,18 +347,16 @@ it("displays error message upon fetch error on refresh", async () => {
 it("dispatches relevant action upon 401 response on refresh", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
 
   await waitFor(() => {
-    screen.getByTestId("mocked-pin-thumbnail-0");
+    screen.getByTestId("mocked-pin-thumbnail-000000000000000000");
   });
 
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
     status: 401,
   });
 
@@ -395,18 +370,16 @@ it("dispatches relevant action upon 401 response on refresh", async () => {
 it("displays error message upon 400 response on refresh", async () => {
   fetchMock.mockOnceIf(
     `${endpointWithBaseURL}?page=1`,
-    JSON.stringify({
-      results: mockPinSuggestionsPage,
-    }),
+    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
 
   await waitFor(() => {
-    screen.getByTestId("mocked-pin-thumbnail-0");
+    screen.getByTestId("mocked-pin-thumbnail-000000000000000000");
   });
 
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, JSON.stringify({}), {
+  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
     status: 400,
   });
 

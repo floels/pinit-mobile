@@ -11,7 +11,11 @@ import {
   API_ENDPOINT_MY_ACCOUNT_DETAILS,
   PROFILE_PICTURE_URL_STORAGE_KEY,
 } from "@/src/lib/constants";
-import { serializeAccountPrivateDetails } from "@/src/lib/utils/serializers";
+import {
+  MOCK_API_RESPONSES,
+  MOCK_API_RESPONSES_JSON,
+  MOCK_API_RESPONSES_SERIALIZED,
+} from "@/src/lib/testing-utils/mockAPIResponses";
 
 jest.mock("expo-secure-store", () => ({
   getItemAsync: jest.fn(),
@@ -48,15 +52,6 @@ const renderComponent = () => {
   );
 };
 
-const accountDetails = {
-  type: "personal",
-  username: "johndoe",
-  display_name: "John Doe",
-  initial: "J",
-  profile_picture_url: "https://example.com/profile-picture.jpg",
-  boards: [],
-};
-
 const accountDetailsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}/`;
 
 it(`calls 'setAccount' with proper arguments and persists 
@@ -65,18 +60,22 @@ relevant data upon successful fetch`, async () => {
     () => "access_token",
   );
 
-  fetchMock.mockOnceIf(accountDetailsEndpoint, JSON.stringify(accountDetails));
+  fetchMock.mockOnceIf(
+    accountDetailsEndpoint,
+    MOCK_API_RESPONSES[API_ENDPOINT_MY_ACCOUNT_DETAILS],
+  );
 
   renderComponent();
 
   await waitFor(() => {
     expect(mockSetAccount).toHaveBeenCalledWith(
-      serializeAccountPrivateDetails(accountDetails),
+      MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_MY_ACCOUNT_DETAILS],
     );
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       PROFILE_PICTURE_URL_STORAGE_KEY,
-      accountDetails.profile_picture_url,
+      MOCK_API_RESPONSES_JSON[API_ENDPOINT_MY_ACCOUNT_DETAILS]
+        .profile_picture_url,
     );
   });
 });
@@ -86,7 +85,7 @@ it("dispatches relevant action upon 401 response", async () => {
     () => "access_token",
   );
 
-  fetchMock.mockOnceIf(accountDetailsEndpoint, JSON.stringify({}), {
+  fetchMock.mockOnceIf(accountDetailsEndpoint, "{}", {
     status: 401,
   });
 
@@ -104,7 +103,7 @@ it("fails silently upon other KO response", async () => {
     () => "access_token",
   );
 
-  fetchMock.mockOnceIf(accountDetailsEndpoint, JSON.stringify({}), {
+  fetchMock.mockOnceIf(accountDetailsEndpoint, "{}", {
     status: 400,
   });
 

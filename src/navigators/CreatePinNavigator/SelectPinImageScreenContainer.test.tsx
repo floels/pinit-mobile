@@ -4,7 +4,7 @@ import { Image } from "react-native";
 import SelectPinImageScreenContainer from "./SelectPinImageScreenContainer";
 
 import { useCameraRollPhotos } from "@/src/hooks/useCameraRollPhotos";
-import { pressButton } from "@/src/lib/utils/testing";
+import { pressButton } from "@/src/lib/testing-utils/misc";
 import enTranslations from "@/translations/en.json";
 
 jest.mock("@react-navigation/native", () => ({
