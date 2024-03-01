@@ -16,10 +16,21 @@ export enum TypesOfAccount {
 }
 
 export type AccountPublicDetails = {
-  type: TypesOfAccount;
   username: string;
   displayName: string;
-  profilePictureURL?: string;
-  backgroundPictureURL?: string;
-  description?: string;
+  profilePictureURL: string | null;
+  backgroundPictureURL: string | null;
+  description: string | null;
+  boards: Board[];
+};
+
+export type AccountPrivateDetails = AccountPublicDetails & {
+  type: TypesOfAccount;
+  initial: string;
+};
+
+export type Board = {
+  id: string;
+  title: string;
+  coverPictureURL: string | null;
 };

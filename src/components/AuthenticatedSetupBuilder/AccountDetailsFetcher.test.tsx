@@ -11,7 +11,7 @@ import {
   API_ENDPOINT_MY_ACCOUNT_DETAILS,
   PROFILE_PICTURE_URL_STORAGE_KEY,
 } from "@/src/lib/constants";
-import { getAccountWithCamelCaseKeys } from "@/src/lib/utils/serializers";
+import { serializeAccountPrivateDetails } from "@/src/lib/utils/serializers";
 
 jest.mock("expo-secure-store", () => ({
   getItemAsync: jest.fn(),
@@ -23,16 +23,13 @@ jest.mock("@react-native-async-storage/async-storage", () => ({
 }));
 
 const mockAuthenticationContextDispatch = jest.fn();
-const mockAccountContextDispatch = jest.fn();
+
+const mockSetAccount = jest.fn();
 
 const renderComponent = () => {
   const authenticationContextInitialState = {
     isCheckingAccessToken: false,
     isAuthenticated: true,
-  };
-
-  const accountContextInitialState = {
-    account: null,
   };
 
   render(
@@ -43,10 +40,7 @@ const renderComponent = () => {
       }}
     >
       <AccountContext.Provider
-        value={{
-          state: accountContextInitialState,
-          dispatch: mockAccountContextDispatch,
-        }}
+        value={{ account: null, setAccount: mockSetAccount }}
       >
         <AccountDetailsFetcher />
       </AccountContext.Provider>
@@ -60,11 +54,13 @@ const accountDetails = {
   display_name: "John Doe",
   initial: "J",
   profile_picture_url: "https://example.com/profile-picture.jpg",
+  boards: [],
 };
 
 const accountDetailsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}/`;
 
-it("dispatches relevant action and persist profile picture URL upon successful fetch", async () => {
+it(`calls 'setAccount' with proper arguments and persists 
+relevant data upon successful fetch`, async () => {
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "access_token",
   );
@@ -74,10 +70,9 @@ it("dispatches relevant action and persist profile picture URL upon successful f
   renderComponent();
 
   await waitFor(() => {
-    expect(mockAccountContextDispatch).toHaveBeenCalledWith({
-      type: "FETCHED_ACCOUNT_DETAILS",
-      accountDetails: getAccountWithCamelCaseKeys(accountDetails),
-    });
+    expect(mockSetAccount).toHaveBeenCalledWith(
+      serializeAccountPrivateDetails(accountDetails),
+    );
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
       PROFILE_PICTURE_URL_STORAGE_KEY,
@@ -104,7 +99,7 @@ it("dispatches relevant action upon 401 response", async () => {
   });
 });
 
-it("fails silently upon KO response", async () => {
+it("fails silently upon other KO response", async () => {
   (SecureStore.getItemAsync as jest.Mock).mockImplementationOnce(
     () => "access_token",
   );

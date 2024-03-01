@@ -5,7 +5,7 @@ import {
   API_ENDPOINT_ACCOUNT_DETAILS,
 } from "@/src/lib/constants";
 import { ResponseKOError } from "@/src/lib/customErrors";
-import { getAccountWithCamelCaseKeys } from "@/src/lib/utils/serializers";
+import { serializeAccountPublicDetails } from "@/src/lib/utils/serializers";
 
 const fetchAccountDetails = async ({ username }: { username: string }) => {
   const response = await fetch(
@@ -18,7 +18,7 @@ const fetchAccountDetails = async ({ username }: { username: string }) => {
 
   const responseData = await response.json();
 
-  return getAccountWithCamelCaseKeys(responseData);
+  return serializeAccountPublicDetails(responseData);
 };
 
 export const useAccountDetailsQuery = ({ username }: { username: string }) => {
