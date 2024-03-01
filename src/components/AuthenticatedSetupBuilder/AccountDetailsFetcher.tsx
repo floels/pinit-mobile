@@ -10,11 +10,11 @@ import {
 } from "@/src/lib/constants";
 import { Response401Error, ResponseKOError } from "@/src/lib/customErrors";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
-import { getAccountWithCamelCaseKeys } from "@/src/lib/utils/serializers";
+import { serializeAccountPrivateDetails } from "@/src/lib/utils/serializers";
 
 const AccountDetailsFetcher = () => {
   const authenticationContext = useAuthenticationContext();
-  const accountContext = useAccountContext();
+  const { setAccount } = useAccountContext();
 
   const fetchDispatchAndPersistAccountDetails = async () => {
     let accountDetails;
@@ -31,10 +31,7 @@ const AccountDetailsFetcher = () => {
       return;
     }
 
-    accountContext.dispatch({
-      type: "FETCHED_ACCOUNT_DETAILS",
-      accountDetails,
-    });
+    setAccount(accountDetails);
 
     await persistProfilePictureURL({
       profilePictureURL: accountDetails.profilePictureURL,
@@ -56,7 +53,7 @@ const AccountDetailsFetcher = () => {
 
     const responseData = await response.json();
 
-    return getAccountWithCamelCaseKeys(responseData);
+    return serializeAccountPrivateDetails(responseData);
   };
 
   const persistProfilePictureURL = async ({

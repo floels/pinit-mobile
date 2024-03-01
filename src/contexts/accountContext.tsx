@@ -1,67 +1,35 @@
 import {
   Dispatch,
-  ReactNode,
+  SetStateAction,
   createContext,
   useContext,
-  useReducer,
+  useState,
 } from "react";
 
-import { AccountPublicDetails } from "@/src/lib/types";
+import { AccountPrivateDetails } from "@/src/lib/types";
 
-type State = {
-  account: AccountPublicDetails | null;
+type AccountContextType = {
+  account: AccountPrivateDetails | null;
+  setAccount: Dispatch<SetStateAction<AccountPrivateDetails | null>>;
 };
 
-type Action = {
-  type: "FETCHED_ACCOUNT_DETAILS";
-  accountDetails: AccountPublicDetails;
-};
-
-type ContextType = {
-  state: State;
-  dispatch: Dispatch<Action>;
-};
-
-const initialState = {
+export const AccountContext = createContext<AccountContextType>({
   account: null,
-};
-
-export const AccountContext = createContext<ContextType>({
-  state: initialState,
-  dispatch: () => {}, // placeholder function
+  setAccount: () => {},
 });
-
-const reducer = (state: State, action: Action) => {
-  if (action.type === "FETCHED_ACCOUNT_DETAILS") {
-    return {
-      account: { ...action.accountDetails },
-    };
-  }
-  return state;
-};
 
 export const AccountContextProvider = ({
   children,
 }: {
-  children: ReactNode;
+  children: React.ReactNode;
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [account, setAccount] = useState<AccountPrivateDetails | null>(null);
 
   return (
-    <AccountContext.Provider value={{ state, dispatch }}>
+    <AccountContext.Provider value={{ account, setAccount }}>
       {children}
     </AccountContext.Provider>
   );
 };
 
-export const useAccountContext = () => {
-  const context = useContext(AccountContext);
-
-  if (context === undefined) {
-    throw new Error(
-      "'useAccountContext' must be used within an AccountContextProvider",
-    );
-  }
-
-  return context;
-};
+export const useAccountContext = () => useContext(AccountContext);

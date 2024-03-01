@@ -9,7 +9,7 @@ import { Image } from "react-native";
 import SearchResultsBaseScreenContainer from "./SearchResultsBaseScreenContainer";
 
 import { API_BASE_URL, API_ENDPOINT_SEARCH } from "@/src/lib/constants";
-import { getPinWithCamelCaseKeys } from "@/src/lib/utils/serializers";
+import { serializePinWithAuthorData } from "@/src/lib/utils/serializers";
 
 Image.getSize = jest.fn();
 
@@ -76,7 +76,7 @@ it(`should navigate to proper screen with proper params when user taps on a pin`
     fireEvent.press(firstPin);
 
     expect(mockNavigation.navigate).toHaveBeenCalledWith("PinDetails", {
-      pin: getPinWithCamelCaseKeys(mockPinSuggestionsPage[0]),
+      pin: serializePinWithAuthorData(mockPinSuggestionsPage[0]),
       pinImageAspectRatio: pinImagesAspectRatio,
     });
   });

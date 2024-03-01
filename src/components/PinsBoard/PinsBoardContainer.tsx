@@ -12,7 +12,7 @@ import {
 } from "@/src/lib/customErrors";
 import { PinBasicDetails, PinWithAuthorDetails } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
-import { getPinsWithCamelCaseKeys } from "@/src/lib/utils/serializers";
+import { serializePinsWithAuthorData } from "@/src/lib/utils/serializers";
 import { appendQueryParam } from "@/src/lib/utils/strings";
 
 type PinsBoardContainerProps = {
@@ -177,7 +177,7 @@ const PinsBoardContainer = ({
 
     const responseData = await newPinsResponse.json();
 
-    return getPinsWithCamelCaseKeys(responseData.results);
+    return serializePinsWithAuthorData(responseData.results);
   };
 
   const fetchWithAuthenticationIfNeeded = async (url: string) => {

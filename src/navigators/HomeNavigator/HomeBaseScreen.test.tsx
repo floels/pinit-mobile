@@ -12,7 +12,7 @@ import {
   API_BASE_URL,
   API_ENDPOINT_PIN_SUGGESTIONS,
 } from "@/src/lib/constants";
-import { getPinWithCamelCaseKeys } from "@/src/lib/utils/serializers";
+import { serializePinWithAuthorData } from "@/src/lib/utils/serializers";
 
 jest.mock("expo-secure-store", () => ({
   getItemAsync: () => "access_token",
@@ -65,7 +65,7 @@ it(`should navigate to proper screen with proper params when user taps on a pin`
     fireEvent.press(firstPin);
 
     expect(mockNavigation.navigate).toHaveBeenCalledWith("PinDetails", {
-      pin: getPinWithCamelCaseKeys(mockPinSuggestionsPage[0]),
+      pin: serializePinWithAuthorData(mockPinSuggestionsPage[0]),
       pinImageAspectRatio: pinImagesAspectRatio,
     });
   });
