@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
   },
   submitButtonDisabled: {
-    backgroundColor: Colors.backgroundNormal,
+    backgroundColor: Colors.backgroundSecondary,
   },
   submitButtonEnabled: {
     backgroundColor: Colors.backgroundImportant,

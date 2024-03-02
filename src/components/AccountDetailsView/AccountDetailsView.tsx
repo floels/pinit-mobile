@@ -1,16 +1,17 @@
 import { useTranslation } from "react-i18next";
-import { Dimensions, Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./AccountDetailsView.styles";
+import AccountPictures from "./AccountPictures";
 import Spinner from "../Spinner/Spinner";
 
 import { Colors } from "@/src/global.styles";
 import { Account } from "@/src/lib/types";
 
 type AccountDetailsViewProps = {
-  accountDetails: Account | undefined;
+  account: Account | undefined;
   isError: boolean;
   isLoading: boolean;
   onPressBack: () => void;
@@ -26,20 +27,20 @@ const Logo = (props: any) => (
 );
 
 const AccountDetailsView = ({
-  accountDetails,
+  account,
   isLoading,
   isError,
   onPressBack,
 }: AccountDetailsViewProps) => {
   const { t } = useTranslation();
 
-  const hasBackgroundPicture = !!accountDetails?.backgroundPictureURL;
+  const hasBackgroundPicture = !!account?.backgroundPictureURL;
 
   const backButtonIconStyle = hasBackgroundPicture
     ? styles.backButtonIconWithBackgroundPicture
     : null;
 
-  const backButton = (
+  const BackButton = () => (
     <TouchableOpacity
       onPress={onPressBack}
       style={styles.backButton}
@@ -56,7 +57,7 @@ const AccountDetailsView = ({
   if (isLoading) {
     return (
       <View style={styles.container}>
-        {backButton}
+        <BackButton />
         <View style={styles.loadingOrErrorStateContainer}>
           <Spinner>
             <FontAwesome5Icon
@@ -71,10 +72,10 @@ const AccountDetailsView = ({
     );
   }
 
-  if (isError || !accountDetails) {
+  if (isError || !account) {
     return (
       <View style={styles.container}>
-        {backButton}
+        <BackButton />
         <View style={styles.loadingOrErrorStateContainer}>
           <FontAwesome5Icon
             name="exclamation-circle"
@@ -89,53 +90,19 @@ const AccountDetailsView = ({
     );
   }
 
-  let picturesBlock;
-
-  if (
-    accountDetails?.profilePictureURL &&
-    accountDetails?.backgroundPictureURL
-  ) {
-    const screenWidth = Dimensions.get("window").width;
-
-    picturesBlock = (
-      <View style={styles.backgroundPictureAndProfilePicture}>
-        <Image
-          source={{ uri: accountDetails.backgroundPictureURL }}
-          width={screenWidth}
-          style={styles.backgroundPictureImage}
-          testID="account-background-picture"
-        />
-        <Image
-          source={{ uri: accountDetails.profilePictureURL }}
-          style={[
-            styles.profilePictureImage,
-            styles.profilePictureImageWithBackgroundPicture,
-          ]}
-          testID="account-profile-picture"
-        />
-      </View>
-    );
-  } else if (accountDetails?.profilePictureURL) {
-    picturesBlock = (
-      <Image
-        source={{ uri: accountDetails.profilePictureURL }}
-        style={[
-          styles.profilePictureImage,
-          styles.profilePictureImageWithoutBackgroundPicture,
-        ]}
-        testID="account-profile-picture"
-      />
-    );
-  }
+  const { displayName, description, username } = account;
 
   return (
     <View style={styles.container}>
-      {backButton}
-      {picturesBlock}
-      <Text style={styles.displayName}>{accountDetails.displayName}</Text>
-      <View style={styles.logoAndUsername}>
-        <Logo style={styles.logo} />
-        <Text style={styles.username}>{accountDetails.username}</Text>
+      <BackButton />
+      <AccountPictures account={account} />
+      <View style={styles.accountData}>
+        <Text style={styles.displayName}>{displayName}</Text>
+        {description && <Text style={styles.description}>{description}</Text>}
+        <View style={styles.logoAndUsername}>
+          <Logo style={styles.logo} />
+          <Text style={styles.username}>{username}</Text>
+        </View>
       </View>
     </View>
   );

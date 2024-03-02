@@ -36,28 +36,16 @@ const styles = StyleSheet.create({
     color: Colors.fontWarning,
     textAlign: "center",
   },
-  backgroundPictureAndProfilePicture: {
+  accountData: {
+    padding: 20,
     alignItems: "center",
-  },
-  backgroundPictureImage: {
-    height: 240,
-  },
-  profilePictureImage: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-  },
-  profilePictureImageWithBackgroundPicture: {
-    marginTop: -70,
-    borderWidth: 2,
-    borderColor: "white",
-  },
-  profilePictureImageWithoutBackgroundPicture: {
-    marginTop: 80,
   },
   displayName: {
     fontSize: Fonts.fontSize400,
     fontWeight: Fonts.fontWeightSemiBold,
+    marginTop: 10,
+  },
+  description: {
     marginTop: 10,
   },
   logoAndUsername: {

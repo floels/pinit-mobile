@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   logOutButton: {
-    backgroundColor: Colors.backgroundNormal,
+    backgroundColor: Colors.backgroundSecondary,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",

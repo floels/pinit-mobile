@@ -54,7 +54,8 @@ export const MOCK_API_RESPONSES_JSON = {
       },
     ],
     initial: "J",
-    background_picture_url: null,
+    background_picture_url:
+      "https://i.pinimg.com/1200x/a9/b1/51/a9b151f4593e062c012579071aa09d16.jpg",
     description: null,
     type: "personal",
     owner_email: "john.doe@example.com",
@@ -109,7 +110,8 @@ export const MOCK_API_RESPONSES_JSON = {
       },
     ],
     initial: "J",
-    background_picture_url: null,
+    background_picture_url:
+      "https://i.pinimg.com/1200x/a9/b1/51/a9b151f4593e062c012579071aa09d16.jpg",
     description: "Description for account of John Doe.",
   },
 };
@@ -118,6 +120,30 @@ export const MOCK_API_RESPONSES_JSON = {
 // 'lib/utils/serializers.ts' here because otherwise we wouldn't
 // be able to detect in the tests if there is a bug in them.
 export const MOCK_API_RESPONSES_SERIALIZED = {
+  [API_ENDPOINT_ACCOUNT_DETAILS]: {
+    username: "johndoe",
+    displayName: "John Doe",
+    profilePictureURL:
+      "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
+    boards: [
+      {
+        id: "000000000000000001",
+        title: "Board 1 title",
+        coverPictureURL:
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+      },
+      {
+        id: "000000000000000002",
+        title: "Board 2 title",
+        coverPictureURL:
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+      },
+    ],
+    initial: "J",
+    backgroundPictureURL:
+      "https://i.pinimg.com/1200x/a9/b1/51/a9b151f4593e062c012579071aa09d16.jpg",
+    description: "Description for account of John Doe.",
+  },
   [API_ENDPOINT_MY_ACCOUNT_DETAILS]: {
     username: "johndoe",
     displayName: "John Doe",
@@ -138,7 +164,8 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
       },
     ],
     initial: "J",
-    backgroundPictureURL: null,
+    backgroundPictureURL:
+      "https://i.pinimg.com/1200x/a9/b1/51/a9b151f4593e062c012579071aa09d16.jpg",
     description: null,
     type: TypesOfAccount.PERSONAL,
     ownerEmail: "john.doe@example.com",

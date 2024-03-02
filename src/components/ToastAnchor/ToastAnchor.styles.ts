@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     color: Colors.fontImportant,
   },
   pinCreationSuccessButton: {
-    backgroundColor: Colors.backgroundNormal,
+    backgroundColor: Colors.backgroundSecondary,
     padding: 10,
     borderRadius: 20,
   },
