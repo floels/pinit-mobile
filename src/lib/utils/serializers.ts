@@ -1,55 +1,63 @@
 import {
   AccountPrivateDetails,
-  AccountPublicDetails,
+  Account,
   Board,
   PinWithAuthorDetails,
-  PinWithBasicDetails,
+  Pin,
+  PinWithFullDetails,
 } from "../types";
 
-export const serializePinWithBasicDetails = (pin: any): PinWithBasicDetails => {
+export const serializePin = (pin: any): Pin => {
   return {
     id: pin.unique_id,
     imageURL: pin.image_url,
     title: pin.title,
-    description: pin.description,
   };
 };
 
-export const serializePinWithAuthorData = (pin: any): PinWithAuthorDetails => {
+export const serializePinWithAuthorDetails = (
+  pin: any,
+): PinWithAuthorDetails => {
   return {
-    ...serializePinWithBasicDetails(pin),
+    ...serializePin(pin),
     authorUsername: pin.author.username,
     authorDisplayName: pin.author.display_name,
     authorProfilePictureURL: pin.author.profile_picture_url,
   };
 };
 
-export const serializePinsWithAuthorData = (
+export const serializePinsWithAuthorDetails = (
   pins: any,
 ): PinWithAuthorDetails[] => {
-  return pins.map(serializePinWithAuthorData);
+  return pins.map(serializePinWithAuthorDetails);
 };
 
-export const serializeAccountPublicDetails = (
-  account: any,
-): AccountPublicDetails => {
+export const serializePinWithFullDetails = (pin: any): PinWithFullDetails => {
+  return {
+    ...serializePinWithAuthorDetails(pin),
+    description: pin.description,
+  };
+};
+
+export const serializeAccount = (account: any): Account => {
   return {
     username: account.username,
     displayName: account.display_name,
     profilePictureURL: account.profile_picture_url,
+    initial: account.initial,
     boards: serializeBoards(account.boards),
     backgroundPictureURL: account.background_picture_url,
     description: account.description,
   };
 };
 
-export const serializeAccountPrivateDetails = (
+export const serializeAccountWithPrivateDetails = (
   account: any,
 ): AccountPrivateDetails => {
   return {
-    ...serializeAccountPublicDetails(account),
+    ...serializeAccount(account),
     type: account.type,
-    initial: account.initial,
+    ownerEmail: account.owner_email,
   };
 };
 

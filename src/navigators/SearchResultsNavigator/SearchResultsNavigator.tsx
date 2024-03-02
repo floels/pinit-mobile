@@ -5,7 +5,7 @@ import AuthorAccountDetailsScreen from "./AuthorAccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 import { SearchNavigatorParamList } from "../SearchNavigator/SearchNavigator";
 
-import { AccountPublicDetails, PinWithAuthorDetails } from "@/src/lib/types";
+import { Account, PinWithAuthorDetails } from "@/src/lib/types";
 import SearchResultsBaseScreenContainer from "@/src/navigators/SearchResultsNavigator/SearchResultsBaseScreenContainer";
 
 type SearchResultsNavigatorProps = {
@@ -20,7 +20,7 @@ export type SearchResultsNavigatorParamList = {
   };
   AuthorAccountDetails: {
     accountDetailsQuery: {
-      data: AccountPublicDetails | undefined;
+      data: Account | undefined;
       isLoading: boolean;
       isError: boolean;
     };

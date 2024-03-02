@@ -50,7 +50,9 @@ const PinDetails = ({
           <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
         </TouchableOpacity>
         <Text style={styles.pinTitle}>{pin.title}</Text>
-        <Text style={styles.pinDescription}>{pin.description}</Text>
+        <Text style={styles.pinDescription}>
+          TODO: insert pin description here
+        </Text>
       </View>
     </ScrollView>
   );

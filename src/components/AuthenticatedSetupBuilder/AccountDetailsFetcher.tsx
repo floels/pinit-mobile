@@ -10,13 +10,13 @@ import {
 } from "@/src/lib/constants";
 import { Response401Error, ResponseKOError } from "@/src/lib/customErrors";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
-import { serializeAccountPrivateDetails } from "@/src/lib/utils/serializers";
+import { serializeAccountWithPrivateDetails } from "@/src/lib/utils/serializers";
 
 const AccountDetailsFetcher = () => {
   const authenticationContext = useAuthenticationContext();
   const { setAccount } = useAccountContext();
 
-  const fetchDispatchAndPersistAccountDetails = async () => {
+  const fetchDispatchAndPersist = async () => {
     let accountDetails;
 
     try {
@@ -53,22 +53,24 @@ const AccountDetailsFetcher = () => {
 
     const responseData = await response.json();
 
-    return serializeAccountPrivateDetails(responseData);
+    return serializeAccountWithPrivateDetails(responseData);
   };
 
   const persistProfilePictureURL = async ({
     profilePictureURL,
   }: {
-    profilePictureURL: string;
+    profilePictureURL: string | null;
   }) => {
-    await AsyncStorage.setItem(
-      PROFILE_PICTURE_URL_STORAGE_KEY,
-      profilePictureURL,
-    );
+    if (profilePictureURL) {
+      await AsyncStorage.setItem(
+        PROFILE_PICTURE_URL_STORAGE_KEY,
+        profilePictureURL,
+      );
+    }
   };
 
   useEffect(() => {
-    fetchDispatchAndPersistAccountDetails();
+    fetchDispatchAndPersist();
   }, []);
 
   return null;

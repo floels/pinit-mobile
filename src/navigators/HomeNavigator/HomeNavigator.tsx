@@ -3,7 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AuthorAccountDetailsScreen from "./AuthorAccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 
-import { AccountPublicDetails, PinWithAuthorDetails } from "@/src/lib/types";
+import { Account, PinWithAuthorDetails } from "@/src/lib/types";
 import HomeBaseScreen from "@/src/navigators/HomeNavigator/HomeBaseScreen";
 
 export type HomeNavigatorParamList = {
@@ -14,7 +14,7 @@ export type HomeNavigatorParamList = {
   };
   AuthorAccountDetails: {
     accountDetailsQuery: {
-      data: AccountPublicDetails | undefined;
+      data: Account | undefined;
       isLoading: boolean;
       isError: boolean;
     };

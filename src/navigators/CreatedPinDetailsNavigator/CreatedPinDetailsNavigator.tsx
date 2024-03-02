@@ -5,7 +5,7 @@ import AuthorAccountDetailsScreen from "./AuthorAccountDetailsScreen";
 import PinDetailsScreen from "./PinDetailsScreen";
 import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/AuthenticatedNavigator";
 
-import { AccountPublicDetails } from "@/src/lib/types";
+import { Account } from "@/src/lib/types";
 
 type CreatedPinDetailsNavigatorProps = {
   route: RouteProp<AuthenticatedNavigatorParamList, "CreatedPinDetails">;
@@ -16,7 +16,7 @@ export type CreatedPinDetailsNavigatorParamList = {
   PinDetails: undefined;
   AuthorAccountDetails: {
     accountDetailsQuery: {
-      data: AccountPublicDetails | undefined;
+      data: Account | undefined;
       isLoading: boolean;
       isError: boolean;
     };

@@ -26,7 +26,6 @@ export const MOCK_API_RESPONSES_JSON = {
       image_url:
         "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       title: `Pin ${index + 1} title`,
-      description: "",
       author: {
         username: "johndoe",
         display_name: "John Doe",
@@ -40,8 +39,6 @@ export const MOCK_API_RESPONSES_JSON = {
     display_name: "John Doe",
     profile_picture_url:
       "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
-    background_picture_url: null,
-    description: null,
     boards: [
       {
         unique_id: "000000000000000001",
@@ -56,8 +53,11 @@ export const MOCK_API_RESPONSES_JSON = {
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       },
     ],
-    type: "personal",
     initial: "J",
+    background_picture_url: null,
+    description: null,
+    type: "personal",
+    owner_email: "john.doe@example.com",
   },
   [API_ENDPOINT_SEARCH_SUGGESTIONS]: {
     results: [
@@ -74,7 +74,6 @@ export const MOCK_API_RESPONSES_JSON = {
     image_url:
       "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
     title: "Pin title",
-    description: "Pin description",
   },
   [API_ENDPOINT_SEARCH_PINS]: {
     results: Array.from({ length: 50 }, (_, index) => ({
@@ -82,7 +81,6 @@ export const MOCK_API_RESPONSES_JSON = {
       image_url:
         "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       title: `Pin ${index + 1} title`,
-      description: "",
       author: {
         username: "johndoe",
         display_name: "John Doe",
@@ -96,8 +94,6 @@ export const MOCK_API_RESPONSES_JSON = {
     display_name: "John Doe",
     profile_picture_url:
       "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
-    background_picture_url: null,
-    description: "Description for account of John Doe.",
     boards: [
       {
         unique_id: "000000000000000001",
@@ -112,6 +108,9 @@ export const MOCK_API_RESPONSES_JSON = {
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       },
     ],
+    initial: "J",
+    background_picture_url: null,
+    description: "Description for account of John Doe.",
   },
 };
 
@@ -124,8 +123,6 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
     displayName: "John Doe",
     profilePictureURL:
       "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
-    backgroundPictureURL: null,
-    description: null,
     boards: [
       {
         id: "000000000000000001",
@@ -140,8 +137,11 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       },
     ],
-    type: TypesOfAccount.PERSONAL,
     initial: "J",
+    backgroundPictureURL: null,
+    description: null,
+    type: TypesOfAccount.PERSONAL,
+    ownerEmail: "john.doe@example.com",
   },
   [API_ENDPOINT_PIN_SUGGESTIONS]: {
     results: Array.from({ length: 50 }, (_, index) => ({
@@ -153,7 +153,6 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
       authorDisplayName: "John Doe",
       authorProfilePictureURL:
         "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
-      description: "",
     })),
   },
   [API_ENDPOINT_SEARCH_PINS]: {
@@ -162,7 +161,6 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
       imageURL:
         "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       title: `Pin ${index + 1} title`,
-      description: "",
       authorUsername: "johndoe",
       authorDisplayName: "John Doe",
       authorProfilePictureURL:

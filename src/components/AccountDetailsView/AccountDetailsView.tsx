@@ -7,10 +7,10 @@ import styles from "./AccountDetailsView.styles";
 import Spinner from "../Spinner/Spinner";
 
 import { Colors } from "@/src/global.styles";
-import { AccountPublicDetails } from "@/src/lib/types";
+import { Account } from "@/src/lib/types";
 
 type AccountDetailsViewProps = {
-  accountDetails: AccountPublicDetails | undefined;
+  accountDetails: Account | undefined;
   isError: boolean;
   isLoading: boolean;
   onPressBack: () => void;

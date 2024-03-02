@@ -5,7 +5,7 @@ import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
 import SelectPinImageScreenContainer from "./SelectPinImageScreenContainer";
 import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/AuthenticatedNavigator";
 
-import { PinWithBasicDetails } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 
 export type CreatePinNavigatorParamList = {
   SelectImage: undefined;
@@ -26,7 +26,7 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
     createdPin,
     createdPinImageAspectRatio,
   }: {
-    createdPin: PinWithBasicDetails;
+    createdPin: Pin;
     createdPinImageAspectRatio: number;
   }) => {
     props.navigation.navigate("Main", {

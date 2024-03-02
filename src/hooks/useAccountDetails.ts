@@ -5,7 +5,7 @@ import {
   API_ENDPOINT_ACCOUNT_DETAILS,
 } from "@/src/lib/constants";
 import { ResponseKOError } from "@/src/lib/customErrors";
-import { serializeAccountPublicDetails } from "@/src/lib/utils/serializers";
+import { serializeAccount } from "@/src/lib/utils/serializers";
 
 const fetchAccountDetails = async ({ username }: { username: string }) => {
   const response = await fetch(
@@ -18,7 +18,7 @@ const fetchAccountDetails = async ({ username }: { username: string }) => {
 
   const responseData = await response.json();
 
-  return serializeAccountPublicDetails(responseData);
+  return serializeAccount(responseData);
 };
 
 export const useAccountDetailsQuery = ({ username }: { username: string }) => {

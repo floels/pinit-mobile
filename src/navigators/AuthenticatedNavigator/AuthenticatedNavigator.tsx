@@ -5,14 +5,12 @@ import {
 
 import CreatedPinDetailsNavigator from "../CreatedPinDetailsNavigator/CreatedPinDetailsNavigator";
 
-import { PinWithBasicDetails, PinWithAuthorDetails } from "@/src/lib/types";
+import { Pin, PinWithAuthorDetails } from "@/src/lib/types";
 import AuthenticatedMainNavigator from "@/src/navigators/AuthenticatedMainNavigator/AuthenticatedMainNavigator";
 import CreatePinNavigator from "@/src/navigators/CreatePinNavigator/CreatePinNavigator";
 
 export type AuthenticatedNavigatorParamList = {
-  Main:
-    | undefined
-    | { createdPin: PinWithBasicDetails; createdPinImageAspectRatio: number };
+  Main: undefined | { createdPin: Pin; createdPinImageAspectRatio: number };
   CreatePin: undefined;
   CreatedPinDetails: {
     createdPin: PinWithAuthorDetails;

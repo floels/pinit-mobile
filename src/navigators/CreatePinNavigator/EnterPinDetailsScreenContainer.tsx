@@ -11,9 +11,9 @@ import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
 import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
-import { PinWithBasicDetails } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
-import { serializePinWithBasicDetails } from "@/src/lib/utils/serializers";
+import { serializePin } from "@/src/lib/utils/serializers";
 
 type EnterPinDetailsScreenContainerProps = {
   navigation: NavigationProp<CreatePinNavigatorParamList>;
@@ -22,7 +22,7 @@ type EnterPinDetailsScreenContainerProps = {
     createdPin,
     createdPinImageAspectRatio,
   }: {
-    createdPin: PinWithBasicDetails;
+    createdPin: Pin;
     createdPinImageAspectRatio: number;
   }) => void;
 };
@@ -140,7 +140,7 @@ const EnterPinDetailsScreenContainer = ({
 
     const responseData = await response.json();
 
-    return serializePinWithBasicDetails(responseData);
+    return serializePin(responseData);
   };
 
   const handlePostError = (error: unknown) => {

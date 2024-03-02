@@ -75,7 +75,7 @@ beforeEach(() => {
   fetchMock.resetMocks();
 });
 
-it.only("calls 'handleCreateSuccess' with proper arguments upon successful pin creation", async () => {
+it("calls 'handleCreateSuccess' with proper arguments upon successful pin creation", async () => {
   renderComponent();
 
   fetchMock.mockOnceIf(
@@ -94,8 +94,6 @@ it.only("calls 'handleCreateSuccess' with proper arguments upon successful pin c
         id: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].unique_id,
         imageURL: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].image_url,
         title: MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].title,
-        description:
-          MOCK_API_RESPONSES_JSON[API_ENDPOINT_CREATE_PIN].description,
       },
       createdPinImageAspectRatio: 1.5,
     });
