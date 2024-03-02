@@ -2,7 +2,7 @@ export const Colors = {
   colorBlack: "#000",
 
   backgroundBase: "#fff",
-  backgroundNormal: "#e9e9e9",
+  backgroundSecondary: "#e9e9e9",
   backgroundImportant: "#e60023",
   backgroundDark: "#141414",
 
@@ -17,5 +17,6 @@ export const Fonts = {
   fontSize200: 16,
   fontSize300: 20,
   fontSize400: 28,
+  fontSize600: 36,
   fontWeightSemiBold: "600" as "600",
 };

@@ -18,7 +18,7 @@ const AccountDetailsScreen = ({
 
   return (
     <AccountDetailsView
-      accountDetails={accountDetails}
+      account={accountDetails}
       isError={isError}
       isLoading={isLoading}
       onPressBack={navigation.goBack}

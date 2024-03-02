@@ -7,7 +7,7 @@ export type Pin = {
 export type PinWithAuthorDetails = Pin & {
   authorUsername: string;
   authorDisplayName: string;
-  authorProfilePictureURL: string;
+  authorProfilePictureURL: string | null;
 };
 
 export type PinWithFullDetails = PinWithAuthorDetails & {

@@ -2,28 +2,19 @@ import { render, screen, waitFor } from "@testing-library/react-native";
 
 import AccountDetailsView from "./AccountDetailsView";
 
+import { API_ENDPOINT_ACCOUNT_DETAILS } from "@/src/lib/constants";
 import { pressButton } from "@/src/lib/testing-utils/misc";
+import { MOCK_API_RESPONSES_SERIALIZED } from "@/src/lib/testing-utils/mockAPIResponses";
 import enTranslations from "@/translations/en.json";
 
 const mockOnPressBack = jest.fn();
 
-const accountDetailsWithoutBackgroundPicture = {
-  type: "Personal",
-  displayName: "John Doe",
-  username: "john_doe",
-  profilePictureURL: "http://example.com/profile.jpg",
-  backgroundPictureURL: null,
-};
-
-const accountDetailsWithBackgroundPicture = {
-  ...accountDetailsWithoutBackgroundPicture,
-  backgroundPictureURL: "http://example.com/background.jpg",
-};
+const account = MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_ACCOUNT_DETAILS];
 
 const renderComponent = (props?: any) => {
   render(
     <AccountDetailsView
-      accountDetails={accountDetailsWithoutBackgroundPicture}
+      account={account}
       isLoading={false}
       isError={false}
       onPressBack={mockOnPressBack}
@@ -32,27 +23,21 @@ const renderComponent = (props?: any) => {
   );
 };
 
-it(`renders account details correctly, and does not render 
-background picture if none was provided`, () => {
+it("renders all relevant details", () => {
   renderComponent();
 
-  screen.getByText(accountDetailsWithoutBackgroundPicture.displayName);
-  screen.getByText(accountDetailsWithoutBackgroundPicture.username);
+  screen.getByText(account.displayName);
+  screen.getByText(account.username);
+  screen.getByText(account.description);
 
   const profilePicture = screen.getByTestId("account-profile-picture");
   expect(profilePicture).toHaveProp("source", {
-    uri: accountDetailsWithoutBackgroundPicture.profilePictureURL,
+    uri: account.profilePictureURL,
   });
-
-  expect(screen.queryByTestId("account-background-picture")).toBeNull();
-});
-
-it("renders background picture if one was provided", () => {
-  renderComponent({ accountDetails: accountDetailsWithBackgroundPicture });
 
   const backgroundPicture = screen.getByTestId("account-background-picture");
   expect(backgroundPicture).toHaveProp("source", {
-    uri: accountDetailsWithBackgroundPicture.backgroundPictureURL,
+    uri: account.backgroundPictureURL,
   });
 });
 

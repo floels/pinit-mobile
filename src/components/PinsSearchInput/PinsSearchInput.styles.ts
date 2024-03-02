@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   searchInputAndIcons: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Colors.backgroundNormal,
+    backgroundColor: Colors.backgroundSecondary,
     borderRadius: 20,
     flex: 1,
   },

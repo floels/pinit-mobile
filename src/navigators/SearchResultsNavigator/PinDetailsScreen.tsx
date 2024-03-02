@@ -5,7 +5,7 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import styles from "./PinDetailsScreen.styles";
 import { SearchResultsNavigatorParamList } from "./SearchResultsNavigator";
 
-import PinDetails from "@/src/components/PinDetails/PinDetails";
+import PinDetailsView from "@/src/components/PinDetailsView/PinDetailsView";
 import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
 
 type PinDetailsScreenProps = {
@@ -37,7 +37,7 @@ const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
           style={styles.backButtonIcon}
         />
       </TouchableOpacity>
-      <PinDetails
+      <PinDetailsView
         pin={pin}
         pinImageAspectRatio={pinImageAspectRatio}
         handlePressAuthor={handlePressAuthor}

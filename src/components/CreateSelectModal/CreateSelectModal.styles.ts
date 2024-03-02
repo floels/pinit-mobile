@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   createPinIconContainer: {
     padding: 30,
-    backgroundColor: Colors.backgroundNormal,
+    backgroundColor: Colors.backgroundSecondary,
     borderRadius: 20,
     marginBottom: 10,
   },
