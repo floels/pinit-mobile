@@ -6,7 +6,7 @@ import {
 } from "@testing-library/react-native";
 import { Image } from "react-native";
 
-import SearchResultsBaseScreenContainer from "./SearchResultsBaseScreenContainer";
+import ResultsScreenContainer from "./ResultsScreenContainer";
 
 import { API_BASE_URL, API_ENDPOINT_SEARCH_PINS } from "@/src/lib/constants";
 import {
@@ -31,9 +31,9 @@ const mockHandlePressBack = jest.fn();
 
 const renderComponent = () => {
   render(
-    <SearchResultsBaseScreenContainer
+    <ResultsScreenContainer
       navigation={mockNavigation as any}
-      initialSearchTerm="search"
+      route={{ params: { searchTerm: "search" } } as any}
       handlePressBack={mockHandlePressBack}
     />,
   );
@@ -66,9 +66,12 @@ it("should navigate to screen with proper params when user taps on a pin", async
 
     fireEvent.press(firstPin);
 
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("PinDetails", {
-      pin: MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_SEARCH_PINS].results[0],
-      pinImageAspectRatio: pinImagesAspectRatio,
-    });
+    expect(mockNavigation.navigate).toHaveBeenLastCalledWith(
+      "Authenticated.Browse.Main.Search.Pin",
+      {
+        pin: MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_SEARCH_PINS].results[0],
+        pinImageAspectRatio: pinImagesAspectRatio,
+      },
+    );
   });
 });

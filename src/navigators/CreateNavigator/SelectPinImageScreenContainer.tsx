@@ -2,7 +2,7 @@ import { NavigationProp, useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import { Image } from "react-native";
 
-import { CreatePinNavigatorParamList } from "./CreatePinNavigator";
+import { CreatePinNavigatorParamList } from "./CreateNavigator";
 import SelectPinImageScreen from "./SelectPinImageScreen";
 
 import { useCameraRollPhotos } from "@/src/hooks/useCameraRollPhotos";

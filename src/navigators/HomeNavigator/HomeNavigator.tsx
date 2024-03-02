@@ -1,23 +1,15 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import AuthorAccountDetailsScreen from "./AuthorAccountDetailsScreen";
-import PinDetailsScreen from "./PinDetailsScreen";
+import PinNavigator from "../PinNavigator/PinNavigator";
 
-import { Account, PinWithAuthorDetails } from "@/src/lib/types";
-import HomeBaseScreen from "@/src/navigators/HomeNavigator/HomeBaseScreen";
+import { PinWithAuthorDetails } from "@/src/lib/types";
+import BaseScreen from "@/src/navigators/HomeNavigator/BaseScreen";
 
 export type HomeNavigatorParamList = {
-  HomeBase: undefined;
-  PinDetails: {
+  "Authenticated.Browse.Main.Home.Base": undefined;
+  "Authenticated.Browse.Main.Home.Pin": {
     pin: PinWithAuthorDetails;
     pinImageAspectRatio: number;
-  };
-  AuthorAccountDetails: {
-    accountDetailsQuery: {
-      data: Account | undefined;
-      isLoading: boolean;
-      isError: boolean;
-    };
   };
 };
 
@@ -30,11 +22,13 @@ const HomeNavigator = () => {
         headerShown: false,
       }}
     >
-      <StackNavigator.Screen name="HomeBase" component={HomeBaseScreen} />
-      <StackNavigator.Screen name="PinDetails" component={PinDetailsScreen} />
       <StackNavigator.Screen
-        name="AuthorAccountDetails"
-        component={AuthorAccountDetailsScreen}
+        name="Authenticated.Browse.Main.Home.Base"
+        component={BaseScreen}
+      />
+      <StackNavigator.Screen
+        name="Authenticated.Browse.Main.Home.Pin"
+        component={PinNavigator}
       />
     </StackNavigator.Navigator>
   );

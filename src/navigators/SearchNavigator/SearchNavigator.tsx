@@ -1,11 +1,18 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
-import SearchBaseScreen from "@/src/navigators/SearchNavigator/SearchBaseScreen";
-import SearchResultsNavigator from "@/src/navigators/SearchResultsNavigator/SearchResultsNavigator";
+import HomeScreen from "./HomeScreen";
+import ResultsScreenContainer from "./ResultsScreenContainer";
+import PinNavigator from "../PinNavigator/PinNavigator";
+
+import { PinWithAuthorDetails } from "@/src/lib/types";
 
 export type SearchNavigatorParamList = {
-  SearchBase: undefined;
-  SearchResults: { searchTerm: string };
+  "Authenticated.Browse.Main.Search.Home": undefined;
+  "Authenticated.Browse.Main.Search.Results": { searchTerm: string };
+  "Authenticated.Browse.Main.Search.Pin": {
+    pin: PinWithAuthorDetails;
+    pinImageAspectRatio: number;
+  };
 };
 
 const SearchNavigator = () => {
@@ -17,10 +24,22 @@ const SearchNavigator = () => {
         headerShown: false,
       }}
     >
-      <StackNavigator.Screen name="SearchBase" component={SearchBaseScreen} />
       <StackNavigator.Screen
-        name="SearchResults"
-        component={SearchResultsNavigator}
+        name="Authenticated.Browse.Main.Search.Home"
+        component={HomeScreen}
+      />
+      <StackNavigator.Screen name="Authenticated.Browse.Main.Search.Results">
+        {({ navigation, route }) => (
+          <ResultsScreenContainer
+            navigation={navigation}
+            route={route}
+            handlePressBack={navigation.goBack}
+          />
+        )}
+      </StackNavigator.Screen>
+      <StackNavigator.Screen
+        name="Authenticated.Browse.Main.Search.Pin"
+        component={PinNavigator}
       />
     </StackNavigator.Navigator>
   );

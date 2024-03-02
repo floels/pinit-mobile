@@ -18,24 +18,24 @@ const PinThumbnail = ({
   width,
   pinImageAspectRatio,
 }: PinThumbnailProps) => {
+  const { authorProfilePictureURL, authorDisplayName, title, imageURL } = pin;
+
   let displayAuthorData;
 
-  const hasAuthorProfilePicture = !!pin.authorProfilePictureURL;
-
-  if (hasAuthorProfilePicture) {
+  if (authorProfilePictureURL) {
     displayAuthorData = (
       <View style={styles.authorData}>
         <Image
-          source={{ uri: pin.authorProfilePictureURL }}
+          source={{ uri: authorProfilePictureURL }}
           style={styles.authorProfilePicture}
           testID="pin-thumbnail-author-profile-picture"
         />
-        <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
+        <Text style={styles.authorName}>{authorDisplayName}</Text>
       </View>
     );
   } else {
     displayAuthorData = (
-      <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
+      <Text style={styles.authorName}>{authorDisplayName}</Text>
     );
   }
 
@@ -44,14 +44,14 @@ const PinThumbnail = ({
   return (
     <View style={[styles.container, { width }]}>
       <Image
-        source={{ uri: pin.imageURL }}
+        source={{ uri: imageURL }}
         width={width}
         height={pinImageHeight}
         style={styles.image}
         testID="pin-thumbnail-pin-image"
       />
       <Text style={styles.title}>
-        {ellipsizeText({ text: pin.title, maxLength: MAX_CHARACTERS_TITLE })}
+        {ellipsizeText({ text: title, maxLength: MAX_CHARACTERS_TITLE })}
       </Text>
       {displayAuthorData}
     </View>

@@ -1,18 +1,16 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 
-import { SearchResultsNavigatorParamList } from "./SearchResultsNavigator";
+import { PinNavigatorParamList } from "./PinNavigator";
 
 import AccountDetailsView from "@/src/components/AccountDetailsView/AccountDetailsView";
+import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
 
-type AccountDetailsScreenProps = {
-  route: RouteProp<SearchResultsNavigatorParamList, "AuthorAccountDetails">;
-  navigation: NavigationProp<SearchResultsNavigatorParamList>;
+type AuthorScreenProps = {
+  route: RouteProp<PinNavigatorParamList, "Author">;
+  navigation: NavigationProp<PinNavigatorParamList>;
 };
 
-const AccountDetailsScreen = ({
-  route,
-  navigation,
-}: AccountDetailsScreenProps) => {
+const AuthorScreen = ({ route, navigation }: AuthorScreenProps) => {
   const { accountDetailsQuery } = route.params;
 
   const { data: accountDetails, isError, isLoading } = accountDetailsQuery;
@@ -27,4 +25,4 @@ const AccountDetailsScreen = ({
   );
 };
 
-export default AccountDetailsScreen;
+export default AuthorScreen;

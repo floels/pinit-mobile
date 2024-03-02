@@ -2,20 +2,24 @@ import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { TouchableOpacity, View } from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-import styles from "./PinDetailsScreen.styles";
-import { SearchResultsNavigatorParamList } from "./SearchResultsNavigator";
+import styles from "./HomeScreen.styles";
+import { PinNavigatorParamList } from "./PinNavigator";
 
 import PinDetailsView from "@/src/components/PinDetailsView/PinDetailsView";
 import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
+import { PinWithAuthorDetails } from "@/src/lib/types";
 
-type PinDetailsScreenProps = {
-  route: RouteProp<SearchResultsNavigatorParamList, "PinDetails">;
-  navigation: NavigationProp<SearchResultsNavigatorParamList>;
+type HomeScreenProps = {
+  pin: PinWithAuthorDetails;
+  pinImageAspectRatio: number;
+  navigation: NavigationProp<PinNavigatorParamList>;
 };
 
-const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
-  const { pin, pinImageAspectRatio } = route.params;
-
+const HomeScreen = ({
+  pin,
+  pinImageAspectRatio,
+  navigation,
+}: HomeScreenProps) => {
   // Pre-fetch pin author information, so the account details
   // screen renders immediately if the user taps the author's name:
   const accountDetailsQuery = useAccountDetailsQuery({
@@ -23,7 +27,7 @@ const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
   });
 
   const handlePressAuthor = () => {
-    navigation.navigate("AuthorAccountDetails", {
+    navigation.navigate("Author", {
       accountDetailsQuery,
     });
   };
@@ -46,4 +50,4 @@ const PinDetailsScreen = ({ route, navigation }: PinDetailsScreenProps) => {
   );
 };
 
-export default PinDetailsScreen;
+export default HomeScreen;

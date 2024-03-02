@@ -6,7 +6,7 @@ import {
 } from "@testing-library/react-native";
 import { Image } from "react-native";
 
-import HomeBaseScreen from "./HomeBaseScreen";
+import BaseScreen from "./BaseScreen";
 
 import {
   API_BASE_URL,
@@ -35,7 +35,7 @@ const mockNavigation = {
 };
 
 const renderComponent = () => {
-  render(<HomeBaseScreen navigation={mockNavigation as any} />);
+  render(<BaseScreen navigation={mockNavigation as any} />);
 };
 
 const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
@@ -56,8 +56,12 @@ it("should navigate to screen with proper params when user taps on a pin", async
 
   fireEvent.press(firstPin);
 
-  expect(mockNavigation.navigate).toHaveBeenCalledWith("PinDetails", {
-    pin: MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_PIN_SUGGESTIONS].results[0],
-    pinImageAspectRatio: pinImagesAspectRatio,
-  });
+  expect(mockNavigation.navigate).toHaveBeenLastCalledWith(
+    "Authenticated.Browse.Main.Home.Pin",
+    {
+      pin: MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_PIN_SUGGESTIONS]
+        .results[0],
+      pinImageAspectRatio: pinImagesAspectRatio,
+    },
+  );
 });

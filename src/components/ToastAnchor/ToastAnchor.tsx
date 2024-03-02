@@ -22,7 +22,7 @@ const ToastAnchor = () => {
     ),
     pinCreationSuccess: ({ props }: { props: any }) => {
       const handlePressViewPin = () => {
-        props.handlePressViewPin();
+        props.handlePressView();
         Toast.hide();
       };
 

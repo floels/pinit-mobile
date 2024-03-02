@@ -2,7 +2,7 @@ import { NavigationProp } from "@react-navigation/native";
 import { useRef, useState } from "react";
 import { TextInput, View } from "react-native";
 
-import styles from "./SearchBaseScreen.styles";
+import styles from "./HomeScreen.styles";
 
 import PinsSearchInputContainer from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
 import { SearchNavigatorParamList } from "@/src/navigators/SearchNavigator/SearchNavigator";
@@ -32,13 +32,17 @@ const SearchBaseScreen = ({ navigation }: SearchBaseScreenProps) => {
   };
 
   const handleSearchInputSubmit = () => {
-    navigation.navigate("SearchResults", { searchTerm: searchInputValue });
+    navigation.navigate("Authenticated.Browse.Main.Search.Results", {
+      searchTerm: searchInputValue,
+    });
   };
 
   const getPressHandlerForSearchSuggestion =
     ({ suggestion }: { suggestion: string }) =>
     () => {
-      navigation.navigate("SearchResults", { searchTerm: suggestion });
+      navigation.navigate("Authenticated.Browse.Main.Search.Results", {
+        searchTerm: suggestion,
+      });
     };
 
   return (
