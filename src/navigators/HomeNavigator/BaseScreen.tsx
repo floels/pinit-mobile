@@ -1,7 +1,7 @@
 import { NavigationProp } from "@react-navigation/native";
 import { View } from "react-native";
 
-import styles from "./HomeBaseScreen.styles";
+import styles from "./BaseScreen.styles";
 
 import AuthenticatedSetupBuilder from "@/src/components/AuthenticatedSetupBuilder/AuthenticatedSetupBuilder";
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
@@ -16,7 +16,7 @@ type HomeScreenProps = {
   navigation: NavigationProp<HomeNavigatorParamList>;
 };
 
-const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
+const BaseScreen = ({ navigation }: HomeScreenProps) => {
   const getTapHandlerForPin =
     ({
       pin,
@@ -26,7 +26,7 @@ const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
       pinImageAspectRatio: number;
     }) =>
     () => {
-      navigation.navigate("PinDetails", {
+      navigation.navigate("Authenticated.Browse.Main.Home.Pin", {
         pin,
         pinImageAspectRatio,
       });
@@ -46,4 +46,4 @@ const HomeBaseScreen = ({ navigation }: HomeScreenProps) => {
   );
 };
 
-export default HomeBaseScreen;
+export default BaseScreen;

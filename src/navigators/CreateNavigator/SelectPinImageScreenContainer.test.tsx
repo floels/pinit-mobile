@@ -113,7 +113,7 @@ after selecting an image`, async () => {
 
   pressButton({ testID: "select-pin-image-screen-next-button" });
 
-  expect(mockNavigation.navigate).toHaveBeenCalledWith("EnterPinDetails", {
+  expect(mockNavigation.navigate).toHaveBeenLastCalledWith("EnterPinDetails", {
     selectedImageURI: cameraRollPhotos[1].uri,
     providedImageAspectRatio: selectedPhotoAspectRatio,
   });

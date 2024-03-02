@@ -17,5 +17,7 @@ it("navigates to login screen when pressing 'Log in' button", async () => {
 
   pressButton({ testID: "log-in-button" });
 
-  expect(mockNavigation.navigate).toHaveBeenCalledWith("LoginScreen");
+  expect(mockNavigation.navigate).toHaveBeenLastCalledWith(
+    "Unauthenticated.Login",
+  );
 });

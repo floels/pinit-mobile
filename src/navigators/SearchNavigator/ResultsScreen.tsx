@@ -2,13 +2,13 @@ import { Ref, forwardRef } from "react";
 import { View, TouchableOpacity, TextInput } from "react-native";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
-import styles from "./SearchResultsBaseScreen.styles";
+import styles from "./ResultsScreen.styles";
 
 import PinsBoardContainer from "@/src/components/PinsBoard/PinsBoardContainer";
 import PinsSearchInputContainer from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
 import { PinWithAuthorDetails } from "@/src/lib/types";
 
-type SearchResultsBaseScreenProps = {
+type ResultsScreenProps = {
   showBackButton: boolean;
   searchInputValue: string;
   isSearchInputFocused: boolean;
@@ -33,8 +33,8 @@ type SearchResultsBaseScreenProps = {
   }) => () => void;
 };
 
-const SearchResultsBaseScreen = forwardRef(
-  (props: SearchResultsBaseScreenProps, ref: Ref<TextInput>) => {
+const ResultsScreen = forwardRef(
+  (props: ResultsScreenProps, ref: Ref<TextInput>) => {
     const {
       showBackButton,
       searchInputValue,
@@ -85,4 +85,4 @@ const SearchResultsBaseScreen = forwardRef(
   },
 );
 
-export default SearchResultsBaseScreen;
+export default ResultsScreen;

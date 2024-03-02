@@ -1,24 +1,29 @@
-import { NavigationProp } from "@react-navigation/native";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { useRef, useState } from "react";
 import { TextInput } from "react-native";
 
-import SearchResultsBaseScreen from "./SearchResultsBaseScreen";
+import ResultsScreen from "./ResultsScreen";
+import { SearchNavigatorParamList } from "./SearchNavigator";
 
 import { API_BASE_URL, API_ENDPOINT_SEARCH_PINS } from "@/src/lib/constants";
 import { PinWithAuthorDetails } from "@/src/lib/types";
-import { SearchResultsNavigatorParamList } from "@/src/navigators/SearchResultsNavigator/SearchResultsNavigator";
 
 type SearchResultsBaseScreenContainerProps = {
-  navigation: NavigationProp<SearchResultsNavigatorParamList>;
-  initialSearchTerm: string;
+  navigation: NavigationProp<SearchNavigatorParamList>;
+  route: RouteProp<
+    SearchNavigatorParamList,
+    "Authenticated.Browse.Main.Search.Results"
+  >;
   handlePressBack: () => void;
 };
 
-const SearchResultsBaseScreenContainer = ({
+const ResultsScreenContainer = ({
   navigation,
-  initialSearchTerm,
+  route,
   handlePressBack,
 }: SearchResultsBaseScreenContainerProps) => {
+  const initialSearchTerm = route.params.searchTerm;
+
   const searchInputRef = useRef<TextInput>(null);
 
   const [searchInputValue, setSearchInputValue] = useState(initialSearchTerm);
@@ -63,7 +68,7 @@ const SearchResultsBaseScreenContainer = ({
     pinImageAspectRatio: number;
   }) => {
     return () => {
-      navigation.navigate("PinDetails", {
+      navigation.navigate("Authenticated.Browse.Main.Search.Pin", {
         pin,
         pinImageAspectRatio,
       });
@@ -75,7 +80,7 @@ const SearchResultsBaseScreenContainer = ({
   const showBackButton = !isSearchInputFocused;
 
   return (
-    <SearchResultsBaseScreen
+    <ResultsScreen
       showBackButton={showBackButton}
       searchInputValue={searchInputValue}
       isSearchInputFocused={isSearchInputFocused}
@@ -93,4 +98,4 @@ const SearchResultsBaseScreenContainer = ({
   );
 };
 
-export default SearchResultsBaseScreenContainer;
+export default ResultsScreenContainer;

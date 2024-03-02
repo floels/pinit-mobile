@@ -4,7 +4,8 @@ import LandingScreen from "@/src/navigators/UnauthenticatedNavigator/LandingScre
 import LoginScreenContainer from "@/src/navigators/UnauthenticatedNavigator/LoginScreenContainer";
 
 export type UnauthenticatedNavigatorParamList = {
-  LoginScreen: undefined;
+  "Unauthenticated.Home": undefined;
+  "Unauthenticated.Login": undefined;
 };
 
 const UnauthenticatedNavigator = () => {
@@ -12,9 +13,12 @@ const UnauthenticatedNavigator = () => {
 
   return (
     <StackNavigator.Navigator screenOptions={{ headerShown: false }}>
-      <StackNavigator.Screen name="Home" component={LandingScreen} />
       <StackNavigator.Screen
-        name="LoginScreen"
+        name="Unauthenticated.Home"
+        component={LandingScreen}
+      />
+      <StackNavigator.Screen
+        name="Unauthenticated.Login"
         options={{ presentation: "modal" }}
         component={LoginScreenContainer}
       />

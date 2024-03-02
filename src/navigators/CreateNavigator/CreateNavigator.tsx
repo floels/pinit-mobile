@@ -15,11 +15,11 @@ export type CreatePinNavigatorParamList = {
   };
 };
 
-type CreatePinNavigatorProps = {
+type CreateNavigatorProps = {
   navigation: NavigationProp<AuthenticatedNavigatorParamList>;
 };
 
-const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
+const CreateNavigator = (props: CreateNavigatorProps) => {
   const StackNavigator = createStackNavigator<CreatePinNavigatorParamList>();
 
   const handleCreateSuccess = ({
@@ -29,7 +29,7 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
     createdPin: Pin;
     createdPinImageAspectRatio: number;
   }) => {
-    props.navigation.navigate("Main", {
+    props.navigation.navigate("Authenticated.Browse", {
       createdPin,
       createdPinImageAspectRatio,
     });
@@ -62,4 +62,4 @@ const CreatePinNavigator = (props: CreatePinNavigatorProps) => {
   );
 };
 
-export default CreatePinNavigator;
+export default CreateNavigator;

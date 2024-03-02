@@ -7,7 +7,7 @@ import {
   within,
 } from "@testing-library/react-native";
 
-import SearchBaseScreen from "./SearchBaseScreen";
+import HomeScreen from "./HomeScreen";
 
 import { AUTOCOMPLETE_DEBOUNCE_TIME_MS } from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
 import {
@@ -28,7 +28,7 @@ const mockNavigation = {
 const endpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}/`;
 
 const renderComponent = () => {
-  render(<SearchBaseScreen navigation={mockNavigation} />);
+  render(<HomeScreen navigation={mockNavigation} />);
 };
 
 const focusSearchInput = () => {
@@ -270,9 +270,12 @@ it("navigates to search results screen upon submitting search input", async () =
 
   submitSearchInput();
 
-  expect(mockNavigation.navigate).toHaveBeenLastCalledWith("SearchResults", {
-    searchTerm: "foo",
-  });
+  expect(mockNavigation.navigate).toHaveBeenLastCalledWith(
+    "Authenticated.Browse.Main.Search.Results",
+    {
+      searchTerm: "foo",
+    },
+  );
 });
 
 it("navigates to search results screen upon pressing search suggestion item", async () => {
@@ -295,7 +298,10 @@ it("navigates to search results screen upon pressing search suggestion item", as
 
   fireEvent.press(firstSuggestionItem);
 
-  expect(mockNavigation.navigate).toHaveBeenLastCalledWith("SearchResults", {
-    searchTerm: "foo suggestion 1",
-  });
+  expect(mockNavigation.navigate).toHaveBeenLastCalledWith(
+    "Authenticated.Browse.Main.Search.Results",
+    {
+      searchTerm: "foo suggestion 1",
+    },
+  );
 });

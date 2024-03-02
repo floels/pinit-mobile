@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Image } from "react-native";
 import Toast from "react-native-toast-message";
 
-import { CreatePinNavigatorParamList } from "./CreatePinNavigator";
+import { CreatePinNavigatorParamList } from "./CreateNavigator";
 import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";

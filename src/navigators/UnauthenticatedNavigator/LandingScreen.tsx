@@ -14,7 +14,7 @@ type LandingScreenProps = {
 
 const LandingScreen = ({ navigation }: LandingScreenProps) => {
   const handlePressLogIn = () => {
-    navigation.navigate("LoginScreen");
+    navigation.navigate("Unauthenticated.Login");
   };
 
   return (
