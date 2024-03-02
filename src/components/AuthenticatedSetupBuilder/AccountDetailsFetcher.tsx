@@ -8,8 +8,8 @@ import {
   API_ENDPOINT_MY_ACCOUNT_DETAILS,
   PROFILE_PICTURE_URL_STORAGE_KEY,
 } from "@/src/lib/constants";
-import { Response401Error, ResponseKOError } from "@/src/lib/customErrors";
-import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
+import { Response401Error } from "@/src/lib/customErrors";
+import { fetchWithAuthentication, throwIfKO } from "@/src/lib/utils/fetch";
 import { serializeAccountWithPrivateDetails } from "@/src/lib/utils/serializers";
 
 const AccountDetailsFetcher = () => {
@@ -47,9 +47,7 @@ const AccountDetailsFetcher = () => {
       throw new Response401Error();
     }
 
-    if (!response.ok) {
-      throw new ResponseKOError();
-    }
+    throwIfKO(response);
 
     const responseData = await response.json();
 

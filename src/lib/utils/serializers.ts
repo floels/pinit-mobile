@@ -1,10 +1,11 @@
 import {
-  AccountPrivateDetails,
-  Account,
+  AccountWithPrivateDetails,
+  AccountWithPublicDetails,
   Board,
   PinWithAuthorDetails,
   Pin,
   PinWithFullDetails,
+  Account,
 } from "../types";
 
 export const serializePin = (pin: any): Pin => {
@@ -39,7 +40,9 @@ export const serializePinWithFullDetails = (pin: any): PinWithFullDetails => {
   };
 };
 
-export const serializeAccount = (account: any): Account => {
+export const serializeAccountWithPublicDetails = (
+  account: any,
+): AccountWithPublicDetails => {
   return {
     username: account.username,
     displayName: account.display_name,
@@ -53,9 +56,9 @@ export const serializeAccount = (account: any): Account => {
 
 export const serializeAccountWithPrivateDetails = (
   account: any,
-): AccountPrivateDetails => {
+): AccountWithPrivateDetails => {
   return {
-    ...serializeAccount(account),
+    ...serializeAccountWithPublicDetails(account),
     type: account.type,
     ownerEmail: account.owner_email,
   };
@@ -71,4 +74,12 @@ export const serializeBoard = (board: any): Board => {
 
 export const serializeBoards = (boards: any): Board[] => {
   return boards.map(serializeBoard);
+};
+
+export const getAccountFromPin = (pin: PinWithAuthorDetails): Account => {
+  return {
+    username: pin.authorUsername,
+    displayName: pin.authorDisplayName,
+    profilePictureURL: pin.authorProfilePictureURL,
+  };
 };

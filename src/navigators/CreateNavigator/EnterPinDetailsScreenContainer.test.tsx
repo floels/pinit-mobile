@@ -4,13 +4,14 @@ import {
   userEvent,
   waitFor,
 } from "@testing-library/react-native";
+import { FetchMock } from "jest-fetch-mock";
 import { Image } from "react-native";
 import Toast from "react-native-toast-message";
 
 import EnterPinDetailsScreenContainer from "./EnterPinDetailsScreenContainer";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
-import { pressButton } from "@/src/lib/testing-utils/misc";
+import { MockFormData, pressButton } from "@/src/lib/testing-utils/misc";
 import {
   MOCK_API_RESPONSES,
   MOCK_API_RESPONSES_JSON,
@@ -18,7 +19,9 @@ import {
 import enTranslations from "@/translations/en.json";
 
 jest.mock("expo-media-library", () => ({
-  getAssetInfoAsync: () => "file:///my/image/path.jpeg",
+  getAssetInfoAsync: () => ({
+    localUri: "file:///my/image/path.jpeg",
+  }),
 }));
 
 jest.mock("mime", () => ({
@@ -27,7 +30,7 @@ jest.mock("mime", () => ({
 
 jest.mock("expo-secure-store", () => ({
   getItemAsync: () => "access_token",
-})); // needed to be able to fetch with authentication
+}));
 
 jest.mock("react-native-toast-message", () => ({
   show: jest.fn(),
@@ -71,8 +74,43 @@ const typeInDescriptionInput = async (input: string) => {
   await userEvent.type(descriptionInput, input);
 };
 
+(global.FormData as any) = MockFormData;
+
 beforeEach(() => {
   fetchMock.resetMocks();
+});
+
+it("calls 'fetch' with proper arguments upon pressing 'Create'", async () => {
+  renderComponent();
+
+  await typeInTitleInput("My pin title");
+  await typeInDescriptionInput("My pin description");
+
+  pressButton({ testID: "create-pin-submit-button" });
+
+  await waitFor(() => {
+    expect(fetch).toHaveBeenCalledWith(
+      createPinEndpoint,
+      expect.objectContaining({
+        method: "POST",
+        headers: {
+          Authorization: "Bearer access_token",
+        },
+        body: expect.anything(),
+      }),
+    );
+
+    const fetchCall = (fetch as FetchMock).mock.calls[0] as any;
+    const formData = fetchCall[1].body;
+
+    expect(formData.entries.title).toBe("My pin title");
+    expect(formData.entries.description).toBe("My pin description");
+    expect(formData.entries.image_file).toEqual({
+      uri: "file:///my/image/path.jpeg",
+      name: "image_file",
+      type: "image/jpeg",
+    });
+  });
 });
 
 it("calls 'handleCreateSuccess' with proper arguments upon successful pin creation", async () => {
@@ -97,23 +135,6 @@ it("calls 'handleCreateSuccess' with proper arguments upon successful pin creati
       },
       createdPinImageAspectRatio: 1.5,
     });
-  });
-});
-
-it("displays error connection toast upon fetch error", async () => {
-  renderComponent();
-
-  fetchMock.mockReject(new Error());
-
-  pressButton({ testID: "create-pin-submit-button" });
-
-  await waitFor(() => {
-    expect(Toast.show).toHaveBeenLastCalledWith(
-      expect.objectContaining({
-        type: "pinCreationError",
-        text1: enTranslations.Common.CONNECTION_ERROR,
-      }),
-    );
   });
 });
 

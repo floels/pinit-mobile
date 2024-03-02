@@ -10,9 +10,8 @@ import { CreatePinNavigatorParamList } from "./CreateNavigator";
 import EnterPinDetailsScreen from "./EnterPinDetailsScreen";
 
 import { API_BASE_URL, API_ENDPOINT_CREATE_PIN } from "@/src/lib/constants";
-import { NetworkError, ResponseKOError } from "@/src/lib/customErrors";
 import { Pin } from "@/src/lib/types";
-import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
+import { fetchWithAuthentication, throwIfKO } from "@/src/lib/utils/fetch";
 import { serializePin } from "@/src/lib/utils/serializers";
 
 type EnterPinDetailsScreenContainerProps = {
@@ -105,8 +104,8 @@ const EnterPinDetailsScreenContainer = ({
 
     try {
       createdPin = await postFormData(formData);
-    } catch (error) {
-      handlePostError(error);
+    } catch {
+      handlePostError();
       return;
     } finally {
       setIsPosting(false);
@@ -120,47 +119,22 @@ const EnterPinDetailsScreenContainer = ({
   };
 
   const postFormData = async (formData: FormData) => {
-    let response;
+    const response = await fetchWithAuthentication(
+      `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}/`,
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
 
-    try {
-      response = await fetchWithAuthentication(
-        `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}/`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-    } catch {
-      throw new NetworkError();
-    }
-
-    if (!response.ok) {
-      throw new ResponseKOError();
-    }
+    throwIfKO(response);
 
     const responseData = await response.json();
 
     return serializePin(responseData);
   };
 
-  const handlePostError = (error: unknown) => {
-    if (error instanceof NetworkError) {
-      showConnectionErrorToast();
-      return;
-    }
-
-    showGenericErrorToast();
-  };
-
-  const showConnectionErrorToast = () => {
-    Toast.show({
-      type: "pinCreationError",
-      position: "bottom",
-      text1: t("Common.CONNECTION_ERROR"),
-    });
-  };
-
-  const showGenericErrorToast = () => {
+  const handlePostError = () => {
     Toast.show({
       type: "pinCreationError",
       position: "bottom",

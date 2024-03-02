@@ -1,24 +1,23 @@
 import { useQuery } from "@tanstack/react-query";
 
+import { throwIfKO } from "../lib/utils/fetch";
+
 import {
   API_BASE_URL,
   API_ENDPOINT_ACCOUNT_DETAILS,
 } from "@/src/lib/constants";
-import { ResponseKOError } from "@/src/lib/customErrors";
-import { serializeAccount } from "@/src/lib/utils/serializers";
+import { serializeAccountWithPublicDetails } from "@/src/lib/utils/serializers";
 
 const fetchAccountDetails = async ({ username }: { username: string }) => {
   const response = await fetch(
     `${API_BASE_URL}/${API_ENDPOINT_ACCOUNT_DETAILS}/${username}/`,
   );
 
-  if (!response.ok) {
-    throw new ResponseKOError();
-  }
+  throwIfKO(response);
 
   const responseData = await response.json();
 
-  return serializeAccount(responseData);
+  return serializeAccountWithPublicDetails(responseData);
 };
 
 export const useAccountDetailsQuery = ({ username }: { username: string }) => {

@@ -6,28 +6,59 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles, { SIDE_PADDING } from "./PinDetailsView.styles";
+import BlinkingDots from "../BlinkingDots/BlinkingDots";
 
-import { PinWithAuthorDetails } from "@/src/lib/types";
+import { PinWithAuthorDetails, PinWithFullDetails } from "@/src/lib/types";
 
-type PinDetailsProps = {
-  pin: PinWithAuthorDetails;
+type PinDetailsViewProps = {
+  pin: PinWithAuthorDetails | PinWithFullDetails;
   pinImageAspectRatio: number;
+  isLoading: boolean;
+  handlePressBack: () => void;
   handlePressAuthor: () => void;
 };
 
-const PinDetails = ({
+const PinDetailsView = ({
   pin,
   pinImageAspectRatio,
+  isLoading,
+  handlePressBack,
   handlePressAuthor,
-}: PinDetailsProps) => {
+}: PinDetailsViewProps) => {
   const screenWidth = Dimensions.get("window").width;
   const imageWidth = screenWidth - 2 * SIDE_PADDING;
   const pinImageHeight = imageWidth / pinImageAspectRatio;
 
+  const BackButton = () => (
+    <TouchableOpacity
+      style={styles.backButton}
+      onPress={handlePressBack}
+      testID="pin-details-view-back-button"
+    >
+      <FontAwesome5Icon
+        name="chevron-left"
+        size={20}
+        style={styles.backButtonIcon}
+      />
+    </TouchableOpacity>
+  );
+
+  let displayDescription;
+
+  if ("description" in pin && pin.description) {
+    displayDescription = (
+      <Text style={styles.pinDescription}>{pin.description}</Text>
+    );
+  } else if (isLoading) {
+    displayDescription = <BlinkingDots style={styles.pinDescription} />;
+  }
+
   return (
     <ScrollView style={styles.container}>
+      <BackButton />
       <View style={styles.content}>
         <Image
           source={{ uri: pin.imageURL }}
@@ -53,13 +84,11 @@ const PinDetails = ({
             <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
           </TouchableOpacity>
           <Text style={styles.pinTitle}>{pin.title}</Text>
-          <Text style={styles.pinDescription}>
-            TODO: insert pin description here
-          </Text>
+          {displayDescription}
         </View>
       </View>
     </ScrollView>
   );
 };
 
-export default PinDetails;
+export default PinDetailsView;

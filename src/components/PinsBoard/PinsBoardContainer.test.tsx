@@ -194,16 +194,6 @@ it("displays spinner while fetching initial pins", async () => {
   screen.getByTestId("mocked-spinner");
 });
 
-it("displays error message upon fetch error when fetching initial pins", async () => {
-  fetchMock.mockRejectOnce();
-
-  renderComponent();
-
-  await waitFor(() => {
-    screen.getByText(enTranslations.Common.CONNECTION_ERROR);
-  });
-});
-
 it("dispatches relevant action upon 401 response when fetching initial pins", async () => {
   fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
     status: 401,
@@ -326,29 +316,6 @@ again if user pulls again after debounce time`, async () => {
 
   await waitFor(() => {
     expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?page=1`);
-  });
-});
-
-it("displays error message upon fetch error on refresh", async () => {
-  jest.useFakeTimers();
-
-  fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
-    MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
-  );
-
-  renderComponent();
-
-  await waitFor(() => {
-    screen.getByTestId("mocked-pin-thumbnail-000000000000000000");
-  });
-
-  fetchMock.mockRejectOnce();
-
-  pullToRefresh();
-
-  await waitFor(() => {
-    screen.getByText(enTranslations.Common.CONNECTION_ERROR);
   });
 });
 

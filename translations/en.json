@@ -1,6 +1,5 @@
 {
   "Common": {
-    "CONNECTION_ERROR": "We couldn't reach the server. Please check your Internet connection.",
     "UNFORESEEN_ERROR": "An unforeseen error happened. Please try again later.",
     "ERROR_FETCH_MORE_PINS": "An error occurred while attempting to retrieve more pins.",
     "ERROR_REFRESH_PINS": "An error occurred while attempting to refresh pins."
@@ -26,9 +25,6 @@
   },
   "ProfileScreen": {
     "LOG_OUT": "Log out"
-  },
-  "AccountDetails": {
-    "ERROR_FETCH_ACCOUNT_DETAILS": "An error occurred while retrieving the details of this account."
   },
   "CreatePin": {
     "CAMERA_ROLL_ACCESS_REQUIRED": "Camera roll access is required to create a pin.",

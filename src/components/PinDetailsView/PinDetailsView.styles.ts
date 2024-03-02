@@ -11,6 +11,16 @@ const styles = StyleSheet.create({
     paddingLeft: SIDE_PADDING,
     paddingRight: SIDE_PADDING,
     backgroundColor: "black",
+    position: "relative",
+  },
+  backButton: {
+    position: "absolute",
+    zIndex: 10,
+    top: 40,
+    left: 26,
+  },
+  backButtonIcon: {
+    color: Colors.fontImportant,
   },
   content: {
     minHeight: "100%", // For some reason setting 'flex: 1' here doesn't

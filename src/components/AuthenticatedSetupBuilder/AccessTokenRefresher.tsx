@@ -8,8 +8,8 @@ import {
   API_ENDPOINT_REFRESH_TOKEN,
   REFRESH_TOKEN_STORAGE_KEY,
 } from "@/src/lib/constants";
-import { ResponseKOError } from "@/src/lib/customErrors";
 import { persistTokensData } from "@/src/lib/utils/authentication";
+import { throwIfKO } from "@/src/lib/utils/fetch";
 
 export const TOKEN_REFRESH_BUFFER_BEFORE_EXPIRATION_MS = 60 * 60 * 1000; // i.e. 1 hour
 
@@ -105,9 +105,7 @@ const AccessTokenRefresher = ({
       }),
     });
 
-    if (!response.ok) {
-      throw new ResponseKOError();
-    }
+    throwIfKO(response);
 
     const responseData = await response.json();
 
