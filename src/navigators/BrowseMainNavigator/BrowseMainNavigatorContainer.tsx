@@ -1,11 +1,8 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationProp } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 
-import BrowseMainNavigator, {
-  BrowseMainNavigatorParamList,
-} from "./BrowseMainNavigator";
+import BrowseMainNavigator from "./BrowseMainNavigator";
 import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/AuthenticatedNavigator";
 import { BrowseNavigatorParamList } from "../BrowseNavigator/BrowseNavigator";
 
@@ -29,8 +26,6 @@ const BrowseMainNavigatorContainer = ({
 
   const [isCreateSelectModalVisible, setIsCreateSelectModalVisible] =
     useState(false);
-
-  const TabNavigator = createBottomTabNavigator<BrowseMainNavigatorParamList>();
 
   const createTabPressListener = (event: any) => {
     event?.preventDefault(); // prevent regular navigation to "Create" screen (which renders nothing)

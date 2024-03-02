@@ -153,20 +153,6 @@ it("persists tokens data and dispatch 'LOGGED_IN' action upon successful login",
   });
 });
 
-it("displays right error message upon fetch fail", async () => {
-  renderComponent();
-
-  await fillInputsWithValidCredentials();
-
-  fetchMock.mockRejectOnce();
-
-  pressSubmit();
-
-  await waitFor(() => {
-    screen.getByText(enTranslations.Common.CONNECTION_ERROR);
-  });
-});
-
 it("displays right error message upon KO response", async () => {
   renderComponent();
 

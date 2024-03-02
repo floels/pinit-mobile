@@ -1,13 +1,17 @@
-import { NavigationProp, RouteProp } from "@react-navigation/native";
-import { TouchableOpacity, View } from "react-native";
-import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
+import { NavigationProp } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
-import styles from "./HomeScreen.styles";
 import { PinNavigatorParamList } from "./PinNavigator";
 
 import PinDetailsView from "@/src/components/PinDetailsView/PinDetailsView";
-import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
-import { PinWithAuthorDetails } from "@/src/lib/types";
+import { API_BASE_URL, API_ENDPOINT_PIN_DETAILS } from "@/src/lib/constants";
+import { PinWithAuthorDetails, PinWithFullDetails } from "@/src/lib/types";
+import { throwIfKO } from "@/src/lib/utils/fetch";
+import {
+  getAccountFromPin,
+  serializePinWithFullDetails,
+} from "@/src/lib/utils/serializers";
 
 type HomeScreenProps = {
   pin: PinWithAuthorDetails;
@@ -16,37 +20,55 @@ type HomeScreenProps = {
 };
 
 const HomeScreen = ({
-  pin,
+  pin: providedPin,
   pinImageAspectRatio,
   navigation,
 }: HomeScreenProps) => {
-  // Pre-fetch pin author information, so the account details
-  // screen renders immediately if the user taps the author's name:
-  const accountDetailsQuery = useAccountDetailsQuery({
-    username: pin.authorUsername,
+  const [pin, setPin] = useState<PinWithFullDetails | PinWithAuthorDetails>(
+    providedPin,
+  );
+
+  const { id } = providedPin;
+
+  const fetchPinDetails = async () => {
+    const url = `${API_BASE_URL}/${API_ENDPOINT_PIN_DETAILS}/${id}/`;
+
+    const response = await fetch(url);
+
+    throwIfKO(response);
+
+    const responseData = await response.json();
+
+    return serializePinWithFullDetails(responseData);
+  };
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["queryPinDetails", { id }],
+    queryFn: fetchPinDetails,
   });
 
+  useEffect(() => {
+    if (data) {
+      setPin(data);
+    }
+  }, [data]);
+
   const handlePressAuthor = () => {
+    const author = getAccountFromPin(providedPin);
+
     navigation.navigate("Author", {
-      accountDetailsQuery,
+      author,
     });
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={navigation.goBack}>
-        <FontAwesome5Icon
-          name="chevron-left"
-          size={20}
-          style={styles.backButtonIcon}
-        />
-      </TouchableOpacity>
-      <PinDetailsView
-        pin={pin}
-        pinImageAspectRatio={pinImageAspectRatio}
-        handlePressAuthor={handlePressAuthor}
-      />
-    </View>
+    <PinDetailsView
+      pin={pin}
+      pinImageAspectRatio={pinImageAspectRatio}
+      isLoading={isLoading}
+      handlePressBack={navigation.goBack}
+      handlePressAuthor={handlePressAuthor}
+    />
   );
 };
 

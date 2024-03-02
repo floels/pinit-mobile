@@ -23,13 +23,16 @@ export type Account = {
   username: string;
   displayName: string;
   profilePictureURL: string | null;
+};
+
+export type AccountWithPublicDetails = Account & {
   boards: Board[];
   initial: string;
   backgroundPictureURL: string | null;
   description: string | null;
 };
 
-export type AccountPrivateDetails = Account & {
+export type AccountWithPrivateDetails = AccountWithPublicDetails & {
   type: TypesOfAccount;
   ownerEmail: string;
 };

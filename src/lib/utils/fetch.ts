@@ -1,7 +1,10 @@
 import * as SecureStore from "expo-secure-store";
 
 import { ACCESS_TOKEN_STORAGE_KEY } from "@/src/lib/constants";
-import { MissingAccessTokenError } from "@/src/lib/customErrors";
+import {
+  MissingAccessTokenError,
+  ResponseKOError,
+} from "@/src/lib/customErrors";
 
 export const fetchWithAuthentication = async (
   endpoint: string,
@@ -20,4 +23,10 @@ export const fetchWithAuthentication = async (
       Authorization: `Bearer ${accessToken}`,
     },
   });
+};
+
+export const throwIfKO = (response: Response) => {
+  if (!response.ok) {
+    throw new ResponseKOError();
+  }
 };

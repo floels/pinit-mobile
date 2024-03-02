@@ -1,52 +1,25 @@
-import { render, screen } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 
 import PinDetailsView from "./PinDetailsView";
 
-import { pressButton } from "@/src/lib/testing-utils/misc";
+import { API_ENDPOINT_PIN_DETAILS } from "@/src/lib/constants";
+import { MOCK_API_RESPONSES_SERIALIZED } from "@/src/lib/testing-utils/mockAPIResponses";
 
-const mockHandlePressAuthor = jest.fn();
-
-const pin = {
-  id: "0000",
-  title: "Pin title",
-  description: "Pin description",
-  imageURL: "https://example.com/pin-image.jpg",
-  authorUsername: "johndoe",
-  authorDisplayName: "John Doe",
-  authorProfilePictureURL: "https://example.com/profile-picture.jpg",
-};
+const pin = MOCK_API_RESPONSES_SERIALIZED[API_ENDPOINT_PIN_DETAILS];
 
 const renderComponent = () => {
   render(
     <PinDetailsView
       pin={pin}
       pinImageAspectRatio={1.0}
-      handlePressAuthor={mockHandlePressAuthor}
+      isLoading={false}
+      handlePressAuthor={() => {}}
+      handlePressBack={() => {}}
     />,
   );
 };
 
-it("renders pin details", () => {
+// NB: this component is tested via src/navigators/HomeNavigator/HomeScreen.test.tsx
+it("renders", () => {
   renderComponent();
-
-  const pinImage = screen.getByTestId("pin-details-pin-image");
-  expect(pinImage).toHaveProp("source", { uri: pin.imageURL });
-
-  const authorProfilePicture = screen.getByTestId(
-    "pin-details-author-profile-picture",
-  );
-  expect(authorProfilePicture).toHaveProp("source", {
-    uri: pin.authorProfilePictureURL,
-  });
-
-  screen.getByText(pin.title);
-  //screen.getByText(pin.description); //TODO: uncomment
-});
-
-it("calls 'handlePressAuthor' upon press on author details", async () => {
-  renderComponent();
-
-  pressButton({ testID: "pin-details-author-data" });
-
-  expect(mockHandlePressAuthor).toHaveBeenCalledTimes(1);
 });

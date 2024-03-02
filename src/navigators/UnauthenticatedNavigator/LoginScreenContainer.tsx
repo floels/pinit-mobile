@@ -10,12 +10,9 @@ import {
   API_ENDPOINT_OBTAIN_TOKEN,
   ERROR_CODE_INVALID_EMAIL,
 } from "@/src/lib/constants";
-import {
-  NetworkError,
-  Response401Error,
-  ResponseKOError,
-} from "@/src/lib/customErrors";
+import { Response401Error } from "@/src/lib/customErrors";
 import { persistTokensData } from "@/src/lib/utils/authentication";
+import { throwIfKO } from "@/src/lib/utils/fetch";
 import { isValidEmail, isValidPassword } from "@/src/lib/utils/validation";
 import { UnauthenticatedNavigatorParamList } from "@/src/navigators/UnauthenticatedNavigator/UnauthenticatedNavigator";
 
@@ -33,10 +30,9 @@ const computeCanSubmit = (values: Credentials) => {
 };
 
 const fetchTokens = async ({ email, password }: Credentials) => {
-  let response;
-
-  try {
-    response = await fetch(`${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}/`, {
+  const response = await fetch(
+    `${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}/`,
+    {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,10 +41,8 @@ const fetchTokens = async ({ email, password }: Credentials) => {
         email,
         password,
       }),
-    });
-  } catch {
-    throw new NetworkError();
-  }
+    },
+  );
 
   if (response.status === 401) {
     const responseData = await response.json();
@@ -58,9 +52,7 @@ const fetchTokens = async ({ email, password }: Credentials) => {
     throw new Response401Error(errorMessage);
   }
 
-  if (!response.ok) {
-    throw new ResponseKOError();
-  }
+  throwIfKO(response);
 
   const responseData = await response.json();
 
@@ -93,11 +85,6 @@ const LoginScreenContainer = ({ navigation }: LoginScreenContainerProps) => {
     };
 
   const handleSubmitError = (error: unknown) => {
-    if (error instanceof NetworkError) {
-      setSubmitError(t("Common.CONNECTION_ERROR"));
-      return;
-    }
-
     if (error instanceof Response401Error) {
       if (error.message === ERROR_CODE_INVALID_EMAIL) {
         setSubmitError(t("LandingScreen.INVALID_EMAIL_LOGIN"));

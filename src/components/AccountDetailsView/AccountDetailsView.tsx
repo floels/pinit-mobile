@@ -1,20 +1,18 @@
-import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./AccountDetailsView.styles";
 import AccountPictures from "./AccountPictures";
-import Spinner from "../Spinner/Spinner";
+import BlinkingDots from "../BlinkingDots/BlinkingDots";
 
 import { Colors } from "@/src/global.styles";
-import { Account } from "@/src/lib/types";
+import { Account, AccountWithPublicDetails } from "@/src/lib/types";
 
 type AccountDetailsViewProps = {
-  account: Account | undefined;
-  isError: boolean;
+  account: AccountWithPublicDetails | Account;
   isLoading: boolean;
-  onPressBack: () => void;
+  handlePressBack: () => void;
 };
 
 const Logo = (props: any) => (
@@ -29,12 +27,12 @@ const Logo = (props: any) => (
 const AccountDetailsView = ({
   account,
   isLoading,
-  isError,
-  onPressBack,
+  handlePressBack,
 }: AccountDetailsViewProps) => {
-  const { t } = useTranslation();
+  const { displayName, username } = account;
 
-  const hasBackgroundPicture = !!account?.backgroundPictureURL;
+  const hasBackgroundPicture =
+    "backgroundPictureURL" in account && account.backgroundPictureURL;
 
   const backButtonIconStyle = hasBackgroundPicture
     ? styles.backButtonIconWithBackgroundPicture
@@ -42,9 +40,9 @@ const AccountDetailsView = ({
 
   const BackButton = () => (
     <TouchableOpacity
-      onPress={onPressBack}
+      onPress={handlePressBack}
       style={styles.backButton}
-      testID="account-details-back-button"
+      testID="account-details-view-back-button"
     >
       <FontAwesome5Icon
         name="chevron-left"
@@ -54,51 +52,23 @@ const AccountDetailsView = ({
     </TouchableOpacity>
   );
 
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <BackButton />
-        <View style={styles.loadingOrErrorStateContainer}>
-          <Spinner>
-            <FontAwesome5Icon
-              name="spinner"
-              size={40}
-              style={styles.spinnerIcon}
-              testID="account-details-loading-spinner"
-            />
-          </Spinner>
-        </View>
-      </View>
-    );
-  }
+  let displayDescription;
 
-  if (isError || !account) {
-    return (
-      <View style={styles.container}>
-        <BackButton />
-        <View style={styles.loadingOrErrorStateContainer}>
-          <FontAwesome5Icon
-            name="exclamation-circle"
-            size={40}
-            style={styles.errorIcon}
-          />
-          <Text style={styles.errorText}>
-            {t("AccountDetails.ERROR_FETCH_ACCOUNT_DETAILS")}
-          </Text>
-        </View>
-      </View>
+  if ("description" in account && account.description) {
+    displayDescription = (
+      <Text style={styles.description}>{account.description}</Text>
     );
+  } else if (isLoading) {
+    displayDescription = <BlinkingDots style={styles.description} />;
   }
-
-  const { displayName, description, username } = account;
 
   return (
     <View style={styles.container}>
       <BackButton />
-      <AccountPictures account={account} />
+      <AccountPictures account={account} isLoading={isLoading} />
       <View style={styles.accountData}>
         <Text style={styles.displayName}>{displayName}</Text>
-        {description && <Text style={styles.description}>{description}</Text>}
+        {displayDescription}
         <View style={styles.logoAndUsername}>
           <Logo style={styles.logo} />
           <Text style={styles.username}>{username}</Text>

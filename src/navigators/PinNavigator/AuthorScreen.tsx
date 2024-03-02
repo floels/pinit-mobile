@@ -1,9 +1,17 @@
 import { NavigationProp, RouteProp } from "@react-navigation/native";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 import { PinNavigatorParamList } from "./PinNavigator";
 
 import AccountDetailsView from "@/src/components/AccountDetailsView/AccountDetailsView";
-import { HomeNavigatorParamList } from "@/src/navigators/HomeNavigator/HomeNavigator";
+import {
+  API_BASE_URL,
+  API_ENDPOINT_ACCOUNT_DETAILS,
+} from "@/src/lib/constants";
+import { Account, AccountWithPublicDetails } from "@/src/lib/types";
+import { throwIfKO } from "@/src/lib/utils/fetch";
+import { serializeAccountWithPublicDetails } from "@/src/lib/utils/serializers";
 
 type AuthorScreenProps = {
   route: RouteProp<PinNavigatorParamList, "Author">;
@@ -11,16 +19,42 @@ type AuthorScreenProps = {
 };
 
 const AuthorScreen = ({ route, navigation }: AuthorScreenProps) => {
-  const { accountDetailsQuery } = route.params;
+  const providedAccount = route.params.author;
 
-  const { data: accountDetails, isError, isLoading } = accountDetailsQuery;
+  const [account, setAccount] = useState<AccountWithPublicDetails | Account>(
+    providedAccount,
+  );
+
+  const { username } = providedAccount;
+
+  const fetchAccountDetails = async () => {
+    const url = `${API_BASE_URL}/${API_ENDPOINT_ACCOUNT_DETAILS}/${username}/`;
+
+    const response = await fetch(url);
+
+    throwIfKO(response);
+
+    const responseData = await response.json();
+
+    return serializeAccountWithPublicDetails(responseData);
+  };
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["queryAccountDetails", { username }],
+    queryFn: fetchAccountDetails,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setAccount(data);
+    }
+  }, [data]);
 
   return (
     <AccountDetailsView
-      account={accountDetails}
-      isError={isError}
+      account={account}
       isLoading={isLoading}
-      onPressBack={navigation.goBack}
+      handlePressBack={navigation.goBack}
     />
   );
 };

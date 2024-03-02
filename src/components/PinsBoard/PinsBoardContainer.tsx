@@ -5,11 +5,7 @@ import { NativeScrollEvent, NativeSyntheticEvent, Image } from "react-native";
 import PinsBoard, { THRESHOLD_PULL_TO_REFRESH } from "./PinsBoard";
 
 import { useAuthenticationContext } from "@/src/contexts/authenticationContext";
-import {
-  NetworkError,
-  Response401Error,
-  ResponseKOError,
-} from "@/src/lib/customErrors";
+import { Response401Error, ResponseKOError } from "@/src/lib/customErrors";
 import { PinWithAuthorDetails } from "@/src/lib/types";
 import { fetchWithAuthentication } from "@/src/lib/utils/fetch";
 import { serializePinsWithAuthorDetails } from "@/src/lib/utils/serializers";
@@ -77,11 +73,6 @@ const PinsBoardContainer = ({
         return;
       }
 
-      if (error instanceof NetworkError) {
-        setFetchMorePinsError(t("Common.CONNECTION_ERROR"));
-        return;
-      }
-
       setFetchMorePinsError(t("Common.ERROR_FETCH_MORE_PINS"));
       return;
     } finally {
@@ -113,11 +104,6 @@ const PinsBoardContainer = ({
     } catch (error) {
       if (error instanceof Response401Error) {
         dispatch({ type: "GOT_401_RESPONSE" });
-        return;
-      }
-
-      if (error instanceof NetworkError) {
-        setRefreshError(t("Common.CONNECTION_ERROR"));
         return;
       }
 
@@ -157,15 +143,9 @@ const PinsBoardContainer = ({
       value: currentPage.toString(),
     });
 
-    let newPinsResponse;
-
-    try {
-      newPinsResponse = await fetchWithAuthenticationIfNeeded(
-        endpointWithPageParameter,
-      );
-    } catch {
-      throw new NetworkError();
-    }
+    const newPinsResponse = await fetchWithAuthenticationIfNeeded(
+      endpointWithPageParameter,
+    );
 
     if (newPinsResponse.status === 401) {
       throw new Response401Error();

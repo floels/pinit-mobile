@@ -25,11 +25,7 @@ export type PinNavigatorParamList = {
     pinImageAspectRatio: number;
   };
   Author: {
-    accountDetailsQuery: {
-      data: Account | undefined;
-      isLoading: boolean;
-      isError: boolean;
-    };
+    author: Account;
   };
 };
 
