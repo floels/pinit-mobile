@@ -30,13 +30,8 @@ const styles = StyleSheet.create({
     fontWeight: Fonts.fontWeightSemiBold,
     marginBottom: 24,
   },
-  signUpButtonText: {
-    fontSize: buttonTextsFontSize,
-    color: Colors.fontImportant,
-    fontWeight: buttonTextsFontWeight,
-  },
   logInButton: {
-    backgroundColor: Colors.backgroundNormal,
+    backgroundColor: Colors.backgroundImportant,
     width: "100%",
     alignItems: "center",
     justifyContent: "center",
@@ -44,6 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: buttonsBorderRadius,
   },
   logInButtonText: {
+    color: Colors.fontImportant,
     fontSize: buttonTextsFontSize,
     fontWeight: buttonTextsFontWeight,
   },

@@ -22,6 +22,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.backgroundBase,
     paddingBottom: 80,
   },
+  pinData: {
+    marginTop: 20,
+    padding: 20,
+  },
   pinImage: {
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -29,32 +33,24 @@ const styles = StyleSheet.create({
   authorData: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
   },
   authorName: {
     fontSize: Fonts.fontSize300,
     fontWeight: Fonts.fontWeightSemiBold,
-    paddingRight: 10,
   },
   authorProfilePictureImage: {
     height: 40,
     width: 40,
     borderRadius: 20,
-    marginLeft: 20,
     marginRight: 16,
   },
   pinTitle: {
     marginTop: 10,
-    marginLeft: 20,
-    marginRight: 20,
     fontSize: Fonts.fontSize300,
     fontWeight: Fonts.fontWeightSemiBold,
-    paddingRight: 10,
   },
   pinDescription: {
     marginTop: 6,
-    marginLeft: 20,
-    paddingRight: 10,
     fontSize: Fonts.fontSize200,
   },
 });

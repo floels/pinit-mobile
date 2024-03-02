@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react-native";
 
-import PinDetails from "./PinDetails";
+import PinDetailsView from "./PinDetailsView";
 
 import { pressButton } from "@/src/lib/testing-utils/misc";
 
@@ -18,7 +18,7 @@ const pin = {
 
 const renderComponent = () => {
   render(
-    <PinDetails
+    <PinDetailsView
       pin={pin}
       pinImageAspectRatio={1.0}
       handlePressAuthor={mockHandlePressAuthor}

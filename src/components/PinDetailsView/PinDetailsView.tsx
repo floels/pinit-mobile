@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 
-import styles, { SIDE_PADDING } from "./PinDetails.styles";
+import styles, { SIDE_PADDING } from "./PinDetailsView.styles";
 
 import { PinWithAuthorDetails } from "@/src/lib/types";
 
@@ -37,22 +37,26 @@ const PinDetails = ({
           ]}
           testID="pin-details-pin-image"
         />
-        <TouchableOpacity
-          onPress={handlePressAuthor}
-          style={styles.authorData}
-          testID="pin-details-author-data"
-        >
-          <Image
-            source={{ uri: pin.authorProfilePictureURL }}
-            style={styles.authorProfilePictureImage}
-            testID="pin-details-author-profile-picture"
-          />
-          <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
-        </TouchableOpacity>
-        <Text style={styles.pinTitle}>{pin.title}</Text>
-        <Text style={styles.pinDescription}>
-          TODO: insert pin description here
-        </Text>
+        <View style={styles.pinData}>
+          <TouchableOpacity
+            onPress={handlePressAuthor}
+            style={styles.authorData}
+            testID="pin-details-author-data"
+          >
+            {pin.authorProfilePictureURL && (
+              <Image
+                source={{ uri: pin.authorProfilePictureURL }}
+                style={styles.authorProfilePictureImage}
+                testID="pin-details-author-profile-picture"
+              />
+            )}
+            <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
+          </TouchableOpacity>
+          <Text style={styles.pinTitle}>{pin.title}</Text>
+          <Text style={styles.pinDescription}>
+            TODO: insert pin description here
+          </Text>
+        </View>
       </View>
     </ScrollView>
   );

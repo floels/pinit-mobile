@@ -5,7 +5,7 @@ import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
 import { CreatedPinDetailsNavigatorParamList } from "./CreatedPinDetailsNavigator";
 import styles from "./PinDetailsScreen.styles";
 
-import PinDetails from "@/src/components/PinDetails/PinDetails";
+import PinDetailsView from "@/src/components/PinDetailsView/PinDetailsView";
 import { useAccountDetailsQuery } from "@/src/hooks/useAccountDetails";
 import { PinWithAuthorDetails } from "@/src/lib/types";
 
@@ -43,7 +43,7 @@ const PinDetailsScreen = ({
           style={styles.closeButtonIcon}
         />
       </TouchableOpacity>
-      <PinDetails
+      <PinDetailsView
         pin={createdPin}
         pinImageAspectRatio={createdPinImageAspectRatio}
         handlePressAuthor={handlePressAuthor}
