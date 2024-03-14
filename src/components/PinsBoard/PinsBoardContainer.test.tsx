@@ -67,7 +67,7 @@ const mockRefreshedPinSuggestions = mockPinSuggestions.map((result, index) => ({
   unique_id: String(mockPinSuggestions.length + index).padStart(18, "0"),
 }));
 
-const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
+const pinSuggestionsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}`;
 
 const mockDispatch = jest.fn();
 
@@ -78,8 +78,6 @@ const renderComponent = (props?: any) => {
     isCheckingAccessToken: false,
     isAuthenticated: true,
   };
-
-  const pinSuggestionsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
 
   render(
     <AuthenticationContext.Provider
@@ -124,7 +122,7 @@ and fetches second page upon scroll`, async () => {
   jest.useFakeTimers();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
@@ -155,7 +153,7 @@ and fetches second page upon scroll`, async () => {
 
   await waitFor(() => {
     expect(fetch as FetchMock).toHaveBeenLastCalledWith(
-      `${endpointWithBaseURL}?page=2`,
+      `${pinSuggestionsEndpoint}?page=2`,
     );
   });
 });
@@ -164,7 +162,7 @@ it("fetches first page with authentication if relevant", async () => {
   renderComponent({ shouldAuthenticate: true });
 
   await waitFor(() => {
-    expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?page=1`, {
+    expect(fetch).toHaveBeenCalledWith(`${pinSuggestionsEndpoint}?page=1`, {
       headers: { Authorization: "Bearer access_token" },
     });
   });
@@ -172,7 +170,7 @@ it("fetches first page with authentication if relevant", async () => {
 
 it("displays relevant message if search results are empty", async () => {
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     JSON.stringify({
       results: [],
     }),
@@ -195,7 +193,7 @@ it("displays spinner while fetching initial pins", async () => {
 });
 
 it("dispatches relevant action upon 401 response when fetching initial pins", async () => {
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
+  fetchMock.mockOnceIf(`${pinSuggestionsEndpoint}?page=1`, "{}", {
     status: 401,
   });
 
@@ -207,7 +205,7 @@ it("dispatches relevant action upon 401 response when fetching initial pins", as
 });
 
 it("displays error message upon 400 response when fetching initial pins", async () => {
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
+  fetchMock.mockOnceIf(`${pinSuggestionsEndpoint}?page=1`, "{}", {
     status: 400,
   });
 
@@ -220,7 +218,7 @@ it("displays error message upon 400 response when fetching initial pins", async 
 
 it("displays error message upon error in 'Image.getSize()' when fetching initial pins", async () => {
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
@@ -240,14 +238,14 @@ again if user pulls again within debounce time`, async () => {
   jest.useFakeTimers();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     JSON.stringify({
       results: mockRefreshedPinSuggestions,
     }),
@@ -279,14 +277,14 @@ again if user pulls again after debounce time`, async () => {
   jest.useFakeTimers();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
   renderComponent();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     JSON.stringify({
       results: mockRefreshedPinSuggestions,
     }),
@@ -302,7 +300,7 @@ again if user pulls again after debounce time`, async () => {
   expect(fetch).not.toHaveBeenCalled();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     JSON.stringify({
       results: mockRefreshedPinSuggestions,
     }),
@@ -315,7 +313,7 @@ again if user pulls again after debounce time`, async () => {
   pullToRefresh();
 
   await waitFor(() => {
-    expect(fetch).toHaveBeenCalledWith(`${endpointWithBaseURL}?page=1`);
+    expect(fetch).toHaveBeenCalledWith(`${pinSuggestionsEndpoint}?page=1`);
   });
 });
 
@@ -323,7 +321,7 @@ it("dispatches relevant action upon 401 response on refresh", async () => {
   jest.useFakeTimers();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
@@ -333,7 +331,7 @@ it("dispatches relevant action upon 401 response on refresh", async () => {
     screen.getByTestId("mocked-pin-thumbnail-000000000000000000");
   });
 
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
+  fetchMock.mockOnceIf(`${pinSuggestionsEndpoint}?page=1`, "{}", {
     status: 401,
   });
 
@@ -348,7 +346,7 @@ it("displays error message upon 400 response on refresh", async () => {
   jest.useFakeTimers();
 
   fetchMock.mockOnceIf(
-    `${endpointWithBaseURL}?page=1`,
+    `${pinSuggestionsEndpoint}?page=1`,
     MOCK_API_RESPONSES[API_ENDPOINT_PIN_SUGGESTIONS],
   );
 
@@ -358,7 +356,7 @@ it("displays error message upon 400 response on refresh", async () => {
     screen.getByTestId("mocked-pin-thumbnail-000000000000000000");
   });
 
-  fetchMock.mockOnceIf(`${endpointWithBaseURL}?page=1`, "{}", {
+  fetchMock.mockOnceIf(`${pinSuggestionsEndpoint}?page=1`, "{}", {
     status: 400,
   });
 

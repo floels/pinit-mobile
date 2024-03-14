@@ -7,7 +7,7 @@ import { AuthenticatedNavigatorParamList } from "../AuthenticatedNavigator/Authe
 import { BrowseNavigatorParamList } from "../BrowseNavigator/BrowseNavigator";
 
 import { useAccountContext } from "@/src/contexts/accountContext";
-import { Pin, PinWithAuthorDetails } from "@/src/lib/types";
+import { Pin } from "@/src/lib/types";
 
 type BrowseMainNavigatorProps = {
   createdPin: Pin | undefined;
@@ -51,16 +51,18 @@ const BrowseMainNavigatorContainer = ({
   }, [createdPin, createdPinImageAspectRatio]);
 
   const showPinCreationToast = () => {
+    if (!createdPin || !account) {
+      return;
+    }
+
     const createdPinWithAuthorDetails = {
       ...createdPin,
-      authorUsername: account?.username,
-      authorDisplayName: account?.displayName,
-      authorProfilePictureURL: account?.profilePictureURL,
+      author: account,
     };
 
     const handlePressView = () => {
       navigation.navigate("Authenticated.Browse.CreatedPin", {
-        pin: createdPinWithAuthorDetails as PinWithAuthorDetails,
+        pin: createdPinWithAuthorDetails,
         pinImageAspectRatio: createdPinImageAspectRatio as number,
       });
     };

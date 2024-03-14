@@ -75,7 +75,7 @@ const ResultsScreenContainer = ({
     };
   };
 
-  const searchEndpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}/?q=${lastSubmittedSearchTerm.toLowerCase()}`;
+  const searchEndpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}?q=${lastSubmittedSearchTerm.toLowerCase()}`;
 
   const showBackButton = !isSearchInputFocused;
 

@@ -74,14 +74,14 @@ const PinDetailsView = ({
             style={styles.authorData}
             testID="pin-details-author-data"
           >
-            {pin.authorProfilePictureURL && (
+            {pin.author.profilePictureURL && (
               <Image
-                source={{ uri: pin.authorProfilePictureURL }}
+                source={{ uri: pin.author.profilePictureURL }}
                 style={styles.authorProfilePictureImage}
                 testID="pin-details-author-profile-picture"
               />
             )}
-            <Text style={styles.authorName}>{pin.authorDisplayName}</Text>
+            <Text style={styles.authorName}>{pin.author.displayName}</Text>
           </TouchableOpacity>
           <Text style={styles.pinTitle}>{pin.title}</Text>
           {displayDescription}

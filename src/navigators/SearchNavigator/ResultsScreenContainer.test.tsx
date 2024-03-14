@@ -39,7 +39,7 @@ const renderComponent = () => {
   );
 };
 
-const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}/`;
+const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}`;
 
 it(`should set search input value based on initial search term provided,
 and search pins accordingly`, async () => {

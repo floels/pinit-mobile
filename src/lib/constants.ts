@@ -1,13 +1,13 @@
 // API base URL and endpoints
 export const API_BASE_URL = "http://127.0.0.1:8000/api";
-export const API_ENDPOINT_OBTAIN_TOKEN = "token/obtain";
-export const API_ENDPOINT_REFRESH_TOKEN = "token/refresh";
-export const API_ENDPOINT_PIN_SUGGESTIONS = "pin-suggestions";
-export const API_ENDPOINT_SEARCH_SUGGESTIONS = "search-suggestions";
-export const API_ENDPOINT_SEARCH_PINS = "search";
+export const API_ENDPOINT_OBTAIN_TOKEN = "token/obtain/";
+export const API_ENDPOINT_REFRESH_TOKEN = "token/refresh/";
+export const API_ENDPOINT_PIN_SUGGESTIONS = "pin-suggestions/";
+export const API_ENDPOINT_SEARCH_SUGGESTIONS = "search-suggestions/";
+export const API_ENDPOINT_SEARCH_PINS = "search/";
 export const API_ENDPOINT_ACCOUNT_DETAILS = "accounts";
-export const API_ENDPOINT_MY_ACCOUNT_DETAILS = "accounts/me";
-export const API_ENDPOINT_CREATE_PIN = "create-pin";
+export const API_ENDPOINT_MY_ACCOUNT_DETAILS = "accounts/me/";
+export const API_ENDPOINT_CREATE_PIN = "create-pin/";
 export const API_ENDPOINT_PIN_DETAILS = "pins";
 
 // API error codes

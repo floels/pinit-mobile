@@ -32,7 +32,7 @@ const BaseScreen = ({ navigation }: HomeScreenProps) => {
       });
     };
 
-  const pinSuggestionsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
+  const pinSuggestionsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}`;
 
   return (
     <View style={styles.container}>

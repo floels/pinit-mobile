@@ -52,7 +52,7 @@ const renderComponent = () => {
   );
 };
 
-const accountDetailsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}/`;
+const accountDetailsEndpoint = `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}`;
 
 it(`calls 'setAccount' with proper arguments and persists 
 relevant data upon successful fetch`, async () => {

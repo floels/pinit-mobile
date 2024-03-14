@@ -44,14 +44,20 @@ export const MOCK_API_RESPONSES_JSON = {
       {
         unique_id: "000000000000000001",
         title: "Board 1 title",
-        cover_picture_url:
+        first_image_urls: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
       {
         unique_id: "000000000000000002",
         title: "Board 2 title",
-        cover_picture_url:
+        first_image_urls: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
     ],
     initial: "J",
@@ -111,14 +117,20 @@ export const MOCK_API_RESPONSES_JSON = {
       {
         unique_id: "000000000000000001",
         title: "Board 1 title",
-        cover_picture_url:
+        first_image_urls: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
       {
         unique_id: "000000000000000002",
         title: "Board 2 title",
-        cover_picture_url:
+        first_image_urls: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
     ],
     initial: "J",
@@ -141,14 +153,20 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
       {
         id: "000000000000000001",
         title: "Board 1 title",
-        coverPictureURL:
+        firstImageURLs: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
       {
         id: "000000000000000002",
         title: "Board 2 title",
-        coverPictureURL:
+        firstImageURLs: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
     ],
     initial: "J",
@@ -164,19 +182,23 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
       title: `Pin ${index + 1} title`,
       imageURL:
         "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
-      authorUsername: "johndoe",
-      authorDisplayName: "John Doe",
-      authorProfilePictureURL:
-        "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
+      author: {
+        username: "johndoe",
+        displayName: "John Doe",
+        profilePictureURL:
+          "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
+      },
     })),
   },
   [API_ENDPOINT_PIN_DETAILS]: {
     id: "837672678962535495",
     imageURL: "http://example.com",
     title: "Pin title",
-    authorUsername: "johndoe",
-    authorDisplayName: "John Doe",
-    authorProfilePictureURL: "http://example.com",
+    author: {
+      username: "johndoe",
+      displayName: "John Doe",
+      profilePictureURL: "http://example.com",
+    },
     description: "Pin description.",
   },
   [API_ENDPOINT_ACCOUNT_DETAILS]: {
@@ -188,14 +210,20 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
       {
         id: "000000000000000001",
         title: "Board 1 title",
-        coverPictureURL:
+        firstImageURLs: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
       {
         id: "000000000000000002",
         title: "Board 2 title",
-        coverPictureURL:
+        firstImageURLs: [
           "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+          "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
+        ],
       },
     ],
     initial: "J",
@@ -209,10 +237,12 @@ export const MOCK_API_RESPONSES_SERIALIZED = {
       imageURL:
         "https://i.pinimg.com/564x/fb/71/38/fb7138bb24bc5dabdaf3908a961cdfc6.jpg",
       title: `Pin ${index + 1} title`,
-      authorUsername: "johndoe",
-      authorDisplayName: "John Doe",
-      authorProfilePictureURL:
-        "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
+      author: {
+        username: "johndoe",
+        displayName: "John Doe",
+        profilePictureURL:
+          "https://i.pinimg.com/564x/49/ce/d2/49ced2e29b6d4945a13be722bac54642.jpg",
+      },
     })),
   },
 };

@@ -8,6 +8,14 @@ import {
   Account,
 } from "../types";
 
+const serializeAccount = (account: any): Account => {
+  return {
+    username: account.username,
+    displayName: account.display_name,
+    profilePictureURL: account.profile_picture_url,
+  };
+};
+
 export const serializePin = (pin: any): Pin => {
   return {
     id: pin.unique_id,
@@ -21,9 +29,7 @@ export const serializePinWithAuthorDetails = (
 ): PinWithAuthorDetails => {
   return {
     ...serializePin(pin),
-    authorUsername: pin.author.username,
-    authorDisplayName: pin.author.display_name,
-    authorProfilePictureURL: pin.author.profile_picture_url,
+    author: serializeAccount(pin.author),
   };
 };
 
@@ -44,9 +50,7 @@ export const serializeAccountWithPublicDetails = (
   account: any,
 ): AccountWithPublicDetails => {
   return {
-    username: account.username,
-    displayName: account.display_name,
-    profilePictureURL: account.profile_picture_url,
+    ...serializeAccount(account),
     initial: account.initial,
     boards: serializeBoards(account.boards),
     backgroundPictureURL: account.background_picture_url,
@@ -68,18 +72,10 @@ export const serializeBoard = (board: any): Board => {
   return {
     id: board.unique_id,
     title: board.title,
-    coverPictureURL: board.cover_picture_url,
+    firstImageURLs: board.first_image_urls,
   };
 };
 
 export const serializeBoards = (boards: any): Board[] => {
   return boards.map(serializeBoard);
-};
-
-export const getAccountFromPin = (pin: PinWithAuthorDetails): Account => {
-  return {
-    username: pin.authorUsername,
-    displayName: pin.authorDisplayName,
-    profilePictureURL: pin.authorProfilePictureURL,
-  };
 };

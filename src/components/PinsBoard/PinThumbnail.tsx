@@ -18,24 +18,24 @@ const PinThumbnail = ({
   width,
   pinImageAspectRatio,
 }: PinThumbnailProps) => {
-  const { authorProfilePictureURL, authorDisplayName, title, imageURL } = pin;
+  const { author, title, imageURL } = pin;
 
   let displayAuthorData;
 
-  if (authorProfilePictureURL) {
+  if (author.profilePictureURL) {
     displayAuthorData = (
       <View style={styles.authorData}>
         <Image
-          source={{ uri: authorProfilePictureURL }}
+          source={{ uri: author.profilePictureURL }}
           style={styles.authorProfilePicture}
           testID="pin-thumbnail-author-profile-picture"
         />
-        <Text style={styles.authorName}>{authorDisplayName}</Text>
+        <Text style={styles.authorName}>{author.displayName}</Text>
       </View>
     );
   } else {
     displayAuthorData = (
-      <Text style={styles.authorName}>{authorDisplayName}</Text>
+      <Text style={styles.authorName}>{author.displayName}</Text>
     );
   }
 

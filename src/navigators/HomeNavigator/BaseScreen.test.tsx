@@ -38,7 +38,7 @@ const renderComponent = () => {
   render(<BaseScreen navigation={mockNavigation as any} />);
 };
 
-const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}/`;
+const endpointWithBaseURL = `${API_BASE_URL}/${API_ENDPOINT_PIN_SUGGESTIONS}`;
 
 it("should navigate to screen with proper params when user taps on a pin", async () => {
   fetchMock.mockOnceIf(

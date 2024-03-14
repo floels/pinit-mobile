@@ -8,10 +8,7 @@ import PinDetailsView from "@/src/components/PinDetailsView/PinDetailsView";
 import { API_BASE_URL, API_ENDPOINT_PIN_DETAILS } from "@/src/lib/constants";
 import { PinWithAuthorDetails, PinWithFullDetails } from "@/src/lib/types";
 import { throwIfKO } from "@/src/lib/utils/fetch";
-import {
-  getAccountFromPin,
-  serializePinWithFullDetails,
-} from "@/src/lib/utils/serializers";
+import { serializePinWithFullDetails } from "@/src/lib/utils/serializers";
 
 type HomeScreenProps = {
   pin: PinWithAuthorDetails;
@@ -54,10 +51,8 @@ const HomeScreen = ({
   }, [data]);
 
   const handlePressAuthor = () => {
-    const author = getAccountFromPin(providedPin);
-
     navigation.navigate("Author", {
-      author,
+      author: providedPin.author,
     });
   };
 
