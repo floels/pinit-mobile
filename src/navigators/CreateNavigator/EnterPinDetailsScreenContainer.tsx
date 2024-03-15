@@ -120,7 +120,7 @@ const EnterPinDetailsScreenContainer = ({
 
   const postFormData = async (formData: FormData) => {
     const response = await fetchWithAuthentication(
-      `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}/`,
+      `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}`,
       {
         method: "POST",
         body: formData,

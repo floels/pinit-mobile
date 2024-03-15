@@ -36,7 +36,7 @@ const mockNavigation = {
 
 const mockDispatch = jest.fn();
 
-const endpoint = `${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}/`;
+const endpoint = `${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}`;
 
 const renderComponent = () => {
   const initialState = {

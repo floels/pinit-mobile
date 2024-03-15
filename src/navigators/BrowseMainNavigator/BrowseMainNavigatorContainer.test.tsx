@@ -91,9 +91,7 @@ and clicking on 'View' link in toast navigates to relevant screen with relevant 
     {
       pin: {
         ...props.createdPin,
-        authorUsername: account.username,
-        authorDisplayName: account.displayName,
-        authorProfilePictureURL: account.profilePictureURL,
+        author: account,
       },
       pinImageAspectRatio: 1.5,
     },

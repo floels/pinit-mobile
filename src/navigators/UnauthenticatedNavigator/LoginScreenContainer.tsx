@@ -30,19 +30,16 @@ const computeCanSubmit = (values: Credentials) => {
 };
 
 const fetchTokens = async ({ email, password }: Credentials) => {
-  const response = await fetch(
-    `${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}/`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
+  const response = await fetch(`${API_BASE_URL}/${API_ENDPOINT_OBTAIN_TOKEN}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  });
 
   if (response.status === 401) {
     const responseData = await response.json();

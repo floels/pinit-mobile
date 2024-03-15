@@ -57,10 +57,10 @@ for description initially`, () => {
     "pin-details-author-profile-picture",
   );
   expect(authorProfilePicture).toHaveProp("source", {
-    uri: providedPin.authorProfilePictureURL,
+    uri: providedPin.author.profilePictureURL,
   });
 
-  screen.getByText(providedPin.authorDisplayName);
+  screen.getByText(providedPin.author.displayName);
   screen.getByText(providedPin.title);
 
   screen.getByTestId("blinking-dots");

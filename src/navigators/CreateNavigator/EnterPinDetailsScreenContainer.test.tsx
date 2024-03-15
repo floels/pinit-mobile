@@ -60,7 +60,7 @@ const renderComponent = (
   );
 };
 
-const createPinEndpoint = `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}/`;
+const createPinEndpoint = `${API_BASE_URL}/${API_ENDPOINT_CREATE_PIN}`;
 
 const typeInTitleInput = async (input: string) => {
   const titleInput = screen.getByTestId("pin-title-input");

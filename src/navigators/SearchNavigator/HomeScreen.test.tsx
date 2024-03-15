@@ -12,7 +12,6 @@ import HomeScreen from "./HomeScreen";
 import { AUTOCOMPLETE_DEBOUNCE_TIME_MS } from "@/src/components/PinsSearchInput/PinsSearchInputContainer";
 import {
   API_BASE_URL,
-  API_ENDPOINT_SEARCH_PINS,
   API_ENDPOINT_SEARCH_SUGGESTIONS,
 } from "@/src/lib/constants";
 import { pressButton } from "@/src/lib/testing-utils/misc";
@@ -25,7 +24,7 @@ const mockNavigation = {
   navigate: jest.fn(),
 } as any;
 
-const endpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_PINS}/`;
+const endpoint = `${API_BASE_URL}/${API_ENDPOINT_SEARCH_SUGGESTIONS}`;
 
 const renderComponent = () => {
   render(<HomeScreen navigation={mockNavigation} />);

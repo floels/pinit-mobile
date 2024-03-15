@@ -40,7 +40,7 @@ const AccountDetailsFetcher = () => {
 
   const fetchAccountDetails = async () => {
     const response = await fetchWithAuthentication(
-      `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}/`,
+      `${API_BASE_URL}/${API_ENDPOINT_MY_ACCOUNT_DETAILS}`,
     );
 
     if (response.status === 401) {
